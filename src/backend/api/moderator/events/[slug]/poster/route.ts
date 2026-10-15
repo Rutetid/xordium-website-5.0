@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { writeFile, mkdir, access } from "node:fs/promises";
-import { join } from "node:path";
+import { prisma } from "@/backend/lib/prisma";
 import { requireAdmin } from "@/backend/lib/api";
 import sharp from "sharp";
 
@@ -19,29 +18,11 @@ const ALLOWED_TYPES = new Set([
 
 const MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
 
-// The `public/` folder Next.js actually serves (`process.cwd()` is the repo
-// root when started via `next dev src/frontend`; the fallback covers being
-// started from inside `src/frontend`).
-async function resolvePublicDir(folder: string): Promise<string> {
-  const primary = join(process.cwd(), "src", "frontend", "public", folder);
-  try {
-    await access(primary);
-    return primary;
-  } catch {
-    try {
-      const fallback = join(process.cwd(), "public", folder);
-      await access(fallback);
-      return fallback;
-    } catch {
-      return primary;
-    }
-  }
-}
-
 // POST /api/moderator/events/:slug/poster
 // Accepts multipart/form-data with a "file" field.
-// The file must already be converted to WebP on the client before upload
-// (enforced by accepting only image/* and returning a deterministic path).
+// The poster is re-encoded and stored in the database (never the
+// filesystem) so uploads also work on read-only serverless hosting.
+// Returns the public path serving the stored bytes.
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ slug: string }> }
@@ -78,21 +59,41 @@ export async function POST(
 
     // Re-encode server-side as a safety net: cap dimensions and compress so
     // posters stay fast even if the client sent a large file.
-    const optimized = await sharp(buffer, { animated: true })
-      .rotate()
-      .resize({ width: 1600, withoutEnlargement: true })
-      .webp({ quality: 80, effort: 4 })
-      .toBuffer();
+    let optimized: Buffer;
+    try {
+      optimized = await sharp(buffer, { animated: true })
+        .rotate()
+        .resize({ width: 1600, withoutEnlargement: true })
+        .webp({ quality: 80, effort: 4 })
+        .toBuffer();
+    } catch {
+      return NextResponse.json(
+        { error: "Could not process that image. Try a JPG or PNG export." },
+        { status: 422 },
+      );
+    }
 
-    // Save as <slug>.webp inside the public/ dir Next.js actually serves.
-    const filename = `${slug}.webp`;
-    const assetsDir = await resolvePublicDir("assets");
+    const existing = await prisma.event.findUnique({
+      where: { slug },
+      select: { id: true },
+    });
+    if (!existing) {
+      return NextResponse.json({ error: "Event not found." }, { status: 404 });
+    }
 
-    await mkdir(assetsDir, { recursive: true });
-    await writeFile(join(assetsDir, filename), optimized);
+    // Copy into a fresh ArrayBuffer (Buffer may pool shared memory).
+    const posterBytes = new Uint8Array(optimized.length);
+    posterBytes.set(optimized);
 
-    const publicPath = `/assets/${filename}`;
-    return NextResponse.json({ path: publicPath });
+    await prisma.event.update({
+      where: { slug },
+      data: {
+        posterImage: posterBytes,
+        posterUrl: `/api/events/poster/${slug}`,
+      },
+    });
+
+    return NextResponse.json({ path: `/api/events/poster/${slug}` });
   } catch (error) {
     console.error("Poster upload error:", error);
     return NextResponse.json(

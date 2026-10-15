@@ -86,6 +86,7 @@ model Event {
   cta         String
   featured    Boolean  @default(false)
   posterUrl   String?
+  posterImage Bytes?
   // Registration setup (drives the public registration form).
   minTeamSize        Int     @default(1)
   maxTeamSize        Int     @default(1)

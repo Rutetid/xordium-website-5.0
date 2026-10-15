@@ -74,6 +74,8 @@ export function requiredPassword(value: unknown, field = "Password"): string {
 export function optionalUrl(value: unknown, field: string): string | null {
   const raw = optionalText(value, field, 2048);
   if (raw === null) return null;
+  // Site-local asset paths (e.g. /assets/x.webp, /api/events/poster/x).
+  if (raw.startsWith("/")) return raw;
   try {
     const url = new URL(raw);
     if (url.protocol !== "https:" && url.protocol !== "http:") throw new Error();
