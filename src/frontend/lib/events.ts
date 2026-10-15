@@ -1,6 +1,12 @@
 export type EventCategory =
   | "Technical"
   | "eSports"
+  | "Esports"
+  | "Robotics"
+  | "Cybersecurity"
+  | "Algorithms"
+  | "AI / ML"
+  | "Open"
   | "Fun";
 
 export interface FestEvent {
@@ -40,7 +46,6 @@ export const events: FestEvent[] = [
     schedule: "Day 01 → Day 03",
     teamSize: "2 – 4 engineers per squad",
     cta: "Submit deck",
-    featured: true,
   },
   {
     slug: "overclock-tactical",
@@ -55,7 +60,6 @@ export const events: FestEvent[] = [
     format: "5v5 squad LAN bracket",
     schedule: "Day 02 // 10:00 IST",
     cta: "Register squad",
-    featured: true,
   },
   {
     slug: "mecha-clash",
@@ -70,7 +74,6 @@ export const events: FestEvent[] = [
     format: "15kg weight ceiling",
     schedule: "Day 03 // Knockouts",
     cta: "Enter bot",
-    featured: true,
   },
   {
     slug: "zero-day-ctf",
@@ -85,7 +88,6 @@ export const events: FestEvent[] = [
     format: "12 continuous hours",
     schedule: "Day 02 // Overnight",
     cta: "Authorize team",
-    featured: true,
   },
   {
     slug: "code-shift",
@@ -100,7 +102,6 @@ export const events: FestEvent[] = [
     format: "32 coders double elim",
     schedule: "Day 01 // Qualifiers",
     cta: "Claim seed",
-    featured: true,
   },
   {
     slug: "latent-runner",
@@ -115,7 +116,6 @@ export const events: FestEvent[] = [
     format: "> 60 FPS @ INT8 accuracy",
     schedule: "Day 03 // Finals",
     cta: "Benchmark model",
-    featured: true,
   },
   {
     slug: "bgmi-showdown",
@@ -188,10 +188,6 @@ export const events: FestEvent[] = [
     cta: "Pitch in",
   },
 ];
-
-export function getFeaturedEvents(): FestEvent[] {
-  return events.filter((e) => e.featured);
-}
 
 export function getEvent(slug: string): FestEvent | undefined {
   return events.find((e) => e.slug === slug);
