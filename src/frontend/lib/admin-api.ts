@@ -283,6 +283,11 @@ export interface AdminEvent {
   cta?: string;
   featured?: boolean;
   posterUrl?: string | null;
+  minTeamSize?: number;
+  maxTeamSize?: number;
+  allowTeamMembers?: boolean;
+  allowExternalTeam?: boolean;
+  registrationLabel?: string | null;
 }
 
 export async function fetchEvents(): Promise<AdminEvent[]> {
@@ -295,7 +300,16 @@ export async function fetchEventBySlug(slug: string): Promise<AdminEvent> {
 
 export async function updateEvent(
   slug: string,
-  input: { description?: string; posterUrl?: string; featured?: boolean }
+  input: {
+    description?: string;
+    posterUrl?: string;
+    featured?: boolean;
+    minTeamSize?: number;
+    maxTeamSize?: number;
+    allowTeamMembers?: boolean;
+    allowExternalTeam?: boolean;
+    registrationLabel?: string;
+  }
 ): Promise<AdminEvent> {
   return apiRequest<AdminEvent>(`/moderator/events/${slug}`, {
     method: "PUT",
@@ -324,6 +338,11 @@ export async function createEvent(input: {
   cta: string;
   featured?: boolean;
   posterUrl?: string;
+  registrationLabel?: string;
+  minTeamSize?: number;
+  maxTeamSize?: number;
+  allowTeamMembers?: boolean;
+  allowExternalTeam?: boolean;
 }): Promise<AdminEvent> {
   return apiRequest<AdminEvent>("/admin/events", {
     method: "POST",
@@ -398,6 +417,59 @@ export async function deleteTimetableEntry(
   return apiRequest<{ message: string }>(`/admin/timetable/${id}`, {
     method: "DELETE",
   });
+}
+
+// ==================== REGISTRATION EVENTS API (public setup data) ====================
+
+export interface RegistrationEventConfig {
+  id: string;
+  name: string;
+  minTeamSize: number;
+  maxTeamSize: number;
+  allowTeamMembers: boolean;
+  allowExternalTeam: boolean;
+}
+
+export async function fetchRegistrationEvents(): Promise<RegistrationEventConfig[]> {
+  const response = await fetch(`${API_BASE}/registration-events`, {
+    credentials: "same-origin",
+  });
+  if (!response.ok) throw new Error("Failed to load registration events");
+  const data = await response.json();
+  return Array.isArray(data) ? (data as RegistrationEventConfig[]) : [];
+}
+
+// ==================== SITE SETTINGS API ====================
+
+export interface SiteSetting {
+  key: string;
+  value: string;
+  updatedAt: string;
+}
+
+export async function fetchSiteSettings(): Promise<Record<string, string>> {
+  const response = await fetch(`${API_BASE}/site-settings`, {
+    credentials: "same-origin",
+  });
+  if (!response.ok) throw new Error("Failed to load site settings");
+  const data = await response.json();
+  return typeof data === "object" && data !== null
+    ? (data as Record<string, string>)
+    : {};
+}
+
+export async function updateSiteSettings(input: {
+  registrationDeadline?: string;
+  totalPrizePool?: string;
+}): Promise<SiteSetting[]> {
+  return apiRequest<SiteSetting[]>("/admin/settings", {
+    method: "PUT",
+    body: JSON.stringify(input),
+  });
+}
+
+export async function fetchAdminSettings(): Promise<SiteSetting[]> {
+  return apiRequest<SiteSetting[]>("/admin/settings");
 }
 
 // ==================== REGISTRATIONS API ====================

@@ -1,9 +1,13 @@
 "use client";
 
-import { useState, type SyntheticEvent } from "react";
+import { useEffect, useState, type SyntheticEvent } from "react";
 import Link from "next/link";
-import { registrationEvents, HACKATHON_EVENT_ID, requiresBitEmail, isBitEmail, BIT_EMAIL_DOMAIN } from "@/data/events";
-import { getEvent } from "@/lib/events";
+import { isBitEmail, BIT_EMAIL_DOMAIN } from "@/data/events";
+import { toFestEvent, type DbEventRow, type FestEvent } from "@/lib/events";
+import {
+  fetchRegistrationEvents,
+  type RegistrationEventConfig,
+} from "@/lib/admin-api";
 import type {
   Branch,
   RegistrationSubmission,
@@ -38,10 +42,23 @@ type Props = {
 };
 
 export default function RegistrationForm({ initialEventId }: Props) {
-  const validInitialEvent =
-    registrationEvents.find((event) => event.id === initialEventId) ?? null;
+  // Registration setup (dropdown options, team sizes, email rules) comes
+  // from the database — nothing about any event is hardcoded here.
+  const [regEvents, setRegEvents] = useState<RegistrationEventConfig[]>([]);
+  const [regEventsLoaded, setRegEventsLoaded] = useState(false);
 
-  const [eventId, setEventId] = useState(validInitialEvent?.id ?? "");
+  useEffect(() => {
+    fetchRegistrationEvents()
+      .then((data) => {
+        setRegEvents(data);
+        setRegEventsLoaded(true);
+      })
+      .catch(() => {
+        setRegEventsLoaded(true);
+      });
+  }, []);
+
+  const [eventId, setEventId] = useState(initialEventId ?? "");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -56,7 +73,8 @@ export default function RegistrationForm({ initialEventId }: Props) {
     [],
   );
   const [acceptedPrivacyPolicy, setAcceptedPrivacyPolicy] = useState(false);
-  // Hackathon only: team declared they are not from BIT (waives @bitmesra.ac.in).
+  // Team declared they are not from BIT (waives @bitmesra.ac.in) —
+  // offered only by events flagged for it.
   const [isExternalTeam, setIsExternalTeam] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState("");
@@ -66,20 +84,41 @@ export default function RegistrationForm({ initialEventId }: Props) {
   );
 
   const selectedEvent =
-    registrationEvents.find((event) => event.id === eventId) ?? null;
-  // Full event details (description, venue, format...) live in the event
-  // catalogue keyed by the same slug — re-resolved on every render so the
-  // panel below always matches the selected event.
-  const selectedEventInfo = eventId ? getEvent(eventId) : undefined;
+    regEvents.find((event) => event.id === eventId) ?? null;
+  // Full event details (description, venue, format...) come from the
+  // database catalogue keyed by the same slug — re-resolved on every
+  // render so the panel below always matches the selected event.
+  const [catalogue, setCatalogue] = useState<FestEvent[]>([]);
+  useEffect(() => {
+    fetch("/api/events")
+      .then((response) => (response.ok ? response.json() : []))
+      .then((data: DbEventRow[]) => {
+        if (Array.isArray(data)) setCatalogue(data.map(toFestEvent));
+      })
+      .catch(() => {
+        // Panel stays hidden when the API is unreachable.
+      });
+  }, []);
+  const selectedEventInfo = eventId
+    ? catalogue.find((e) => e.slug === eventId)
+    : undefined;
   const hasTeamFields = selectedEvent?.allowTeamMembers ?? false;
   const totalTeamSize = 1 + teamMembers.length;
-  const showExternalToggle = selectedEvent?.id === HACKATHON_EVENT_ID;
+  const showExternalToggle = selectedEvent?.allowExternalTeam ?? false;
   const bitRequired = selectedEvent
-    ? requiresBitEmail(selectedEvent.id, isExternalTeam)
+    ? !(selectedEvent.allowExternalTeam && isExternalTeam)
     : true;
 
   function changeEvent(newEventId: string) {
-    const newEvent = registrationEvents.find((event) => event.id === newEventId);
+    if (newEventId === "") {
+      setEventId("");
+      setTeamMembers([]);
+      setTeamName("");
+      setIsExternalTeam(false);
+      setErrors({});
+      return;
+    }
+    const newEvent = regEvents.find((event) => event.id === newEventId);
     if (!newEvent) return;
 
     setEventId(newEventId);
@@ -337,11 +376,17 @@ export default function RegistrationForm({ initialEventId }: Props) {
               className="field-control"
             >
               <option value="">Select event</option>
-              {registrationEvents.map((event) => (
-                <option key={event.id} value={event.id}>
-                  {event.name}
+              {!regEventsLoaded ? (
+                <option value="" disabled>
+                  Loading events...
                 </option>
-              ))}
+              ) : (
+                regEvents.map((event) => (
+                  <option key={event.id} value={event.id}>
+                    {event.name}
+                  </option>
+                ))
+              )}
             </select>
             {errors.event ? (
               <p id="event-error" className="mt-1 font-mono text-[13px] text-red-300" role="alert">

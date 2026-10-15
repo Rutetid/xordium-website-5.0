@@ -28,7 +28,6 @@ const EMPTY_EVENT_FORM = {
   tag: "",
   category: "Technical",
   description: "",
-  image: "",
   prizePool: "",
   venue: "",
   format: "",
@@ -36,6 +35,11 @@ const EMPTY_EVENT_FORM = {
   teamSize: "",
   cta: "Register",
   featured: false,
+  registrationLabel: "",
+  minTeamSize: 1,
+  maxTeamSize: 1,
+  allowTeamMembers: false,
+  allowExternalTeam: false,
 };
 
 // WebP conversion via Canvas (client-side, no server deps)
@@ -103,6 +107,12 @@ export default function EventsPage() {
   const [editingEvent, setEditingEvent] = useState<AdminEvent | null>(null);
   const [editDescription, setEditDescription] = useState("");
   const [editPosterUrl, setEditPosterUrl] = useState("");
+  const [editMinTeamSize, setEditMinTeamSize] = useState(1);
+  const [editMaxTeamSize, setEditMaxTeamSize] = useState(1);
+  const [editAllowTeamMembers, setEditAllowTeamMembers] = useState(false);
+  const [editAllowExternalTeam, setEditAllowExternalTeam] = useState(false);
+  const [editRegistrationLabel, setEditRegistrationLabel] = useState("");
+  const [editFeatured, setEditFeatured] = useState(false);
   const [deletingEvent, setDeletingEvent] = useState<string | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
@@ -142,6 +152,12 @@ export default function EventsPage() {
     setEditingEvent(event);
     setEditDescription(event.description || "");
     setEditPosterUrl(event.posterUrl || event.image || "");
+    setEditMinTeamSize(event.minTeamSize ?? 1);
+    setEditMaxTeamSize(event.maxTeamSize ?? 1);
+    setEditAllowTeamMembers(Boolean(event.allowTeamMembers));
+    setEditAllowExternalTeam(Boolean(event.allowExternalTeam));
+    setEditRegistrationLabel(event.registrationLabel || "");
+    setEditFeatured(Boolean(event.featured));
     setPreviewSrc(null);
     setPendingBlob(null);
     setSuccess("");
@@ -209,6 +225,12 @@ export default function EventsPage() {
       await updateEvent(editingEvent.slug, {
         description: editDescription,
         posterUrl: posterUrl || undefined,
+        minTeamSize: Number(editMinTeamSize) || 1,
+        maxTeamSize: Number(editMaxTeamSize) || 1,
+        allowTeamMembers: editAllowTeamMembers,
+        allowExternalTeam: editAllowExternalTeam,
+        registrationLabel: editRegistrationLabel.trim(),
+        featured: editFeatured,
       });
       setSuccess(`"${editingEvent.title}" updated successfully.`);
       setEditingEvent(null);
@@ -253,7 +275,7 @@ export default function EventsPage() {
     setError("");
   }
 
-  function updateCreateField(field: string, value: string | boolean) {
+  function updateCreateField(field: string, value: string | boolean | number) {
     setCreateForm((current) => ({...current, [field]: value}));
   }
 
@@ -293,6 +315,11 @@ export default function EventsPage() {
         teamSize: createForm.teamSize.trim() || undefined,
         cta: createForm.cta.trim(),
         featured: createForm.featured,
+        registrationLabel: createForm.registrationLabel.trim() || undefined,
+        minTeamSize: Number(createForm.minTeamSize) || 1,
+        maxTeamSize: Number(createForm.maxTeamSize) || 1,
+        allowTeamMembers: createForm.allowTeamMembers,
+        allowExternalTeam: createForm.allowExternalTeam,
       });
 
       // Upload the poster against the created event, then attach its URL.
@@ -405,6 +432,77 @@ export default function EventsPage() {
                 <p className="mt-1.5 font-mono text-[10px] leading-relaxed text-white">
                   Markdown supported - **bold**, *italic*, - lists, &gt;   quotes,
                 </p>
+              </div>
+
+              {/* Registration setup */}
+              <div>
+                <label className="block font-mono text-[11px] tracking-[0.2em] text-white uppercase mb-1.5">
+                  Registration label
+                  <span className="ml-2 text-white normal-case tracking-normal">
+                    (dropdown name — blank falls back to title)
+                  </span>
+                </label>
+                <input
+                  value={editRegistrationLabel}
+                  onChange={(e) => setEditRegistrationLabel(e.target.value)}
+                  placeholder="Hackathon (Synapse Protocol...)"
+                  className="field-control"
+                />
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="field-label">Min team size</label>
+                  <input
+                    type="number"
+                    min={1}
+                    max={100}
+                    value={editMinTeamSize}
+                    onChange={(e) => setEditMinTeamSize(Number(e.target.value))}
+                    className="field-control"
+                  />
+                </div>
+                <div>
+                  <label className="field-label">Max team size</label>
+                  <input
+                    type="number"
+                    min={1}
+                    max={100}
+                    value={editMaxTeamSize}
+                    onChange={(e) => setEditMaxTeamSize(Number(e.target.value))}
+                    className="field-control"
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label className="flex cursor-pointer items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-white">
+                  <input
+                    type="checkbox"
+                    checked={editAllowTeamMembers}
+                    onChange={(e) => setEditAllowTeamMembers(e.target.checked)}
+                    className="size-4 accent-red-600"
+                  />
+                  Allow team members
+                </label>
+                <label className="flex cursor-pointer items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-white">
+                  <input
+                    type="checkbox"
+                    checked={editAllowExternalTeam}
+                    onChange={(e) => setEditAllowExternalTeam(e.target.checked)}
+                    className="size-4 accent-red-600"
+                  />
+                  Allow external (non-BIT) team waiver
+                </label>
+                <label className="flex cursor-pointer items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-white">
+                  <input
+                    type="checkbox"
+                    checked={editFeatured}
+                    onChange={(e) => setEditFeatured(e.target.checked)}
+                    className="size-4 accent-red-600"
+                  />
+                  Show in homepage Featured competitions
+                </label>
               </div>
 
               {/* Poster upload */}
@@ -706,6 +804,68 @@ export default function EventsPage() {
                     )}
                   </div>
                 </div>
+              </div>
+
+              <div>
+                <label className="field-label" htmlFor="new-reglabel">
+                  Registration label
+                  <span className="text-white normal-case tracking-normal"> (dropdown name — blank falls back to title)</span>
+                </label>
+                <input
+                  id="new-reglabel"
+                  value={createForm.registrationLabel}
+                  onChange={(e) => updateCreateField("registrationLabel", e.target.value)}
+                  placeholder="Hackathon (Synapse Protocol...)"
+                  className="field-control"
+                />
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="field-label" htmlFor="new-minteam">Min team size</label>
+                  <input
+                    id="new-minteam"
+                    type="number"
+                    min={1}
+                    max={100}
+                    value={createForm.minTeamSize}
+                    onChange={(e) => updateCreateField("minTeamSize", Number(e.target.value))}
+                    className="field-control"
+                  />
+                </div>
+                <div>
+                  <label className="field-label" htmlFor="new-maxteam">Max team size</label>
+                  <input
+                    id="new-maxteam"
+                    type="number"
+                    min={1}
+                    max={100}
+                    value={createForm.maxTeamSize}
+                    onChange={(e) => updateCreateField("maxTeamSize", Number(e.target.value))}
+                    className="field-control"
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label className="flex cursor-pointer items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-white">
+                  <input
+                    type="checkbox"
+                    checked={createForm.allowTeamMembers}
+                    onChange={(e) => updateCreateField("allowTeamMembers", e.target.checked)}
+                    className="size-4 accent-red-600"
+                  />
+                  Allow team members
+                </label>
+                <label className="flex cursor-pointer items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-white">
+                  <input
+                    type="checkbox"
+                    checked={createForm.allowExternalTeam}
+                    onChange={(e) => updateCreateField("allowExternalTeam", e.target.checked)}
+                    className="size-4 accent-red-600"
+                  />
+                  Allow external (non-BIT) team waiver
+                </label>
               </div>
 
               <label

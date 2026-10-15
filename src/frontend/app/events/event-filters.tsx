@@ -1,33 +1,31 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { events } from "@/lib/events";
+import { useEffect, useMemo, useState } from "react";
+import { toFestEvent, type DbEventRow, type FestEvent } from "@/lib/events";
 import StackedEventCard from "@/components/stacked-event-card";
-
-const FILTER_CATEGORIES = [
-  "All",
-  "Technical",
-  "Esports",
-  "Fun",
-] as const;
-
-type FilterCategory = (typeof FILTER_CATEGORIES)[number];
-
-function getEventFilterCategory(eventCategory: string): FilterCategory {
-  const technicalCategories = ["Hackathon", "Algorithms", "AI / ML", "Cybersecurity", "Hardware"];
-  const esportsCategories = ["Esports"];
-  const funCategories = ["Robotics", "Open"];
-
-  if (technicalCategories.includes(eventCategory)) return "Technical";
-  if (esportsCategories.includes(eventCategory)) return "Esports";
-  if (funCategories.includes(eventCategory)) return "Fun";
-  return "Fun";
-}
 
 export default function EventFilters() {
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState<FilterCategory>("All");
+  const [category, setCategory] = useState<string>("All");
   const [sortBy, setSortBy] = useState<"prize" | "date" | "title">("prize");
+  const [events, setEvents] = useState<FestEvent[]>([]);
+
+  useEffect(() => {
+    fetch("/api/events")
+      .then((response) => (response.ok ? response.json() : []))
+      .then((data: DbEventRow[]) => {
+        if (Array.isArray(data)) setEvents(data.map(toFestEvent));
+      })
+      .catch(() => {
+        // Directory stays empty when the API is unreachable.
+      });
+  }, []);
+
+  // Filter tabs come from the categories actually present — never empty ones.
+  const filterCategories = useMemo(
+    () => ["All", ...[...new Set(events.map((e) => e.category))].sort()],
+    [events],
+  );
 
   const filteredEvents = useMemo(() => {
     let filtered = events.filter((e) => {
@@ -37,8 +35,7 @@ export default function EventFilters() {
         `${e.title} ${e.description} ${e.venue} ${e.tag}`
           .toLowerCase()
           .includes(q);
-      const eventFilterCategory = getEventFilterCategory(e.category);
-      const matchesCategory = category === "All" || eventFilterCategory === category;
+      const matchesCategory = category === "All" || e.category === category;
       return matchesQuery && matchesCategory;
     });
 
@@ -63,7 +60,7 @@ export default function EventFilters() {
     <div className="flex flex-col gap-6">
       {/* Category filters */}
       <div className="flex flex-wrap gap-2 font-mono text-[13px] tracking-[0.15em] uppercase">
-        {FILTER_CATEGORIES.map((c) => (
+        {filterCategories.map((c) => (
           <button
             key={c}
             onClick={() => setCategory(c)}

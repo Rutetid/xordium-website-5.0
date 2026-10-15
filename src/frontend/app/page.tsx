@@ -1,11 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import Countdown from "@/components/countdown";
+import HomepageCountdown from "@/components/homepage-countdown";
 import FeaturedSection from "@/components/featured-section";
 import HomepageCarousel from "@/components/homepage-carousel";
 import SectionHeading from "@/components/section-heading";
 import TimetableSection from "@/components/timetable-section";
-import { REGISTRATION_DEADLINE } from "@/lib/events";
 
 export default function Home() {
   return (
@@ -41,7 +40,7 @@ export default function Home() {
             pinnacle of collegiate esports and intellectual prowess.
           </p>
           <div className="mx-auto mt-6 max-w-xl">
-            <Countdown target={REGISTRATION_DEADLINE} caption="Event commence in"/>
+            <HomepageCountdown caption="Event commence in"/>
           </div>
           <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link

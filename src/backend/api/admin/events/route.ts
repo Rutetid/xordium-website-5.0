@@ -19,6 +19,23 @@ function slugify(value: string): string {
     .slice(0, 80);
 }
 
+function optionalTeamSize(value: unknown, field: string): number | null {
+  if (value === undefined || value === null || value === "") return null;
+  const num = typeof value === "number" ? value : Number(value);
+  if (!Number.isInteger(num) || num < 1 || num > 100) {
+    throw new ApiInputError(`${field} must be an integer between 1 and 100.`);
+  }
+  return num;
+}
+
+function optionalFlag(value: unknown, field: string): boolean | null {
+  if (value === undefined || value === null || value === "") return null;
+  if (typeof value !== "boolean") {
+    throw new ApiInputError(`${field} must be a boolean.`);
+  }
+  return value;
+}
+
 // GET /api/admin/events - list all events (owner only) with featured first, sorted by date
 export async function GET(request: Request) {
   const denied = await requireAdmin(request, true, "users:manage");
@@ -80,6 +97,11 @@ export async function POST(request: Request) {
         cta: optionalText(body.cta, "CTA", 60) ?? "",
         featured,
         posterUrl: optionalText(body.posterUrl, "Poster URL", 2048),
+        minTeamSize: optionalTeamSize(body.minTeamSize, "Min team size") ?? 1,
+        maxTeamSize: optionalTeamSize(body.maxTeamSize, "Max team size") ?? 1,
+        allowTeamMembers: optionalFlag(body.allowTeamMembers, "Allow team members") ?? false,
+        allowExternalTeam: optionalFlag(body.allowExternalTeam, "Allow external team") ?? false,
+        registrationLabel: optionalText(body.registrationLabel, "Registration label", 160),
       },
     });
 

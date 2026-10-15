@@ -86,6 +86,12 @@ model Event {
   cta         String
   featured    Boolean  @default(false)
   posterUrl   String?
+  // Registration setup (drives the public registration form).
+  minTeamSize        Int     @default(1)
+  maxTeamSize        Int     @default(1)
+  allowTeamMembers   Boolean @default(false)
+  allowExternalTeam  Boolean @default(false)
+  registrationLabel  String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -145,4 +151,10 @@ model Registration {
 
   @@index([eventId])
   @@index([email])
+}
+
+model SiteSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
 }

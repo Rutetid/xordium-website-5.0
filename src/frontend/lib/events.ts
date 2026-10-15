@@ -25,172 +25,48 @@ export interface FestEvent {
   cta: string;
   featured?: boolean;
 }
-// Registration deadline: 23 Oct 2026, 00:00 IST (UTC+5:30).
-export const REGISTRATION_DEADLINE = new Date("2026-10-23T00:00:00+05:30");
+// Registration deadline and prize pool now live in site settings (admin).
 
-export const TOTAL_PRIZE_POOL = "₹4,85,000";
-
-export const events: FestEvent[] = [
-  {
-    slug: "synapse-protocol",
-    tag: "HACK-SYN-01",
-    title: "Synapse Protocol: Decentralized Edge & Kinetic Compute",
-    category: "Technical",
-    description:
-      "National flagship 36-hour endurance hackathon. Fault-tolerant distributed networks, local LLM quantization pipelines, and autonomous device coordination under artificial network degradation.",
-    image: "/assets/hackathon.jpg",
-    prizePool: "₹1,20,000",
-    prizeNote: "Cash + incubation",
-    venue: "Central Computer Centre // Lab 04",
-    format: "36 hours non-stop synthesis",
-    schedule: "Day 01 → Day 03",
-    teamSize: "2 – 4 engineers per squad",
-    cta: "Submit deck",
-  },
-  {
-    slug: "overclock-tactical",
-    tag: "ESP-VAL-01",
-    title: "Overclock: Tactical Esports",
-    category: "Esports",
-    description:
-      "Tier-1 collegiate tactical FPS showdown. Valorant 5v5 single elimination bracket on 128-tick LAN servers, low-ping dedicated arena hardware.",
-    image: "/assets/valorant-jett.jpg",
-    prizePool: "₹60,000",
-    venue: "Mainstage Arena",
-    format: "5v5 squad LAN bracket",
-    schedule: "Day 02 // 10:00 IST",
-    cta: "Register squad",
-  },
-  {
-    slug: "mecha-clash",
-    tag: "ROB-CLASH-02",
-    title: "Mecha-Clash: Combat Robotics",
-    category: "Robotics",
-    description:
-      "15kg remote combat bot destruction in an armored polycarbonate enclosure. Spinners, flippers, and vertical drums with mandatory failsafe circuits.",
-    image: "/assets/workshop.jpg",
-    prizePool: "₹80,000",
-    venue: "Arena: Impact Cage",
-    format: "15kg weight ceiling",
-    schedule: "Day 03 // Knockouts",
-    cta: "Enter bot",
-  },
-  {
-    slug: "zero-day-ctf",
-    tag: "SEC-CTF-03",
-    title: "Zero-Day: Jeopardy CTF",
-    category: "Cybersecurity",
-    description:
-      "Binary exploitation, kernel rootkits, cryptographic deciphering, and web-pwn trials hosted on isolated physical enterprise subnets.",
-    image: "/assets/technocrat.jpg",
-    prizePool: "₹70,000",
-    venue: "Isolated Subnet",
-    format: "12 continuous hours",
-    schedule: "Day 02 // Overnight",
-    cta: "Authorize team",
-  },
-  {
-    slug: "code-shift",
-    tag: "ALG-SHIFT-04",
-    title: "Code-Shift: Speed Algorithms",
-    category: "Algorithms",
-    description:
-      "Gladiator single-elimination speed coding bracket. Rapid graph theory, dynamic programming, and string matching under blitz timers.",
-    image: "/assets/competitive-programming.jpg",
-    prizePool: "₹45,000",
-    venue: "Blitz Stage",
-    format: "32 coders double elim",
-    schedule: "Day 01 // Qualifiers",
-    cta: "Claim seed",
-  },
-  {
-    slug: "latent-runner",
-    tag: "AIML-RUN-05",
-    title: "Latent Runner: Vision Benchmark",
-    category: "AI / ML",
-    description:
-      "Deploy lightweight neural models on physical NVIDIA Jetson Orin Nano boards to identify high-velocity objects under extreme latency.",
-    image: "/assets/gen-ai.jpg",
-    prizePool: "₹65,000",
-    venue: "Vision Benchmark Lab",
-    format: "> 60 FPS @ INT8 accuracy",
-    schedule: "Day 03 // Finals",
-    cta: "Benchmark model",
-  },
-  {
-    slug: "bgmi-showdown",
-    tag: "ESP-BGMI-06",
-    title: "BGMI Battlegrounds Showdown",
-    category: "Esports",
-    description:
-      "Erangel points-race battle royale. Pro-league points table across 6 drops with livestream observer slots and shoutcaster desk.",
-    image: "/assets/bgmi.jpg",
-    prizePool: "₹50,000",
-    venue: "Mobile Arena // Hall B",
-    format: "Squad TPP, 6 drops",
-    schedule: "Day 02 // Evening",
-    cta: "Drop in",
-  },
-  {
-    slug: "free-fire-clash",
-    tag: "ESP-FF-07",
-    title: "Free Fire Clash Squad",
-    category: "Esports",
-    description:
-      "4v4 clash-squad warfare on Bermuda. Best-of-7 brackets with economy tracking and grandmaster observer overlays.",
-    image: "/assets/free-fire.jpg",
-    prizePool: "₹30,000",
-    venue: "Mobile Arena // Hall B",
-    format: "4v4 clash squad BO7",
-    schedule: "Day 01 // Evening",
-    cta: "Queue up",
-  },
-  {
-    slug: "aerial-derby",
-    tag: "ROB-AERO-08",
-    title: "Aerial Derby: Drone Soccer",
-    category: "Robotics",
-    description:
-      "FPV drone soccer inside a caged sky-arena. Five-player squads pilot caged quads through a suspended goal ring.",
-    image: "/assets/fifa.jpg",
-    prizePool: "₹40,000",
-    venue: "Sky Cage // Grounds",
-    format: "5v5 drone soccer",
-    schedule: "Day 04 // Showcase",
-    cta: "Fly in",
-  },
-  {
-    slug: "treasure-hunt",
-    tag: "OPEN-HUNT-09",
-    title: "Midnight Treasure Hunt",
-    category: "Open",
-    description:
-      "Campus-wide cryptic chase across 40 checkpoints. Ciphers, QR dead-drops, and a final vault combination under floodlights.",
-    image: "/assets/treasure-hunt.jpg",
-    prizePool: "₹25,000",
-    venue: "Whole campus // Night",
-    format: "Teams of 4, 6 hours",
-    schedule: "Day 02 // 23:00 IST",
-    cta: "Join hunt",
-  },
-  {
-    slug: "ad-mad-showdown",
-    tag: "OPEN-ADMAD-10",
-    title: "Ad-Mad Content Showdown",
-    category: "Open",
-    description:
-      "72-hour brand parody sprint. Teams script, shoot, and cut a 60-second spot. Live audience vote plus jury craft scores.",
-    image: "/assets/ad-making.jpg",
-    prizePool: "₹20,000",
-    venue: "Media Lab // Stage",
-    format: "Teams of 3–5",
-    schedule: "Day 01 → Day 03",
-    cta: "Pitch in",
-  },
-];
+export const events: FestEvent[] = [];
 
 export function getEvent(slug: string): FestEvent | undefined {
   return events.find((e) => e.slug === slug);
+}
+
+// Shape of rows returned by GET /api/events.
+export interface DbEventRow {
+  slug: string;
+  tag: string;
+  title: string;
+  category: string;
+  description: string;
+  image: string;
+  prizePool: string;
+  venue: string;
+  format: string;
+  schedule: string;
+  teamSize?: string | null;
+  cta: string;
+  featured: boolean;
+  posterUrl?: string | null;
+}
+
+// Convert a database row into the catalogue shape used by event cards.
+export function toFestEvent(row: DbEventRow): FestEvent {
+  return {
+    slug: row.slug,
+    tag: row.tag,
+    title: row.title,
+    category: row.category as EventCategory,
+    description: row.description,
+    image: row.posterUrl || row.image,
+    prizePool: row.prizePool,
+    venue: row.venue,
+    format: row.format,
+    schedule: row.schedule,
+    teamSize: row.teamSize ?? undefined,
+    cta: row.cta,
+  };
 }
 
 export function getCategories(): EventCategory[] {

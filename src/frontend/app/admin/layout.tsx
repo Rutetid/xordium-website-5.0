@@ -16,6 +16,7 @@ const NAV_ITEMS = [
   { href: "/admin/events", label: "Events", minRole: "MODERATOR" as const },
   { href: "/admin/timetable", label: "Timetable", minRole: "ADMIN" as const },
   { href: "/admin/registrations", label: "Registrations", minRole: "ADMIN" as const },
+  { href: "/admin/settings", label: "Settings", minRole: "ADMIN" as const },
   { href: "/admin/moderators", label: "Moderators", minRole: "ADMIN" as const },
   { href: "/admin/users", label: "Users", minRole: "OWNER" as const },
   { href: "/admin/support", label: "Support", minRole: "MODERATOR" as const },

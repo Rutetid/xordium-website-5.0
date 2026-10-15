@@ -6,12 +6,7 @@ import {
   requestIdentifier,
   safeServerError,
 } from "@/backend/lib/api";
-import {
-  HACKATHON_EVENT_ID,
-  isBitEmail,
-  registrationEvents,
-  requiresBitEmail,
-} from "@/data/events";
+import { isBitEmail, BIT_EMAIL_DOMAIN } from "@/data/events";
 import type {
   Branch,
   RegistrationSubmission,
@@ -46,20 +41,32 @@ type ValidationResult =
   | { submission: RegistrationSubmission }
   | { error: string };
 
-function validateSubmission(value: unknown): ValidationResult {
+async function validateSubmission(value: unknown): Promise<ValidationResult> {
   if (!isObject(value)) {
     return { error: "The registration data is not valid." };
   }
 
-  const event = registrationEvents.find((item) => item.id === value.eventId);
-  if (!event || value.eventName !== event.name) {
+  if (typeof value.eventId !== "string" || !value.eventId.trim()) {
     return { error: "Choose a valid event to register for." };
   }
 
-  // Only the hackathon carries an external-team declaration.
+  // Event setup (team sizes, email rules, display name) comes from the DB.
+  const event = await prisma.event
+    .findUnique({ where: { slug: value.eventId.trim() } })
+    .catch(() => null);
+  if (!event) {
+    return { error: "Choose a valid event to register for." };
+  }
+
+  const displayName = event.registrationLabel || event.title;
+  if (value.eventName !== displayName) {
+    return { error: "Choose a valid event to register for." };
+  }
+
+  // Only events flagged for it carry an external-team declaration.
   const isExternalTeam =
-    event.id === HACKATHON_EVENT_ID && value.isExternalTeam === true;
-  const bitRequired = requiresBitEmail(event.id, isExternalTeam);
+    event.allowExternalTeam && value.isExternalTeam === true;
+  const bitRequired = !(event.allowExternalTeam && isExternalTeam);
 
   if (
     !isText(value.fullName) ||
@@ -154,8 +161,8 @@ function validateSubmission(value: unknown): ValidationResult {
 
   return {
     submission: {
-      eventId: event.id,
-      eventName: event.name,
+      eventId: event.slug,
+      eventName: displayName,
       fullName,
       email,
       phone,
@@ -198,7 +205,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const result = validateSubmission(body);
+  const result = await validateSubmission(body);
   if ("error" in result) {
     return Response.json(
       { success: false, error: result.error },
