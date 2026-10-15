@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&display=swap');
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@400;500;600;700;800&display=swap");
 @import "tailwindcss";
 
 @theme {
---font-display: "Barlow Condensed", sans-serif;
+  --font-display: "Barlow Condensed", sans-serif;
   --font-body: "DM Sans", sans-serif;
   --font-mono: "Space Mono", ui-monospace, monospace;
 }
@@ -86,7 +86,7 @@ body {
   transition:
     opacity 750ms ease-in-out var(--tile-delay),
     transform 750ms ease-in-out var(--tile-delay);
-  box-shadow: 
+  box-shadow:
     0 4px 24px rgb(0 0 0 / 0.35),
     0 0 0 1px rgb(255 255 255 / 0.05);
 }
@@ -311,9 +311,1239 @@ h6 {
   }
 }
 
-/* On small screens, links read bolder than surrounding body text. */
-@media (max-width: 767px) {
-  a {
-    font-weight: 700;
+/* =============================================================
+   REGISTER // INTAKE TERMINAL  (.rx-*)
+   A maximalist cyberpunk kiosk: hazard tape, CRT scanlines,
+   film grain, glitch type, neon HUD cards and a live uplink
+   terminal. Scoped under .rx-arena so it never bleeds into
+   the rest of the site.
+   ============================================================= */
+
+.rx-arena {
+  --rx-acid: #c6ff00;
+  --rx-cyan: #00f0ff;
+  --rx-magenta: #ff2e88;
+  --rx-red: #ff2b1f;
+  --rx-amber: #ffb300;
+  --rx-violet: #8b5cff;
+  --mx: 50%;
+  --my: -300px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-top: 1px solid rgb(255 255 255 / 10%);
+  background:
+    radial-gradient(130% 55% at 50% -8%, rgb(255 43 31 / 20%), transparent 62%),
+    radial-gradient(90% 40% at 88% 30%, rgb(0 240 255 / 8%), transparent 70%),
+    linear-gradient(
+      180deg,
+      rgb(5 6 10 / 95%),
+      rgb(5 6 10 / 99.5%) 42%,
+      rgb(6 5 12 / 97%)
+    );
+}
+
+.rx-arena::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    460px circle at var(--mx) var(--my),
+    rgb(0 240 255 / 10%),
+    transparent 62%
+  );
+}
+
+.rx-arena .rx-shell {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1180px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 640px) {
+  .rx-arena .rx-shell {
+    padding-inline: 1.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .rx-arena .rx-shell {
+    padding-inline: 4.5rem;
+  }
+}
+
+/* ---------- hazard tape ---------- */
+
+.rx-arena .rx-tape {
+  position: relative;
+  z-index: 5;
+  height: 15px;
+  overflow: hidden;
+}
+
+.rx-arena .rx-tape::after {
+  content: "";
+  position: absolute;
+  inset: -2px -80px;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--rx-acid) 0 20px,
+    #0a0a0c 20px 40px
+  );
+  animation: rx-tape 3.4s linear infinite;
+}
+
+.rx-arena .rx-tape--red::after {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--rx-red) 0 20px,
+    #0a0a0c 20px 40px
+  );
+}
+
+@keyframes rx-tape {
+  to {
+    transform: translateX(56.57px);
+  }
+}
+
+/* ---------- CRT overlays ---------- */
+
+.rx-arena .rx-scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(0 0 0 / 26%) 0 1px,
+    transparent 1px 4px
+  );
+}
+
+.rx-arena .rx-scanbar {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgb(0 240 255 / 6%) 44%,
+    rgb(0 240 255 / 12%) 50%,
+    transparent 58%
+  );
+  background-size: 100% 280px;
+  background-repeat: no-repeat;
+  animation: rx-scanbar 7.5s linear infinite;
+}
+
+@keyframes rx-scanbar {
+  from {
+    background-position: 0 -320px;
+  }
+  to {
+    background-position: 0 115vh;
+  }
+}
+
+.rx-arena .rx-grain {
+  position: absolute;
+  inset: -80px;
+  z-index: 6;
+  pointer-events: none;
+  opacity: 0.12;
+  mix-blend-mode: screen;
+  background-size: 160px 160px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+  animation: rx-grain 0.75s steps(4) infinite;
+}
+
+@keyframes rx-grain {
+  0% {
+    background-position: 0 0;
+  }
+  25% {
+    background-position: -42px 28px;
+  }
+  50% {
+    background-position: 34px -26px;
+  }
+  75% {
+    background-position: -18px -34px;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+/* ---------- side rails + watermark ---------- */
+
+.rx-arena .rx-rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  display: none;
+  align-items: center;
+  writing-mode: vertical-rl;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.55em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 26%);
+  pointer-events: none;
+}
+
+@media (min-width: 1220px) {
+  .rx-arena .rx-rail {
+    display: flex;
+  }
+}
+
+.rx-arena .rx-rail--l {
+  left: 12px;
+}
+
+.rx-arena .rx-rail--r {
+  right: 12px;
+  transform: rotate(180deg);
+}
+
+.rx-arena .rx-watermark {
+  position: absolute;
+  top: 3.5rem;
+  right: -1.25rem;
+  z-index: 0;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 900;
+  font-size: clamp(6rem, 20vw, 16rem);
+  line-height: 0.78;
+  letter-spacing: -0.05em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgb(255 255 255 / 7%);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ---------- hero ---------- */
+
+.rx-arena .rx-hero {
+  padding-block: clamp(2.2rem, 5vw, 4rem) clamp(2rem, 4vw, 3.25rem);
+}
+
+.rx-arena .rx-eyebrow {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--rx-acid);
+}
+
+.rx-arena .rx-outline {
+  display: block;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: clamp(2.6rem, 10.5vw, 7rem);
+  line-height: 0.84;
+  letter-spacing: -0.02em;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--rx-acid);
+  text-shadow: 0 0 34px rgb(198 255 0 / 22%);
+}
+
+.rx-arena .rx-glitch {
+  position: relative;
+  z-index: 0;
+  display: block;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: clamp(2.9rem, 12.5vw, 8.4rem);
+  line-height: 0.82;
+  letter-spacing: -0.035em;
+  color: #fff;
+  text-shadow: 0 0 44px rgb(255 43 31 / 28%);
+}
+
+.rx-arena .rx-glitch::before,
+.rx-arena .rx-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  pointer-events: none;
+}
+
+.rx-arena .rx-glitch::before {
+  color: var(--rx-red);
+  animation: rx-glitch-a 6s steps(1) infinite;
+}
+
+.rx-arena .rx-glitch::after {
+  color: var(--rx-cyan);
+  animation: rx-glitch-b 6s steps(1) infinite;
+}
+
+@keyframes rx-glitch-a {
+  0%,
+  91%,
+  100% {
+    clip-path: inset(0 0 100% 0);
+    transform: translate(0, 0);
+  }
+  92% {
+    clip-path: inset(8% 0 68% 0);
+    transform: translate(-6px, -2px);
+  }
+  94% {
+    clip-path: inset(46% 0 30% 0);
+    transform: translate(5px, 1px);
+  }
+  96% {
+    clip-path: inset(74% 0 6% 0);
+    transform: translate(-4px, 2px);
+  }
+}
+
+@keyframes rx-glitch-b {
+  0%,
+  90%,
+  100% {
+    clip-path: inset(0 0 100% 0);
+    transform: translate(0, 0);
+  }
+  91% {
+    clip-path: inset(18% 0 58% 0);
+    transform: translate(5px, 2px);
+  }
+  93% {
+    clip-path: inset(58% 0 18% 0);
+    transform: translate(-5px, -1px);
+  }
+  97% {
+    clip-path: inset(32% 0 44% 0);
+    transform: translate(3px, -2px);
+  }
+}
+
+.rx-arena .rx-lede {
+  max-width: 46ch;
+  margin-top: 1.35rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: rgb(255 255 255 / 78%);
+}
+
+.rx-arena .rx-stamp {
+  display: inline-block;
+  border: 3px double var(--rx-acid);
+  background: rgb(198 255 0 / 7%);
+  padding: 0.4rem 0.85rem;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 900;
+  font-size: 1.05rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rx-acid);
+  box-shadow: 0 0 34px -10px var(--rx-acid);
+  transform: rotate(-7deg);
+  animation: rx-stamp 3.6s ease-in-out infinite;
+}
+
+@media (min-width: 1024px) {
+  .rx-arena .rx-stamp {
+    position: absolute;
+    top: -1.35rem;
+    right: 0.5rem;
+    z-index: 3;
+    font-size: 1.2rem;
+  }
+}
+
+@keyframes rx-stamp {
+  0%,
+  100% {
+    transform: rotate(-7deg) scale(1);
+  }
+  50% {
+    transform: rotate(-5deg) scale(1.04);
+  }
+}
+
+/* ---------- terminal ---------- */
+
+.rx-arena .rx-term {
+  border: 1px solid rgb(0 240 255 / 26%);
+  background: rgb(0 0 0 / 58%);
+  box-shadow:
+    0 0 70px -30px rgb(0 240 255 / 70%),
+    inset 0 0 50px -42px rgb(0 240 255 / 80%);
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+.rx-arena .rx-term-line {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  opacity: 0;
+  animation: rx-fade 0.55s ease forwards;
+  animation-delay: calc(var(--n, 0) * 150ms + 700ms);
+}
+
+.rx-arena .rx-term-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.rx-arena .rx-term-lead {
+  flex: 1 1 auto;
+  min-width: 1.25rem;
+  border-bottom: 1px dotted rgb(0 240 255 / 30%);
+  transform: translateY(-3px);
+}
+
+.rx-arena .rx-val-cyan {
+  color: var(--rx-cyan);
+}
+
+.rx-arena .rx-val-acid {
+  color: var(--rx-acid);
+}
+
+.rx-arena .rx-caret {
+  color: var(--rx-acid);
+  animation: rx-blink 1.05s steps(1) infinite;
+}
+
+.rx-arena .rx-live-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--rx-acid);
+  box-shadow: 0 0 12px var(--rx-acid);
+  animation: rx-blink 1.7s steps(1) infinite;
+}
+
+@keyframes rx-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes rx-fade {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- ticker ---------- */
+
+.rx-arena .rx-marquee {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  overflow: hidden;
+  white-space: nowrap;
+  border-block: 1px solid rgb(0 0 0 / 45%);
+  background: var(--rx-red);
+  color: #14020a;
+}
+
+.rx-arena .rx-marquee__seg {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  padding-block: 0.5rem;
+  animation: rx-marquee 46s linear infinite;
+  will-change: transform;
+}
+
+.rx-arena .rx-marquee__seg > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-right: 1.75rem;
+}
+
+.rx-arena .rx-marquee__dot {
+  font-style: normal;
+  font-size: 7px;
+  opacity: 0.65;
+}
+
+@keyframes rx-marquee {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* ---------- section heads ---------- */
+
+.rx-arena .rx-grid-section {
+  padding-block: clamp(2rem, 4.5vw, 3.5rem) clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.rx-arena .rx-protocol {
+  padding-block: clamp(1.5rem, 3vw, 2.5rem) clamp(2.5rem, 5vw, 4rem);
+}
+
+.rx-arena .rx-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.9rem;
+  margin-bottom: 1.4rem;
+}
+
+.rx-arena .rx-head-num {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--rx-acid);
+}
+
+.rx-arena .rx-head-title {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: clamp(1.7rem, 3.6vw, 2.7rem);
+  line-height: 1;
+  letter-spacing: -0.015em;
+  color: #fff;
+}
+
+.rx-arena .rx-head-title em {
+  font-style: normal;
+  color: var(--rx-acid);
+}
+
+.rx-arena .rx-head-rule {
+  flex: 1 1 3rem;
+  min-width: 3rem;
+  height: 1px;
+  background: repeating-linear-gradient(
+    90deg,
+    rgb(255 255 255 / 35%) 0 5px,
+    transparent 5px 11px
+  );
+}
+
+.rx-arena .rx-head-meta {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 50%);
+}
+
+/* ---------- card grid ---------- */
+
+.rx-arena .rx-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 768px) {
+  .rx-arena .rx-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .rx-arena .rx-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+.rx-arena .rx-card {
+  --acc: var(--rx-cyan);
+  position: relative;
+  display: flex;
+  min-height: 17rem;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid rgb(255 255 255 / 14%);
+  background-color: rgb(8 9 13 / 76%);
+  background-image:
+    linear-gradient(155deg, rgb(255 255 255 / 7%), transparent 48%),
+    repeating-linear-gradient(
+      135deg,
+      rgb(255 255 255 / 4%) 0 1px,
+      transparent 1px 9px
+    );
+  text-decoration: none;
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.7, 0.3, 1),
+    border-color 0.3s ease,
+    box-shadow 0.35s ease,
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.rx-arena .rx-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background:
+    radial-gradient(
+      130% 95% at 10% 110%,
+      color-mix(in srgb, var(--acc) 32%, transparent),
+      transparent 60%
+    ),
+    linear-gradient(
+      155deg,
+      color-mix(in srgb, var(--acc) 14%, transparent),
+      transparent 55%
+    );
+}
+
+.rx-arena .rx-card:hover,
+.rx-arena .rx-card:focus-visible {
+  transform: translateY(-8px);
+  border-color: color-mix(in srgb, var(--acc) 65%, transparent);
+  box-shadow:
+    0 28px 52px -36px color-mix(in srgb, var(--acc) 95%, transparent),
+    0 0 70px -30px color-mix(in srgb, var(--acc) 85%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--acc) 22%, transparent);
+}
+
+.rx-arena .rx-card:hover::after,
+.rx-arena .rx-card:focus-visible::after {
+  opacity: 1;
+}
+
+.rx-arena .rx-shake {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  padding: 1.1rem 1.15rem 1.15rem;
+  opacity: 0;
+  animation: rx-rise 0.8s cubic-bezier(0.2, 0.75, 0.25, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 90ms + 160ms);
+}
+
+@keyframes rx-rise {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rx-arena .rx-card.is-pending {
+  border-color: var(--rx-amber);
+  box-shadow:
+    0 0 0 1px rgb(255 179 0 / 30%),
+    0 0 70px -26px var(--rx-amber);
+}
+
+.rx-arena .rx-card.is-pending .rx-shake {
+  animation:
+    rx-rise 0.8s cubic-bezier(0.2, 0.75, 0.25, 1) 0ms forwards,
+    rx-shake 0.55s cubic-bezier(0.36, 0.07, 0.19, 0.97) 0s 1;
+}
+
+.rx-arena .rx-card.is-pending .rx-slot {
+  color: var(--rx-amber);
+}
+
+@keyframes rx-shake {
+  10%,
+  90% {
+    transform: translateX(-3px);
+  }
+  20%,
+  80% {
+    transform: translateX(5px);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translateX(-9px);
+  }
+  40%,
+  60% {
+    transform: translateX(9px);
+  }
+  100% {
+    transform: none;
+  }
+}
+
+.rx-arena .rx-corners {
+  position: absolute;
+  inset: 9px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.rx-arena .rx-corners--b {
+  transform: scaleX(-1);
+}
+
+.rx-arena .rx-corners::before,
+.rx-arena .rx-corners::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--acc);
+  opacity: 0.3;
+  transition:
+    opacity 0.3s ease,
+    width 0.3s ease,
+    height 0.3s ease;
+}
+
+.rx-arena .rx-corners::before {
+  top: 0;
+  left: 0;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.rx-arena .rx-corners::after {
+  bottom: 0;
+  right: 0;
+  border-left: 0;
+  border-top: 0;
+}
+
+.rx-arena .rx-card:hover .rx-corners::before,
+.rx-arena .rx-card:hover .rx-corners::after,
+.rx-arena .rx-card:focus-visible .rx-corners::before,
+.rx-arena .rx-card:focus-visible .rx-corners::after {
+  opacity: 0.95;
+  width: 23px;
+  height: 23px;
+}
+
+.rx-arena .rx-sweep {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -45%;
+  height: 45%;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--acc) 26%, transparent) 45%,
+    color-mix(in srgb, var(--acc) 48%, transparent) 50%,
+    transparent
+  );
+}
+
+.rx-arena .rx-card:hover .rx-sweep,
+.rx-arena .rx-card:focus-visible .rx-sweep {
+  animation: rx-sweep 1s ease-out;
+}
+
+@keyframes rx-sweep {
+  0% {
+    opacity: 0.95;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(430%);
+  }
+}
+
+.rx-arena .rx-idx {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 900;
+  font-size: 2.6rem;
+  line-height: 0.8;
+  color: transparent;
+  -webkit-text-stroke: 1.6px rgb(255 255 255 / 40%);
+  transition:
+    color 0.25s ease,
+    -webkit-text-stroke-color 0.25s ease,
+    text-shadow 0.25s ease;
+}
+
+.rx-arena .rx-card:hover .rx-idx,
+.rx-arena .rx-card:focus-visible .rx-idx {
+  color: var(--acc);
+  -webkit-text-stroke-color: var(--acc);
+  text-shadow: 0 0 26px var(--acc);
+}
+
+.rx-arena .rx-tag {
+  max-width: 60%;
+  border: 1px solid rgb(255 255 255 / 18%);
+  padding: 0.28rem 0.5rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-align: right;
+  color: rgb(255 255 255 / 55%);
+  transition:
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.rx-arena .rx-card:hover .rx-tag,
+.rx-arena .rx-card:focus-visible .rx-tag {
+  color: var(--acc);
+  border-color: color-mix(in srgb, var(--acc) 55%, transparent);
+}
+
+.rx-arena .rx-jp {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.42em;
+  color: var(--acc);
+  opacity: 0.85;
+}
+
+.rx-arena .rx-title {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: clamp(1.85rem, 4.2vw, 3rem);
+  line-height: 0.9;
+  letter-spacing: -0.015em;
+  color: #fff;
+  overflow-wrap: break-word;
+}
+
+.rx-arena .rx-blurb {
+  margin-top: 0.6rem;
+  max-width: 46ch;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11.5px;
+  line-height: 1.7;
+  color: rgb(255 255 255 / 70%);
+}
+
+.rx-arena .rx-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 40px;
+  border: 1px solid rgb(255 255 255 / 25%);
+  padding: 0.5rem 0.75rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: #fff;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.3s ease;
+}
+
+.rx-arena .rx-cta svg {
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.rx-arena .rx-card:hover .rx-cta,
+.rx-arena .rx-card:focus-visible .rx-cta {
+  background: var(--acc);
+  border-color: var(--acc);
+  color: #05060a;
+  box-shadow: 0 0 34px -8px var(--acc);
+}
+
+.rx-arena .rx-card:hover .rx-cta svg,
+.rx-arena .rx-card:focus-visible .rx-cta svg {
+  transform: translateX(4px);
+}
+
+.rx-arena .rx-slot {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 45%);
+}
+
+.rx-arena .rx-slot--pending {
+  color: var(--rx-amber);
+}
+
+.rx-arena .rx-card--wide {
+  min-height: 19.5rem;
+}
+
+.rx-arena .rx-card--wide .rx-title {
+  font-size: clamp(2.4rem, 6.8vw, 5rem);
+}
+
+.rx-arena .rx-card--wide .rx-jp {
+  font-size: 12px;
+}
+
+.rx-arena .rx-card--wide .rx-blurb {
+  font-size: 12px;
+  max-width: 58ch;
+}
+
+.rx-arena .rx-ghost {
+  position: absolute;
+  right: -0.6rem;
+  top: 50%;
+  transform: translateY(-52%);
+  z-index: 0;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 900;
+  font-size: clamp(7rem, 15vw, 12rem);
+  line-height: 0.7;
+  letter-spacing: -0.05em;
+  color: transparent;
+  -webkit-text-stroke: 2px color-mix(in srgb, var(--acc) 18%, transparent);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ---------- protocol ---------- */
+
+.rx-arena .rx-step {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 14%);
+  background: linear-gradient(
+    165deg,
+    rgb(255 255 255 / 5%),
+    rgb(255 255 255 / 1%)
+  );
+  padding: 1.15rem 1.15rem 1.25rem 1.35rem;
+  opacity: 0;
+  animation: rx-rise 0.8s cubic-bezier(0.2, 0.75, 0.25, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 110ms + 120ms);
+}
+
+.rx-arena .rx-step::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--rx-acid);
+  opacity: 0.9;
+}
+
+.rx-arena .rx-step-num {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 900;
+  font-size: 2.3rem;
+  line-height: 0.85;
+  color: transparent;
+  -webkit-text-stroke: 1.4px var(--rx-acid);
+}
+
+.rx-arena .rx-step-title {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.rx-arena .rx-step-body {
+  margin-top: 0.8rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11.5px;
+  line-height: 1.7;
+  color: rgb(255 255 255 / 68%);
+}
+
+.rx-arena .rx-outro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.1rem;
+  margin-top: 1.25rem;
+  border: 1px solid rgb(255 255 255 / 12%);
+  background: rgb(255 255 255 / 3%);
+  padding: 1.2rem 1.3rem;
+}
+
+.rx-arena .rx-outro-note {
+  max-width: 62ch;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  line-height: 1.75;
+  color: rgb(255 255 255 / 65%);
+}
+
+.rx-arena .rx-btn-acid,
+.rx-arena .rx-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.75rem 1.05rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.3s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.rx-arena .rx-btn-acid {
+  border: 1px solid var(--rx-acid);
+  background: var(--rx-acid);
+  color: #07090a;
+}
+
+.rx-arena .rx-btn-acid:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 44px -10px var(--rx-acid);
+}
+
+.rx-arena .rx-btn-ghost {
+  border: 1px solid rgb(255 255 255 / 28%);
+  color: #fff;
+}
+
+.rx-arena .rx-btn-ghost:hover {
+  transform: translateY(-2px);
+  background: rgb(255 255 255 / 10%);
+}
+
+/* ---------- barcode + toast ---------- */
+
+.rx-arena .rx-barcode {
+  position: relative;
+  z-index: 2;
+  max-width: 1180px;
+  height: 50px;
+  margin: 0.75rem auto 1.25rem;
+  opacity: 0.26;
+  background-image: repeating-linear-gradient(
+    90deg,
+    #fff 0 2px,
+    transparent 2px 5px,
+    #fff 5px 6px,
+    transparent 6px 10px,
+    #fff 10px 14px,
+    transparent 14px 17px,
+    #fff 17px 18px,
+    transparent 18px 24px,
+    #fff 24px 26px,
+    transparent 26px 30px
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 10%,
+    #000 90%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 10%,
+    #000 90%,
+    transparent
+  );
+}
+
+.rx-arena .rx-toast {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 80;
+  max-width: min(92vw, 26rem);
+  border: 1px solid var(--rx-amber);
+  background: rgb(12 9 2 / 96%);
+  box-shadow: 0 0 60px -22px var(--rx-amber);
+  padding: 0.95rem 1.05rem;
+  animation: rx-toast-in 0.4s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+
+.rx-arena .rx-toast-kicker {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--rx-amber);
+}
+
+.rx-arena .rx-toast-body {
+  margin-top: 0.4rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  line-height: 1.65;
+  color: rgb(255 255 255 / 85%);
+}
+
+.rx-arena .rx-toast-body strong {
+  color: var(--rx-amber);
+  font-weight: 700;
+}
+
+@keyframes rx-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .rx-arena .rx-shake,
+  .rx-arena .rx-step {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .rx-arena .rx-glitch::before,
+  .rx-arena .rx-glitch::after {
+    animation: none !important;
+    clip-path: inset(0 0 100% 0);
+  }
+  .rx-arena .rx-marquee__seg,
+  .rx-arena .rx-tape::after,
+  .rx-arena .rx-scanbar,
+  .rx-arena .rx-grain,
+  .rx-arena .rx-stamp,
+  .rx-arena .rx-sweep,
+  .rx-arena .rx-caret,
+  .rx-arena .rx-live-dot,
+  .rx-arena .rx-term-line,
+  .rx-arena .rx-toast {
+    animation: none !important;
+  }
+  .rx-arena .rx-term-line {
+    opacity: 1;
+  }
+  .rx-arena .rx-card:hover,
+  .rx-arena .rx-card:focus-visible {
+    transform: none;
+  }
+}
+
+/* ---------- mobile refinements (register + header) ---------- */
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 639px) {
+  .rx-arena .rx-shell {
+    padding-inline: 0.85rem;
+  }
+
+  .rx-arena .rx-shake {
+    padding: 0.95rem 0.95rem 1rem;
+  }
+
+  .rx-arena .rx-card {
+    min-height: 15.5rem;
+  }
+
+  .rx-arena .rx-card--wide {
+    min-height: 17rem;
+  }
+
+  .rx-arena .rx-cta {
+    min-height: 42px;
+    padding: 0.7rem 1rem;
+    font-size: 10.5px;
+  }
+
+  .rx-arena .rx-slot {
+    font-size: 9px;
+  }
+
+  .rx-arena .rx-tag {
+    font-size: 8.5px;
+    letter-spacing: 0.16em;
+  }
+
+  .rx-arena .rx-term-line {
+    font-size: 11px;
+  }
+
+  .rx-arena .rx-outro {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1.1rem 1rem;
+  }
+
+  .rx-arena .rx-outro-actions {
+    width: 100%;
+  }
+
+  .rx-arena .rx-btn-acid,
+  .rx-arena .rx-btn-ghost {
+    justify-content: center;
+    width: 100%;
+    padding: 0.95rem 1.1rem;
+  }
+
+  .rx-arena .rx-stamp {
+    font-size: 0.95rem;
+  }
+
+  .rx-arena .rx-watermark {
+    top: 2rem;
+    font-size: clamp(5rem, 26vw, 9rem);
+  }
+
+  .rx-arena .rx-card--wide .rx-ghost {
+    right: -1.2rem;
+    opacity: 0.6;
   }
 }
