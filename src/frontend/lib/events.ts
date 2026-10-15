@@ -1,6 +1,12 @@
 export type EventCategory =
   | "Technical"
   | "eSports"
+  | "Esports"
+  | "Robotics"
+  | "Cybersecurity"
+  | "Algorithms"
+  | "AI / ML"
+  | "Open"
   | "Fun";
 
 export interface FestEvent {
