@@ -74,7 +74,7 @@ export default function ModeratorsPage() {
         <h2 className="font-mono text-sm font-bold text-red-400 uppercase tracking-[0.2em]">
           Access Denied
         </h2>
-        <p className="mt-2 font-mono text-xs text-white/60">
+        <p className="mt-2 font-mono text-xs text-white">
           This page requires Admin or Owner privileges.
         </p>
       </div>
@@ -89,7 +89,7 @@ export default function ModeratorsPage() {
           <h1 className="font-mono text-2xl font-bold tracking-[0.2em] text-white uppercase">
             // MODERATORS
           </h1>
-          <p className="mt-2 font-mono text-[11px] text-white/40 uppercase tracking-[0.2em]">
+          <p className="mt-2 font-mono text-[11px] text-white uppercase tracking-[0.2em]">
             Manage event moderators
           </p>
         </div>
@@ -123,7 +123,7 @@ export default function ModeratorsPage() {
             Promote User to Moderator
           </h3>
 
-          <label className="block font-mono text-xs text-white/70 uppercase tracking-[0.15em]">
+          <label className="block font-mono text-xs text-white uppercase tracking-[0.15em]">
             SELECT USER
             <select
               required
@@ -163,21 +163,21 @@ export default function ModeratorsPage() {
         </div>
       ) : moderators.length === 0 ? (
         <div className="border border-white/10 bg-white/5 p-8 rounded text-center">
-          <p className="font-mono text-sm text-white/60">No moderators found.</p>
-          <p className="mt-2 font-mono text-[11px] text-white/40">
+          <p className="font-mono text-sm text-white">No moderators found.</p>
+          <p className="mt-2 font-mono text-[11px] text-white">
             Promote users to moderator role using the button above.
           </p>
         </div>
       ) : (
         <div className="border border-white/10 bg-white/5 rounded overflow-hidden">
           <div className="grid grid-cols-[1fr,1fr,auto] border-b border-white/10">
-            <div className="px-4 py-3 font-mono text-[10px] text-white/50 uppercase tracking-[0.2em]">
+            <div className="px-4 py-3 font-mono text-[10px] text-white uppercase tracking-[0.2em]">
               Email
             </div>
-            <div className="px-4 py-3 font-mono text-[10px] text-white/50 uppercase tracking-[0.2em]">
+            <div className="px-4 py-3 font-mono text-[10px] text-white uppercase tracking-[0.2em]">
               Name
             </div>
-            <div className="px-4 py-3 font-mono text-[10px] text-white/50 uppercase tracking-[0.2em]">
+            <div className="px-4 py-3 font-mono text-[10px] text-white uppercase tracking-[0.2em]">
               Joined
             </div>
           </div>
@@ -187,10 +187,10 @@ export default function ModeratorsPage() {
               className="grid grid-cols-[1fr,1fr,auto] border-b border-white/5 hover:bg-white/5"
             >
               <div className="px-4 py-3 font-mono text-xs text-white">{mod.email}</div>
-              <div className="px-4 py-3 font-mono text-xs text-white/80">
+              <div className="px-4 py-3 font-mono text-xs text-white">
                 {mod.name || "—"}
               </div>
-              <div className="px-4 py-3 font-mono text-[10px] text-white/40">
+              <div className="px-4 py-3 font-mono text-[10px] text-white">
                 {mod.createdAt ? new Date(mod.createdAt).toLocaleDateString() : "—"}
               </div>
             </div>
@@ -200,16 +200,16 @@ export default function ModeratorsPage() {
 
       {/* Info Box */}
       <div className="mt-8 border border-white/10 bg-white/5 p-4 rounded">
-        <h4 className="font-mono text-[11px] text-white/60 uppercase tracking-[0.15em] mb-2">
+        <h4 className="font-mono text-[11px] text-white uppercase tracking-[0.15em] mb-2">
           Moderator Permissions
         </h4>
         <ul className="space-y-1">
-          <li className="font-mono text-[11px] text-white/40">✓ Edit event descriptions</li>
-          <li className="font-mono text-[11px] text-white/40">
+          <li className="font-mono text-[11px] text-white">✓ Edit event descriptions</li>
+          <li className="font-mono text-[11px] text-white">
             ✓ Upload posters (1350x1080)
           </li>
-          <li className="font-mono text-[11px] text-white/40">✗ Cannot add/manage users</li>
-          <li className="font-mono text-[11px] text-white/40">
+          <li className="font-mono text-[11px] text-white">✗ Cannot add/manage users</li>
+          <li className="font-mono text-[11px] text-white">
             ✗ Cannot promote other users
           </li>
         </ul>

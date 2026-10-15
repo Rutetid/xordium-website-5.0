@@ -11,7 +11,7 @@ export default function EventsPage() {
   return (
     <>
       <section className="border-b border-white/10">
-        <div className="mx-auto max-w-6xl px-4 pt-6 pb-5">
+        <div className="text-slab mx-auto max-w-7xl px-4 pt-6 pb-5 my-6">
           <p className="font-mono text-[10px] tracking-[0.3em] text-red-500 uppercase">
             Syllabus 2026 // Arena directory active // Cycle 05
           </p>
@@ -20,7 +20,7 @@ export default function EventsPage() {
             <span className="text-red-600">{"//"}</span>{" "}
             <span className="text-cyan-300">競技一覧</span>
           </h1>
-          <p className="mt-3 max-w-2xl font-mono text-xs leading-relaxed text-white/60">
+          <p className="mt-3 max-w-2xl font-mono text-xs leading-relaxed text-white">
             List of events, technical, esports and fun for you to drop in
             engineered for Birla Institute of Technology.
           </p>
@@ -34,7 +34,7 @@ export default function EventsPage() {
             <p className="font-mono text-[10px] tracking-[0.2em] text-red-400 uppercase">
               Flagship // Hackathon
             </p>
-            <p className="font-mono text-[10px] tracking-[0.2em] text-white/40 uppercase">
+            <p className="font-mono text-[10px] tracking-[0.2em] text-white uppercase">
               36-hour sprint
             </p>
           </div>
@@ -58,10 +58,10 @@ export default function EventsPage() {
               <h2 className="font-display text-2xl leading-tight font-black uppercase sm:text-3xl">
                 {flagship.title}
               </h2>
-              <MarkdownText className="mt-1.5 font-mono text-[11px] leading-relaxed text-white/60 line-clamp-3">
+              <MarkdownText className="mt-1.5 font-mono text-[11px] leading-relaxed text-white line-clamp-3">
                 {flagship.description}
               </MarkdownText>
-              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[10px] tracking-[0.12em] text-white/40 uppercase">
+              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[10px] tracking-[0.12em] text-white uppercase">
                 {[
                   ["Prize", flagship.prizePool],
                   ["Team", "2 – 4"],
@@ -69,14 +69,14 @@ export default function EventsPage() {
                   ["Hardware", "NVIDIA / ESP32"],
                 ].map(([k, v]) => (
                   <span key={k}>
-                    <span className="text-white/35">{k}:</span>{" "}
-                    <span className="text-white/75">{v}</span>
+                    <span className="text-white">{k}:</span>{" "}
+                    <span className="text-white">{v}</span>
                   </span>
                 ))}
               </div>
 
               <div className="mt-3 rounded border border-white/10 bg-white/[0.03] p-3 font-mono text-[11px]">
-                <p className="tracking-[0.2em] text-white/45 uppercase">
+                <p className="tracking-[0.2em] text-white uppercase">
                   Evaluation matrix
                 </p>
                 <div className="mt-1.5 grid grid-cols-2 gap-x-4 gap-y-1 sm:grid-cols-4">
@@ -90,7 +90,7 @@ export default function EventsPage() {
                       key={k}
                       className="flex items-baseline justify-between gap-2 sm:flex-col sm:items-start sm:gap-0"
                     >
-                      <span className="text-white/70">{k}</span>
+                      <span className="text-white">{k}</span>
                       <span className="font-bold text-cyan-300">{v}</span>
                     </div>
                   ))}

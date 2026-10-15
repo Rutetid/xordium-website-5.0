@@ -12,7 +12,7 @@ const scale = [{
 export default function AboutPage() {
   return (<>
     <section className="border-b border-white/10">
-      <div className="mx-auto max-w-6xl px-4 pt-10 pb-8">
+      <div className="text-slab mx-auto max-w-7xl px-4 pt-10 pb-8 my-6">
         <p className="font-mono text-[10px] tracking-[0.3em] text-red-500 uppercase">
           Sys // Declassified overview // Protocol 2026
         </p>
@@ -22,10 +22,9 @@ export default function AboutPage() {
         <p className="mt-1 font-display text-2xl font-bold text-cyan-300">
           {"//"} 概要・電脳電波核
         </p>
-        <p className="mt-3 max-w-2xl font-mono text-xs leading-relaxed text-white/60">
+        <p className="mt-3 max-w-2xl font-mono text-sm leading-relaxed text-white">
           The convergence of bleeding-edge open hardware, algorithmic
-          dominance, underground cyberpunk culture, and Tier-1 collegiate
-          esports warfare at Birla Institute of Technology.
+          dominance, underground cyberpunk culture, and esports warfare at Birla Institute of Technology.
         </p>
       </div>
     </section>
@@ -45,7 +44,7 @@ export default function AboutPage() {
           Comming Soon
         </span>
       </div>
-      <div>
+      <div className="text-slab">
         <p className="font-mono text-[11px] tracking-[0.3em] text-red-500 uppercase">
           // Symposium manifesto
         </p>
@@ -53,23 +52,11 @@ export default function AboutPage() {
           “We reject the slide deck and measure the{" "}
           <span className="text-red-600">solder seam</span>.”
         </blockquote>
-        <p className="mt-4 font-mono text-xs leading-relaxed text-white/60">
-          Xordium is the annual flagship fest of
-          Club Ignite and the eSports Society of
-          Birla Institute of Technology, Mesra –
-          Off Campus, Patna.
+        <p className="mt-2 font-mono text-md leading-relaxed text-white">
+          Xordium is the annual flagship fest of Club Ignite and the eSports Society of Birla Institute of Technology, Mesra – Off Campus, Patna.
         </p>
-        <p className="mt-2 font-mono text-xs leading-relaxed text-white/60">
-          Xordium brings together technology
-          enthusiasts, gamers, and creators from
-          across campuses to experience a dynamic
-          blend of technical workshops, competitive
-          events, eSports tournaments, and funfilled
-          challenges. From coding battles
-          and robotics showdowns to highenergy
-          gaming arenas and creative contests,
-          every segment of Xordium is designed to
-          ignite minds and fuel collaboration.
+        <p className="mt-1 font-mono text-md leading-relaxed text-white">
+          Xordium brings together technology enthusiasts, gamers, and creators from across campuses to experience a dynamic blend of technical workshops, competitive events, eSports tournaments, and funfilled challenges. From coding battles and robotics showdowns to highenergy gaming arenas and creative contests, every segment of Xordium is designed to ignite minds and fuel collaboration.
         </p>
       </div>
     </section>
@@ -85,7 +72,7 @@ export default function AboutPage() {
           className="glass-panel grid gap-px overflow-hidden sm:grid-cols-2 lg:grid-cols-4">
           {scale.map((s) => (<div key={s.label} className="bg-transparent p-5">
             <p className="font-display text-5xl font-black">{s.value}</p>
-            <p className="mt-2 font-mono text-[11px] leading-relaxed text-white/55">
+            <p className="mt-2 font-mono text-[11px] leading-relaxed text-white">
               {s.label}
             </p>
           </div>))}

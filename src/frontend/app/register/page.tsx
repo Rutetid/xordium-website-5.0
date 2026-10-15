@@ -19,7 +19,7 @@ export default async function RegistrationPage({
           <h1 className="mt-2 font-display text-5xl leading-none font-black uppercase sm:text-7xl">
             Event <span className="text-red-600">registration</span>
           </h1>
-          <p className="mt-3 max-w-2xl font-mono text-xs leading-relaxed text-white/60">
+          <p className="mt-3 max-w-2xl font-mono text-xs leading-relaxed text-white">
             Enter your details to join an event. Team events ask for the full
             team roster; individual events only need your own details.
           </p>

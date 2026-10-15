@@ -40,7 +40,7 @@ export default function SupportAdminPage() {
         <h1 className="font-mono text-2xl font-bold tracking-[0.2em] text-white uppercase">
           // SUPPORT INBOX
         </h1>
-        <p className="mt-2 font-mono text-[11px] text-white/40 uppercase tracking-[0.2em]">
+        <p className="mt-2 font-mono text-[11px] text-white uppercase tracking-[0.2em]">
           Manage incoming support messages from participants
         </p>
       </div>
@@ -62,7 +62,7 @@ export default function SupportAdminPage() {
         </div>
       ) : messages.length === 0 ? (
         <div className="border border-white/10 bg-white/5 p-8 rounded text-center">
-          <p className="font-mono text-sm text-white/60">No support messages yet.</p>
+          <p className="font-mono text-sm text-white">No support messages yet.</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -79,7 +79,7 @@ export default function SupportAdminPage() {
                       <p className="font-mono text-sm font-bold text-white">
                         {msg.name}
                       </p>
-                      <p className="font-mono text-xs text-white/60">
+                      <p className="font-mono text-xs text-white">
                         {msg.email}
                       </p>
                     </div>
@@ -96,7 +96,7 @@ export default function SupportAdminPage() {
                             ? "bg-orange-600/20 text-orange-400 border border-orange-500/50"
                             : msg.topic === "scrims"
                             ? "bg-green-600/20 text-green-400 border border-green-500/50"
-                            : "bg-white/10 text-white/60 border border-white/20"
+                            : "bg-white/10 text-white border border-white/20"
                         }`}
                       >
                         {msg.topic.toUpperCase()}
@@ -110,7 +110,7 @@ export default function SupportAdminPage() {
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <p className="font-mono text-[10px] text-white/40">
+                    <p className="font-mono text-[10px] text-white">
                       {new Date(msg.createdAt).toLocaleString()}
                     </p>
                     <button
@@ -125,17 +125,17 @@ export default function SupportAdminPage() {
                 {isExpanded && (
                   <div className="mt-4 pt-4 border-t border-white/10 space-y-3">
                     <div className="bg-black/30 p-4 rounded border border-white/10">
-                      <p className="font-mono text-[10px] text-white/40 uppercase tracking-[0.15em] mb-1">
+                      <p className="font-mono text-[10px] text-white uppercase tracking-[0.15em] mb-1">
                         Message
                       </p>
-                      <p className="font-mono text-xs text-white/80 whitespace-pre-wrap">
+                      <p className="font-mono text-xs text-white whitespace-pre-wrap">
                         {msg.message}
                       </p>
                     </div>
-                    <div className="flex items-center gap-4 font-mono text-[10px] text-white/50">
-                      <span>Topic: <span className="text-white/70">{msg.topic}</span></span>
+                    <div className="flex items-center gap-4 font-mono text-[10px] text-white">
+                      <span>Topic: <span className="text-white">{msg.topic}</span></span>
                       {msg.game && (
-                        <span>Game: <span className="text-white/70">{msg.game}</span></span>
+                        <span>Game: <span className="text-white">{msg.game}</span></span>
                       )}
                     </div>
                   </div>

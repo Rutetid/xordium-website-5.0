@@ -22,7 +22,7 @@ export default async function EventDetailPage({
     <section className="mx-auto max-w-6xl px-4 py-10">
       <Link
         href="/events"
-        className="font-mono text-[11px] tracking-[0.2em] text-white/50 uppercase hover:text-white"
+        className="font-mono text-[11px] tracking-[0.2em] text-white uppercase hover:text-white"
       >
         ← Back to directory
       </Link>
@@ -47,7 +47,7 @@ export default async function EventDetailPage({
           <h1 className="mt-2 font-display text-4xl leading-tight font-black uppercase">
             {event.title}
           </h1>
-          <MarkdownText className="mt-3 font-mono text-xs leading-relaxed text-white/60">
+          <MarkdownText className="mt-3 font-mono text-xs leading-relaxed text-white">
             {event.description}
           </MarkdownText>
           <dl className="glass-panel mt-5 space-y-2 p-4 font-mono text-xs">
@@ -61,7 +61,7 @@ export default async function EventDetailPage({
                 : []),
             ].map(([k, v]) => (
               <div key={k} className="flex justify-between gap-3">
-                <dt className="tracking-[0.2em] text-white/40 uppercase">{k}</dt>
+                <dt className="tracking-[0.2em] text-white uppercase">{k}</dt>
                 <dd className="text-right text-white">{v}</dd>
               </div>
             ))}

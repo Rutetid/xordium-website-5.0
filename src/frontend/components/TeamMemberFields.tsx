@@ -39,7 +39,7 @@ export default function TeamMemberFields({
             <button
               type="button"
               onClick={() => onRemove(index)}
-              className="rounded border border-white/20 px-3 py-1.5 font-mono text-[13px] tracking-[0.15em] text-white/70 uppercase hover:border-red-500 hover:text-red-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300"
+              className="rounded border border-white/20 px-3 py-1.5 font-mono text-[13px] tracking-[0.15em] text-white uppercase hover:border-red-500 hover:text-red-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300"
               aria-label={`Remove team member ${index + 2}`}
             >
               Remove
@@ -64,7 +64,7 @@ export default function TeamMemberFields({
             <div>
               <label
                 htmlFor={`member-${index}-branch`}
-                className="font-mono text-[13px] tracking-[0.15em] text-white/70 uppercase"
+                className="font-mono text-[13px] tracking-[0.15em] text-white uppercase"
               >
                 Branch
               </label>
@@ -133,7 +133,7 @@ function MemberInput({
     <div>
       <label
         htmlFor={id}
-        className="font-mono text-[13px] tracking-[0.15em] text-white/70 uppercase"
+        className="font-mono text-[13px] tracking-[0.15em] text-white uppercase"
       >
         {label}
       </label>

@@ -1,8 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&display=swap');
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap");
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Anybody", "Arial Narrow", sans-serif;
+--font-display: "Barlow Condensed", sans-serif;
   --font-body: "DM Sans", sans-serif;
   --font-mono: "Space Mono", ui-monospace, monospace;
 }
@@ -13,7 +14,7 @@ html {
 }
 
 body {
-  background-color: #1a1a2e;
+  background-color: #090303;
   color: #fff;
   font-family: var(--font-mono), ui-monospace, monospace;
   -webkit-font-smoothing: antialiased;
@@ -26,7 +27,7 @@ body {
   isolation: isolate;
   min-height: 100vh;
   overflow-x: clip;
-  background: #1a1a2e;
+  background: #0a0c10;
 }
 
 .background-collage {
@@ -36,13 +37,14 @@ body {
   --tile-height: 0px;
   --tile-rotation: 0deg;
   --tile-delay: 0ms;
+  --tile-z-index: auto;
 
   position: absolute;
   z-index: 0;
   inset: 0;
   overflow: hidden;
   opacity: 0;
-  filter: blur(1.5px);
+  filter: blur(1px);
   pointer-events: none;
   transition:
     opacity 750ms ease-in-out,
@@ -50,13 +52,13 @@ body {
 }
 
 .background-collage.is-visible {
-  opacity: 0.44;
+  opacity: 1;
 }
 
 .background-collage::after {
   position: absolute;
   z-index: 2;
-  background: rgb(0 0 0 / 35%);
+  background: rgb(0 0 0 / 22%);
   content: "";
   inset: 0;
   pointer-events: none;
@@ -66,27 +68,31 @@ body {
   position: absolute;
   top: var(--tile-top);
   left: var(--tile-left);
-  z-index: 1;
+  z-index: var(--tile-z-index);
   width: var(--tile-width);
   height: var(--tile-height);
-  overflow: hidden;
+  overflow: visible; /* Allow images to extend beyond tile bounds */
   opacity: 0;
-  transform: rotate(var(--tile-rotation)) scale(0.96);
+  transform: rotate(var(--tile-rotation));
   transition:
     opacity 750ms ease-in-out var(--tile-delay),
     transform 750ms ease-in-out var(--tile-delay);
+  box-shadow: 
+    0 4px 24px rgb(0 0 0 / 0.35),
+    0 0 0 1px rgb(255 255 255 / 0.05);
 }
 
 .background-collage.is-visible .collage-tile.is-loaded {
   opacity: 1;
-  transform: rotate(var(--tile-rotation)) scale(1);
+  transform: rotate(var(--tile-rotation));
 }
 
 .collage-tile img {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain; /* Show entire image, no cropping */
+  border-radius: 4px;
 }
 
 .glass-panel {
@@ -97,7 +103,6 @@ body {
   -webkit-backdrop-filter: blur(16px) saturate(180%);
   backdrop-filter: blur(16px) saturate(180%);
 }
-
 @supports not (
   (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
 ) {
@@ -106,12 +111,73 @@ body {
   }
 }
 
+/* Rectangular backdrop for copy that sits directly on the collage
+   artwork (no glassmorphism of its own). Keeps long text readable
+   while the artwork stays visible around the slab. */
+.text-slab {
+  border: 1px solid rgb(255 255 255 / 9%);
+  border-radius: 10px;
+  background: rgb(3 5 9 / 66%);
+  padding: 1.25rem 1.5rem;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+@supports not (
+  (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+) {
+  .text-slab {
+    background: rgb(3 5 9 / 85%);
+  }
+}
+
+/* Homepage carousel: one continuous slow glide, never halting.
+   The track holds two copies of the slides and loops translateX(-50%). */
+@keyframes carousel-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.carousel-marquee-track {
+  animation-name: carousel-marquee;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
 .collage-content {
   position: relative;
   z-index: 2;
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+}
+
+/* Readability over the collage artwork: every page renders inside
+   .collage-content, so give text a soft black halo that lifts it off
+   busy background images without touching the design colors. */
+.collage-content h1,
+.collage-content h2,
+.collage-content h3,
+.collage-content h4 {
+  text-shadow:
+    0 2px 14px rgb(0 0 0 / 85%),
+    0 1px 3px rgb(0 0 0 / 90%);
+}
+
+.collage-content p,
+.collage-content li,
+.collage-content span,
+.collage-content dt,
+.collage-content dd,
+.collage-content a {
+  text-shadow:
+    0 1px 8px rgb(0 0 0 / 80%),
+    0 1px 2px rgb(0 0 0 / 90%);
 }
 
 h1,
@@ -209,5 +275,8 @@ h6 {
   .collage-tile {
     transition-duration: 0.01ms;
     transition-delay: 0ms;
+  }
+  .carousel-marquee-track {
+    animation: none;
   }
 }

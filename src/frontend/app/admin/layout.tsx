@@ -14,6 +14,7 @@ import {
 const NAV_ITEMS = [
   { href: "/admin/dashboard", label: "Dashboard", minRole: "MODERATOR" as const },
   { href: "/admin/events", label: "Events", minRole: "MODERATOR" as const },
+  { href: "/admin/timetable", label: "Timetable", minRole: "ADMIN" as const },
   { href: "/admin/carousel", label: "Carousel", minRole: "OWNER" as const },
   { href: "/admin/registrations", label: "Registrations", minRole: "ADMIN" as const },
   { href: "/admin/event-registrations", label: "Event Regs", minRole: "ADMIN" as const },
@@ -77,7 +78,7 @@ export default function AdminLayout({
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="font-mono text-xs text-white/60 uppercase tracking-[0.2em]">
+        <p className="font-mono text-xs text-white uppercase tracking-[0.2em]">
           Loading...
         </p>
       </div>
@@ -107,12 +108,12 @@ export default function AdminLayout({
               XORDIUM <span className="text-red-400">//</span> ADMIN
             </Link>
             <div className="flex items-center gap-4">
-              <span className="hidden lg:block font-mono text-[11px] text-white/40 uppercase tracking-[0.15em] whitespace-nowrap">
+              <span className="hidden lg:block font-mono text-[11px] text-white uppercase tracking-[0.15em] whitespace-nowrap">
                 {user.email} ({user.role})
               </span>
               <button
                 onClick={handleLogout}
-                className="font-mono text-[11px] text-white/60 hover:text-white uppercase tracking-[0.15em] transition-colors whitespace-nowrap"
+                className="font-mono text-[11px] text-white hover:text-white uppercase tracking-[0.15em] transition-colors whitespace-nowrap"
               >
                 Logout
               </button>
@@ -126,7 +127,7 @@ export default function AdminLayout({
                 className={`font-mono text-[11px] uppercase tracking-[0.15em] transition-colors ${
                   pathname === item.href
                     ? "text-red-400"
-                    : "text-white/60 hover:text-white"
+                    : "text-white hover:text-white"
                 }`}
               >
                 {item.label}
@@ -141,7 +142,7 @@ export default function AdminLayout({
 
       {/* Footer */}
       <footer className="border-t border-white/10 bg-[#08090c] py-4">
-        <div className="max-w-7xl mx-auto px-4 font-mono text-[10px] text-white/40 uppercase tracking-[0.2em]">
+        <div className="max-w-7xl mx-auto px-4 font-mono text-[10px] text-white uppercase tracking-[0.2em]">
           Xordium Admin Panel v5.0
         </div>
       </footer>

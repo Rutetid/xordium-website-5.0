@@ -53,7 +53,7 @@ export default function EventRegistrationsPage() {
         <h2 className="font-mono text-sm font-bold text-red-400 uppercase tracking-[0.2em]">
           Access Denied
         </h2>
-        <p className="mt-2 font-mono text-xs text-white/60">
+        <p className="mt-2 font-mono text-xs text-white">
           This page requires Admin or Owner privileges.
         </p>
       </div>
@@ -68,14 +68,14 @@ export default function EventRegistrationsPage() {
           <h1 className="font-mono text-2xl font-bold tracking-[0.2em] text-white uppercase">
             // EVENT REGISTRATIONS
           </h1>
-          <p className="mt-2 font-mono text-[11px] text-white/40 uppercase tracking-[0.2em]">
+          <p className="mt-2 font-mono text-[11px] text-white uppercase tracking-[0.2em]">
             Responses from the public event registration form
           </p>
         </div>
         <div className="flex gap-2">
           <button
             onClick={loadRegistrations}
-            className="border border-white/20 bg-white/5 px-4 py-2 font-mono text-[11px] font-bold tracking-[0.2em] text-white/60 uppercase hover:bg-white/10 hover:text-white transition-colors"
+            className="border border-white/20 bg-white/5 px-4 py-2 font-mono text-[11px] font-bold tracking-[0.2em] text-white uppercase hover:bg-white/10 hover:text-white transition-colors"
           >
             ↻ Refresh
           </button>
@@ -97,7 +97,7 @@ export default function EventRegistrationsPage() {
 
       {/* Filter */}
       <div className="mb-6">
-        <label className="block font-mono text-xs text-white/70 uppercase tracking-[0.15em]">
+        <label className="block font-mono text-xs text-white uppercase tracking-[0.15em]">
           FILTER BY EVENT
           <select
             value={filterEvent}
@@ -123,7 +123,7 @@ export default function EventRegistrationsPage() {
       {/* Stats */}
       <div className="mb-6 grid grid-cols-2 md:grid-cols-3 gap-4">
         <div className="border border-white/10 bg-white/5 p-4 rounded">
-          <p className="font-mono text-[10px] text-white/50 uppercase tracking-[0.2em] mb-1">
+          <p className="font-mono text-[10px] text-white uppercase tracking-[0.2em] mb-1">
             Total Responses
           </p>
           <p className="font-mono text-2xl font-bold text-white">
@@ -131,7 +131,7 @@ export default function EventRegistrationsPage() {
           </p>
         </div>
         <div className="border border-white/10 bg-white/5 p-4 rounded">
-          <p className="font-mono text-[10px] text-white/50 uppercase tracking-[0.2em] mb-1">
+          <p className="font-mono text-[10px] text-white uppercase tracking-[0.2em] mb-1">
             Showing
           </p>
           <p className="font-mono text-2xl font-bold text-white">
@@ -139,7 +139,7 @@ export default function EventRegistrationsPage() {
           </p>
         </div>
         <div className="border border-white/10 bg-white/5 p-4 rounded">
-          <p className="font-mono text-[10px] text-white/50 uppercase tracking-[0.2em] mb-1">
+          <p className="font-mono text-[10px] text-white uppercase tracking-[0.2em] mb-1">
             External (non-BIT) Teams
           </p>
           <p className="font-mono text-2xl font-bold text-white">
@@ -159,7 +159,7 @@ export default function EventRegistrationsPage() {
         </div>
       ) : filtered.length === 0 ? (
         <div className="border border-white/10 bg-white/5 p-8 rounded text-center">
-          <p className="font-mono text-sm text-white/60">
+          <p className="font-mono text-sm text-white">
             No registrations found.
           </p>
         </div>
@@ -182,25 +182,25 @@ function RegistrationTable({
       <table className="w-full">
         <thead className="border-b border-white/10">
           <tr>
-            <th className="px-4 py-3 text-left font-mono text-[10px] text-white/50 uppercase tracking-[0.2em]">
+            <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
               Registered
             </th>
-            <th className="px-4 py-3 text-left font-mono text-[10px] text-white/50 uppercase tracking-[0.2em]">
+            <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
               Event
             </th>
-            <th className="px-4 py-3 text-left font-mono text-[10px] text-white/50 uppercase tracking-[0.2em]">
+            <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
               Team Head
             </th>
-            <th className="px-4 py-3 text-left font-mono text-[10px] text-white/50 uppercase tracking-[0.2em]">
+            <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
               Email
             </th>
-            <th className="px-4 py-3 text-left font-mono text-[10px] text-white/50 uppercase tracking-[0.2em]">
+            <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
               Team
             </th>
-            <th className="px-4 py-3 text-left font-mono text-[10px] text-white/50 uppercase tracking-[0.2em]">
+            <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
               Size
             </th>
-            <th className="px-4 py-3 text-left font-mono text-[10px] text-white/50 uppercase tracking-[0.2em]">
+            <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
               Type
             </th>
             <th className="px-4 py-3"></th>
@@ -240,22 +240,22 @@ function RegistrationRow({
         onClick={onToggle}
         className="border-b border-white/5 hover:bg-white/5 cursor-pointer"
       >
-        <td className="px-4 py-3 font-mono text-[10px] text-white/40 whitespace-nowrap">
+        <td className="px-4 py-3 font-mono text-[10px] text-white whitespace-nowrap">
           {new Date(reg.createdAt).toLocaleDateString()}
         </td>
-        <td className="px-4 py-3 font-mono text-[11px] text-white/70">
+        <td className="px-4 py-3 font-mono text-[11px] text-white">
           {reg.eventName}
         </td>
         <td className="px-4 py-3 font-mono text-xs text-white">
           {reg.fullName}
         </td>
-        <td className="px-4 py-3 font-mono text-xs text-white/80">
+        <td className="px-4 py-3 font-mono text-xs text-white">
           {reg.email}
         </td>
-        <td className="px-4 py-3 font-mono text-[11px] text-white/60">
+        <td className="px-4 py-3 font-mono text-[11px] text-white">
           {reg.teamName || "—"}
         </td>
-        <td className="px-4 py-3 font-mono text-[11px] text-white/60">
+        <td className="px-4 py-3 font-mono text-[11px] text-white">
           {teamSize}
         </td>
         <td className="px-4 py-3">
@@ -263,7 +263,7 @@ function RegistrationRow({
             className={`inline-block px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.15em] rounded ${
               reg.isExternalTeam
                 ? "bg-amber-600/20 text-amber-400 border border-amber-500/50"
-                : "bg-white/10 text-white/60 border border-white/20"
+                : "bg-white/10 text-white border border-white/20"
             }`}
           >
             {reg.isExternalTeam ? "External" : "BIT"}
@@ -278,7 +278,7 @@ function RegistrationRow({
           <td colSpan={8} className="px-4 py-4">
             <div className="grid gap-4 md:grid-cols-2">
               <div>
-                <p className="font-mono text-[10px] text-white/40 uppercase tracking-[0.2em] mb-2">
+                <p className="font-mono text-[10px] text-white uppercase tracking-[0.2em] mb-2">
                   Team Head
                 </p>
                 <dl className="space-y-1 font-mono text-xs">
@@ -292,11 +292,11 @@ function RegistrationRow({
                 </dl>
               </div>
               <div>
-                <p className="font-mono text-[10px] text-white/40 uppercase tracking-[0.2em] mb-2">
+                <p className="font-mono text-[10px] text-white uppercase tracking-[0.2em] mb-2">
                   Team Members ({reg.teamMembers.length})
                 </p>
                 {reg.teamMembers.length === 0 ? (
-                  <p className="font-mono text-xs text-white/50">
+                  <p className="font-mono text-xs text-white">
                     Individual entry — no team members.
                   </p>
                 ) : (
@@ -307,10 +307,10 @@ function RegistrationRow({
                         className="border border-white/10 rounded p-2 font-mono text-xs"
                       >
                         <p className="text-white">{member.name}</p>
-                        <p className="text-white/60">
+                        <p className="text-white">
                           {member.email} · {member.phone}
                         </p>
-                        <p className="text-white/40">
+                        <p className="text-white">
                           {member.branch} · {member.year}
                         </p>
                       </li>
@@ -329,10 +329,10 @@ function RegistrationRow({
 function Detail({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex gap-2">
-      <dt className="w-28 shrink-0 text-white/40 uppercase tracking-[0.1em] text-[10px]">
+      <dt className="w-28 shrink-0 text-white uppercase tracking-[0.1em] text-[10px]">
         {label}
       </dt>
-      <dd className="text-white/80">{value || "—"}</dd>
+      <dd className="text-white">{value || "—"}</dd>
     </div>
   );
 }

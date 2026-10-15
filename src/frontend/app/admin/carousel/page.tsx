@@ -61,13 +61,13 @@ export default function CarouselAdminPage() {
         <h1 className="font-mono text-2xl font-bold tracking-[0.2em] text-white uppercase">
           // HOMEPAGE CAROUSEL
         </h1>
-        <p className="mt-2 font-mono text-[11px] tracking-[0.2em] text-white/40 uppercase">
+        <p className="mt-2 font-mono text-[11px] tracking-[0.2em] text-white uppercase">
           Owner-only image upload
         </p>
       </div>
 
       <div className="border border-white/10 bg-white/5 p-6">
-        <p className="font-mono text-sm leading-relaxed text-white/70">
+        <p className="font-mono text-sm leading-relaxed text-white">
           Upload images directly from your computer. Images are automatically converted to
           WebP format, resized to max 300px height, and stored in the database.
         </p>
@@ -76,33 +76,33 @@ export default function CarouselAdminPage() {
           <input
             type="file"
             multiple
-            className="mt-2 block w-full text-sm text-white/30 file:border file:bg-white/5 file:rounded file:text-sm hover:file:bg-white/10"
+            className="mt-2 block w-full text-sm text-white file:border file:bg-white/5 file:rounded file:text-sm hover:file:bg-white/10"
             accept="image/*,.avif,.gif,.jpeg,.jpg,.png,.webp"
             onChange={handleFileChange}
           />
-          <p className="mt-2 text-xs text-white/40">
+          <p className="mt-2 text-xs text-white">
             Supported: AVIF, GIF, JPEG, PNG, WebP. Max height: 300px. Quality: 75%.
           </p>
         </div>
 
         {files.length > 0 && (
           <div className="mt-4 space-y-2">
-            <p className="font-mono text-xs text-white/60">
+            <p className="font-mono text-xs text-white">
               Selected {files.length} file{files.length > 1 ? "s" : ""}:
             </p>
             <div className="max-h-48 overflow-y-auto space-y-1">
               {files.map((file, index) => (
                 <div
                   key={`${file.name}-${index}`}
-                  className="flex items-center justify-between text-sm text-white/70 bg-black/30 px-3 py-2 rounded border border-white/10"
+                  className="flex items-center justify-between text-sm text-white bg-black/30 px-3 py-2 rounded border border-white/10"
                 >
                   <span className="truncate max-w-[200px]">{file.name}</span>
-                  <span className="text-white/40 ml-2">
+                  <span className="text-white ml-2">
                     {Math.round(file.size / 1024)} KB
                   </span>
                   <button
                     onClick={() => removeFile(index)}
-                    className="text-white/50 hover:text-white ml-2"
+                    className="text-white hover:text-white ml-2"
                   >
                     ×
                   </button>
@@ -112,7 +112,7 @@ export default function CarouselAdminPage() {
             <div className="flex gap-2">
               <button
                 onClick={clearFiles}
-                className="text-sm text-white/60 hover:text-white"
+                className="text-sm text-white hover:text-white"
               >
                 Clear all
               </button>
@@ -146,12 +146,12 @@ export default function CarouselAdminPage() {
         </div>
 
         {uploadStatus && (
-          <p className={`mt-4 text-sm ${uploadStatus.startsWith("Error") ? "text-red-400" : "text-white/60"}`}>
+          <p className={`mt-4 text-sm ${uploadStatus.startsWith("Error") ? "text-red-400" : "text-white"}`}>
             {uploadStatus}
           </p>
         )}
 
-        <p className="mt-6 text-xs text-white/50">
+        <p className="mt-6 text-xs text-white">
           Images are converted to WebP (max 300px height, 75% quality) and stored in the database.
           The homepage carousel fetches images directly from the database.
         </p>

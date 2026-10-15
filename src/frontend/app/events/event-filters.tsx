@@ -73,7 +73,7 @@ export default function EventFilters() {
             className={`border px-3 py-1.5 transition ${
               category === c
                 ? "border-red-600 bg-red-600 text-white"
-                : "border-white/15 text-white/55 hover:bg-white/10"
+                : "border-white/15 text-white hover:bg-white/10"
             }`}
           >
             {c === "All" ? `All tracks • ${events.length}` : c}
@@ -81,7 +81,7 @@ export default function EventFilters() {
         ))}
       </div>
 
-      <p className="mt-6 font-mono text-[13px] tracking-[0.2em] text-white/40 uppercase">
+      <p className="mt-6 font-mono text-[13px] tracking-[0.2em] text-white uppercase">
         ■ Event protocols [{" "}
         {String(filteredEvents.length).padStart(2, "0")} active protocols ]
       </p>
@@ -89,7 +89,7 @@ export default function EventFilters() {
       {/* Event cards grid */}
       {filteredEvents.length === 0 ? (
         <div className="glass-panel p-8 text-center">
-          <p className="font-mono text-[13px] text-white/60">No protocols match your query. Clear search or adjust filters.</p>
+          <p className="font-mono text-[13px] text-white">No protocols match your query. Clear search or adjust filters.</p>
         </div>
       ) : (
         <div className="flex flex-col gap-5">
@@ -138,34 +138,34 @@ export default function EventFilters() {
                   {e.title}
                 </h3>
 
-                <MarkdownText className="mt-2 font-mono text-[13px] leading-relaxed text-white/60 line-clamp-3">
+                <MarkdownText className="mt-2 font-mono text-[13px] leading-relaxed text-white line-clamp-3">
                   {e.description}
                 </MarkdownText>
 
                 <dl className="mt-4 space-y-2 border-t border-white/10 pt-4 font-mono text-[13px]">
                   <div className="flex justify-between gap-4">
-                    <dt className="text-white/40 uppercase">Venue</dt>
-                    <dd className="text-right text-white/80">{e.venue}</dd>
+                    <dt className="text-white uppercase">Venue</dt>
+                    <dd className="text-right text-white">{e.venue}</dd>
                   </div>
                   <div className="flex justify-between gap-4">
-                    <dt className="text-white/40 uppercase">Format</dt>
-                    <dd className="text-right text-white/80">{e.format}</dd>
+                    <dt className="text-white uppercase">Format</dt>
+                    <dd className="text-right text-white">{e.format}</dd>
                   </div>
                   <div className="flex justify-between gap-4">
-                    <dt className="text-white/40 uppercase">Schedule</dt>
-                    <dd className="text-right text-white/80">{e.schedule}</dd>
+                    <dt className="text-white uppercase">Schedule</dt>
+                    <dd className="text-right text-white">{e.schedule}</dd>
                   </div>
                   {e.teamSize && (
                     <div className="flex justify-between gap-4">
-                      <dt className="text-white/40 uppercase">Team</dt>
-                      <dd className="text-right text-white/80">{e.teamSize}</dd>
+                      <dt className="text-white uppercase">Team</dt>
+                      <dd className="text-right text-white">{e.teamSize}</dd>
                     </div>
                   )}
                 </dl>
 
                 <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-4">
                   <div>
-                    <div className="font-mono text-[13px] tracking-[0.2em] text-white/40 uppercase">
+                    <div className="font-mono text-[13px] tracking-[0.2em] text-white uppercase">
                       Prize pool
                     </div>
                     <div className="font-display text-lg font-black text-red-500">

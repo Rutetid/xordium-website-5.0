@@ -42,13 +42,13 @@ export default function Countdown({
             <div className="font-display text-3xl font-black tabular-nums text-white sm:text-4xl">
               {String(parts[c.key]).padStart(2, "0")}
             </div>
-            <div className="mt-1 font-mono text-[10px] tracking-[0.25em] text-white/50 uppercase">
+            <div className="mt-1 font-mono text-[10px] tracking-[0.25em] text-white uppercase">
               {c.label}
             </div>
           </div>
         ))}
       </div>
-      <p className="mt-2 text-center font-mono text-[10px] tracking-[0.2em] text-white/40 uppercase">
+      <p className="mt-2 text-center font-mono text-[10px] tracking-[0.2em] text-white uppercase">
         {parts.live
           ? "Registration gateway: closed"
           : (caption ?? "System launch synchronization clock")}

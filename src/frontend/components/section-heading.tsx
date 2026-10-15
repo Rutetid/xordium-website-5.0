@@ -8,7 +8,7 @@ export default function SectionHeading({
   blurb?: string;
 }) {
   return (
-    <div className="mb-8">
+    <div className="text-slab mb-8">
       <p className="font-mono text-[11px] tracking-[0.3em] text-cyan-300 uppercase">
         {"//"} {kicker}
       </p>
@@ -16,7 +16,7 @@ export default function SectionHeading({
         {title}
       </h2>
       {blurb !== undefined ? (
-        <p className="mt-2 max-w-2xl font-mono text-xs leading-relaxed text-white/55">
+        <p className="mt-2 max-w-2xl font-mono text-[13px] shadow-md leading-relaxed text-white">
           {blurb}
         </p>
       ) : null}

@@ -26,22 +26,22 @@ export default function EventCard({ event }: { event: FestEvent }) {
         <h3 className="font-display text-lg leading-tight font-extrabold text-white uppercase">
           {event.title}
         </h3>
-        <MarkdownText className="mt-2 line-clamp-3 font-mono text-[13px] leading-relaxed text-white/55">
+        <MarkdownText className="mt-2 line-clamp-3 font-mono text-[13px] leading-relaxed text-white">
           {event.description}
         </MarkdownText>
         <dl className="mt-3 space-y-1 border-t border-white/10 pt-3 font-mono text-[13px]">
           <div className="flex justify-between gap-2">
-            <dt className="text-white/40 uppercase">Venue</dt>
-            <dd className="text-right text-white/80">{event.venue}</dd>
+            <dt className="text-white uppercase">Venue</dt>
+            <dd className="text-right text-white">{event.venue}</dd>
           </div>
           <div className="flex justify-between gap-2">
-            <dt className="text-white/40 uppercase">Format</dt>
-            <dd className="text-right text-white/80">{event.format}</dd>
+            <dt className="text-white uppercase">Format</dt>
+            <dd className="text-right text-white">{event.format}</dd>
           </div>
         </dl>
         <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-3">
           <div>
-            <div className="font-mono text-[13px] tracking-[0.2em] text-white/40 uppercase">
+            <div className="font-mono text-[13px] tracking-[0.2em] text-white uppercase">
               Prize pool
             </div>
             <div className="font-display text-xl font-black text-red-500">

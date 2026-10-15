@@ -2,10 +2,28 @@ import { NextResponse } from "next/server";
 import { getAdminSession } from "@/backend/lib/auth";
 import { prisma } from "@/backend/lib/prisma";
 import sharp from "sharp";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, writeFile, access } from "node:fs/promises";
 import { join } from "node:path";
 
-const CAROUSEL_SOURCE_DIR = join(process.cwd(), "public", "carousel");
+// The `public/` folder Next.js actually serves (`process.cwd()` is the repo
+// root when started via `next dev src/frontend`; the fallback covers being
+// started from inside `src/frontend`).
+const CAROUSEL_SOURCE_DIR = join(process.cwd(), "src", "frontend", "public", "carousel");
+const CAROUSEL_SOURCE_FALLBACK_DIR = join(process.cwd(), "public", "carousel");
+
+async function resolveCarouselDir(): Promise<string> {
+  try {
+    await access(CAROUSEL_SOURCE_DIR);
+    return CAROUSEL_SOURCE_DIR;
+  } catch {
+    try {
+      await access(CAROUSEL_SOURCE_FALLBACK_DIR);
+      return CAROUSEL_SOURCE_FALLBACK_DIR;
+    } catch {
+      return CAROUSEL_SOURCE_DIR;
+    }
+  }
+}
 
 export const dynamic = "force-dynamic";
 
@@ -43,9 +61,10 @@ export async function POST(request: Request) {
         }
 
         const webpName = `${originalName.replace(/\.[^.]+$/, '')}.webp`;
-        const sourcePath = join(CAROUSEL_SOURCE_DIR, webpName);
+        const carouselDir = await resolveCarouselDir();
+        const sourcePath = join(carouselDir, webpName);
 
-        await mkdir(CAROUSEL_SOURCE_DIR, { recursive: true });
+        await mkdir(carouselDir, { recursive: true });
 
         const imageData = await sharp(buffer)
           .rotate()

@@ -92,14 +92,14 @@ export default function AcceptInvitePage() {
         <h1 className="font-mono text-2xl font-bold tracking-[0.2em] text-white uppercase">
           // SET UP ACCOUNT
         </h1>
-        <p className="mt-2 font-mono text-[11px] text-white/40 uppercase tracking-[0.2em]">
+        <p className="mt-2 font-mono text-[11px] text-white uppercase tracking-[0.2em]">
           Complete your Xordium admin profile
         </p>
       </div>
 
       {phase === "loading" && (
         <div className="border border-white/10 bg-white/5 p-8 rounded">
-          <p className="font-mono text-sm text-white/60 animate-pulse">
+          <p className="font-mono text-sm text-white animate-pulse">
             Validating invitation…
           </p>
         </div>
@@ -110,7 +110,7 @@ export default function AcceptInvitePage() {
           <h2 className="font-mono text-sm font-bold text-red-400 uppercase tracking-[0.2em]">
             Invitation Unavailable
           </h2>
-          <p className="mt-2 font-mono text-xs text-white/60">{inviteError}</p>
+          <p className="mt-2 font-mono text-xs text-white">{inviteError}</p>
           <Link
             href="/admin/login"
             className="mt-4 inline-block font-mono text-[11px] font-bold tracking-[0.15em] text-red-400 uppercase hover:text-red-300"
@@ -125,7 +125,7 @@ export default function AcceptInvitePage() {
           <h2 className="font-mono text-sm font-bold text-green-400 uppercase tracking-[0.2em]">
             Account Ready
           </h2>
-          <p className="mt-2 font-mono text-xs text-white/70">
+          <p className="mt-2 font-mono text-xs text-white">
             Your account has been created. Sign in with your username or email.
           </p>
           <Link
@@ -143,7 +143,7 @@ export default function AcceptInvitePage() {
           className="border border-white/10 bg-white/5 p-6 rounded"
         >
           <div className="mb-5 border border-white/10 bg-black/20 p-3 rounded">
-            <p className="font-mono text-[10px] text-white/40 uppercase tracking-[0.2em]">
+            <p className="font-mono text-[10px] text-white uppercase tracking-[0.2em]">
               Invited as
             </p>
             <p className="font-mono text-sm text-white mt-1">{email}</p>
@@ -159,7 +159,7 @@ export default function AcceptInvitePage() {
           )}
 
           <div className="space-y-4">
-            <label className="block font-mono text-xs text-white/70 uppercase tracking-[0.15em]">
+            <label className="block font-mono text-xs text-white uppercase tracking-[0.15em]">
               FULL NAME
               <input
                 type="text"
@@ -172,7 +172,7 @@ export default function AcceptInvitePage() {
               />
             </label>
 
-            <label className="block font-mono text-xs text-white/70 uppercase tracking-[0.15em]">
+            <label className="block font-mono text-xs text-white uppercase tracking-[0.15em]">
               ROLL NUMBER
               <input
                 type="text"
@@ -183,12 +183,12 @@ export default function AcceptInvitePage() {
                 placeholder="BTECH/150101/22"
                 className={inputClass}
               />
-              <span className="mt-1 block font-mono text-[10px] text-white/30">
+              <span className="mt-1 block font-mono text-[10px] text-white">
                 Format: BTECH/&lt;digits&gt;/&lt;digits&gt;
               </span>
             </label>
 
-            <label className="block font-mono text-xs text-white/70 uppercase tracking-[0.15em]">
+            <label className="block font-mono text-xs text-white uppercase tracking-[0.15em]">
               USERNAME
               <input
                 type="text"
@@ -200,13 +200,13 @@ export default function AcceptInvitePage() {
                 placeholder="jane.doe"
                 className={inputClass}
               />
-              <span className="mt-1 block font-mono text-[10px] text-white/30">
+              <span className="mt-1 block font-mono text-[10px] text-white">
                 3-32 chars: letters, numbers, _ or .
               </span>
             </label>
 
             <div className="grid sm:grid-cols-2 gap-4">
-              <label className="block font-mono text-xs text-white/70 uppercase tracking-[0.15em]">
+              <label className="block font-mono text-xs text-white uppercase tracking-[0.15em]">
                 PASSWORD
                 <input
                   type="password"
@@ -217,7 +217,7 @@ export default function AcceptInvitePage() {
                   className={inputClass}
                 />
               </label>
-              <label className="block font-mono text-xs text-white/70 uppercase tracking-[0.15em]">
+              <label className="block font-mono text-xs text-white uppercase tracking-[0.15em]">
                 CONFIRM PASSWORD
                 <input
                   type="password"

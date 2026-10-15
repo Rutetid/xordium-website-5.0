@@ -21,6 +21,7 @@ type CollageTile = {
   rotation: number;
   delay: number;
   loaded: boolean;
+  zIndex: number;
 };
 
 type TileStyle = CSSProperties & {
@@ -30,6 +31,7 @@ type TileStyle = CSSProperties & {
   "--tile-height": string;
   "--tile-rotation": string;
   "--tile-delay": string;
+  "--tile-z-index": string;
 };
 
 function shuffle<T>(items: readonly T[]) {
@@ -53,58 +55,86 @@ function makeSelection() {
 }
 
 function makeTiles(images: string[], width: number, height: number) {
-  const layoutId = Math.random().toString(36).slice(2);
-  const columns = width < 520 ? 2 : width < 900 ? 3 : 4;
-  const columnWidth = width / columns;
-  const rowHeight = 280;
-  const rows = Math.ceil(height / rowHeight) + 1;
-  const positions = shuffle(
-    Array.from({ length: rows * columns }, (_, index) => ({
-      row: Math.floor(index / columns),
-      column: index % columns,
-    })),
-  );
-  const sources: string[] = [];
+  const safeWidth = Math.max(Math.round(width) || 0, 320);
+  const safeHeight = Math.max(Math.round(height) || 0, 480);
+  const safeImages = images.length > 0 ? images : [];
+  if (safeImages.length === 0) return [];
 
-  while (sources.length < positions.length) {
-    sources.push(...shuffle(images));
+  // Enough tiles to cover the whole page; repeats are fine (sources cycles).
+  // Kept modest (<=64) so decoded WebP memory stays reasonable.
+  const tileCount = Math.max(
+    28,
+    Math.min(64, Math.floor((safeWidth * safeHeight) / 70000)),
+  );
+
+  const sources: string[] = [];
+  while (sources.length < tileCount) {
+    sources.push(...shuffle(safeImages));
   }
+  sources.length = tileCount;
+
+  // Stratified grid so every row of the page gets tiles (fixes top-strip
+  // clustering where `index % cols` kept all tiles in row 0 on tall pages).
+  const cols = Math.max(
+    1,
+    Math.ceil(Math.sqrt((tileCount * safeWidth) / safeHeight)),
+  );
+  const rows = Math.max(1, Math.ceil(tileCount / cols));
 
   let delay = 0;
+  return sources.slice(0, tileCount).map((src, index) => {
+    if (index > 0) delay = Math.min(delay + 25 + Math.random() * 40, 1500);
 
-  return sources.slice(0, positions.length).map((src, index) => {
-    if (index > 0) delay = Math.min(delay + 45 + Math.random() * 50, 900);
-    const { row, column } = positions[index];
-    const scale = [0.64, 0.78, 0.92][Math.floor(Math.random() * 3)];
-    const tileWidth = Math.round(columnWidth * scale);
-    const tileHeight = Math.round(170 + Math.random() * 100);
-    const horizontalJitter = (Math.random() - 0.5) * columnWidth * 0.2;
-    const verticalJitter = (Math.random() - 0.5) * 64;
+    let tileWidth: number;
+    let tileHeight: number;
+    const roll = Math.random();
+    if (roll < 0.15) {
+      tileWidth = 300 + Math.random() * 150;
+      tileHeight = tileWidth * (1.1 + Math.random() * 0.5);
+    } else if (roll < 0.45) {
+      tileWidth = 180 + Math.random() * 120;
+      tileHeight = tileWidth * (0.9 + Math.random() * 0.7);
+    } else {
+      tileWidth = 100 + Math.random() * 100;
+      tileHeight = tileWidth * (0.7 + Math.random() * 0.8);
+    }
+    tileWidth = Math.min(tileWidth, safeWidth - 20);
+    tileHeight = Math.min(tileHeight, safeHeight - 20);
+
+    // One tile per grid cell with jitter, clamped inside the shell.
+    const col = index % cols;
+    const row = Math.floor(index / cols);
+    const cellWidth = safeWidth / cols;
+    const cellHeight = safeHeight / rows;
+    const baseLeft = col * cellWidth + cellWidth / 2 - tileWidth / 2;
+    const baseTop = row * cellHeight + cellHeight / 2 - tileHeight / 2;
+    const jitterX = (Math.random() - 0.5) * cellWidth * 0.6;
+    const jitterY = (Math.random() - 0.5) * cellHeight * 0.6;
     const left = Math.max(
-      0,
-      Math.min(
-        Math.round(column * columnWidth + horizontalJitter),
-        width - tileWidth,
-      ),
+      10,
+      Math.min(safeWidth - tileWidth - 10, baseLeft + jitterX),
     );
     const top = Math.max(
-      0,
-      Math.min(
-        Math.round(row * rowHeight + verticalJitter),
-        Math.max(0, height - tileHeight),
-      ),
+      10,
+      Math.min(safeHeight - tileHeight - 10, baseTop + jitterY),
     );
 
+    const rotation = (Math.random() - 0.5) * 14; // -7 to +7 degrees
+    const zIndex = 10 + Math.floor(Math.random() * 100);
+
+    if (index > 0) delay = Math.min(delay + 20 + Math.random() * 35, 1800);
+
     return {
-      key: `${layoutId}-${index}-${src}`,
+      key: `${Math.random().toString(36).slice(2)}-${index}-${src}`,
       src,
-      left,
-      top,
-      width: tileWidth,
-      height: tileHeight,
-      rotation: Math.round((Math.random() * 8 - 4) * 10) / 10,
+      left: Math.round(left),
+      top: Math.round(top),
+      width: Math.round(tileWidth),
+      height: Math.round(tileHeight),
+      rotation: Math.round(rotation * 10) / 10,
       delay: Math.round(delay),
       loaded: false,
+      zIndex,
     };
   });
 }
@@ -124,12 +154,23 @@ export default function BackgroundCollage({
   useEffect(() => {
     const shell = shellRef.current;
     if (!shell) return;
+    const lastSizeRef = { width: 0, height: 0 };
 
     const updateLayout = () => {
       if (imagesRef.current.length === 0) return;
       const bounds = shell.getBoundingClientRect();
       const width = Math.round(bounds.width || window.innerWidth);
       const height = Math.round(Math.max(bounds.height, window.innerHeight));
+      // Ignore small size wobbles (fonts/images loading) so the collage
+      // doesn't reshuffle repeatedly while the page settles.
+      if (
+        Math.abs(width - lastSizeRef.width) < 80 &&
+        Math.abs(height - lastSizeRef.height) < 120
+      ) {
+        return;
+      }
+      lastSizeRef.width = width;
+      lastSizeRef.height = height;
       setTiles(makeTiles(imagesRef.current, width, height));
     };
 
@@ -199,6 +240,7 @@ export default function BackgroundCollage({
                 "--tile-height": `${tile.height}px`,
                 "--tile-rotation": `${tile.rotation}deg`,
                 "--tile-delay": `${tile.delay}ms`,
+                "--tile-z-index": `${tile.zIndex}`,
               } as TileStyle
             }
           >
@@ -208,6 +250,11 @@ export default function BackgroundCollage({
               loading="lazy"
               decoding="async"
               onLoad={(event) => void revealLoadedImage(event, tile.key)}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "contain",
+              }}
             />
           </div>
         ))}

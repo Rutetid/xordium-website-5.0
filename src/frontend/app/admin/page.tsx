@@ -17,7 +17,7 @@ export default function AdminRoot() {
 
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <p className="font-mono text-xs text-white/60 uppercase tracking-[0.2em]">
+      <p className="font-mono text-xs text-white uppercase tracking-[0.2em]">
         Redirecting...
       </p>
     </div>

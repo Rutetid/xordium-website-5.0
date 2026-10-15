@@ -92,6 +92,21 @@ model Event {
   registrations Registration[]
 }
 
+model TimetableEntry {
+  id        String   @id @default(uuid())
+  day       String
+  time      String
+  title     String
+  detail    String
+  venue     String
+  mode      String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([sortOrder])
+}
+
 model CarouselImage {
   id                String   @id @default(uuid())
   sourceName        String   @unique

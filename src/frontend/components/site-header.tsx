@@ -25,7 +25,7 @@ export default function SiteHeader() {
             <Link
               key={l.href}
               href={l.href}
-              className="px-2 py-1 font-mono text-[11px] tracking-[0.2em] text-white/60 uppercase transition hover:bg-white/10 hover:text-white sm:px-3"
+              className="px-2 py-1 font-mono text-[11px] tracking-[0.2em] text-white uppercase transition hover:bg-white/10 hover:text-white sm:px-3"
             >
               {l.label}
             </Link>

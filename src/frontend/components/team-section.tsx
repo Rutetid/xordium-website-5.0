@@ -73,7 +73,7 @@ function CoreCard({
         <p className="mt-0.5 font-mono text-[10px] tracking-widest text-cyan-400 uppercase">
           {member.post}
         </p>
-        <p className="mt-0.5 font-mono text-[10px] text-white/40">
+        <p className="mt-0.5 font-mono text-[10px] text-white">
           {member.rollNo}
         </p>
       </div>
@@ -103,7 +103,7 @@ function CoordinatorCard({ member }: { member: CoordinatorMember }) {
         <p className="font-display font-bold text-white text-sm leading-tight">
           {member.name}
         </p>
-        <p className="mt-0.5 font-mono text-[10px] text-white/40">
+        <p className="mt-0.5 font-mono text-[10px] text-white">
           {member.rollNo}
         </p>
       </div>
@@ -245,12 +245,6 @@ export default function TeamSection() {
           <div className="flex justify-center mb-10">
             <div className="relative">
               <CoreCard member={president} size="lg" />
-              {/* Crown / top indicator */}
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-red-600/90 rounded-sm">
-                <span className="font-mono text-[9px] tracking-[0.25em] uppercase text-white">
-                  President
-                </span>
-              </div>
             </div>
           </div>
 
@@ -258,12 +252,7 @@ export default function TeamSection() {
           <div className="flex justify-center gap-12 sm:gap-20 mb-12">
             {vicePresidents.map((vp, i) => (
               <div key={i} className="relative">
-                <CoreCard member={vp} size="md" />
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-white/10 border border-white/20 rounded-sm whitespace-nowrap">
-                  <span className="font-mono text-[9px] tracking-[0.2em] uppercase text-cyan-300">
-                    Vice President
-                  </span>
-                </div>
+                <CoreCard member={vp} size="lg" />
               </div>
             ))}
           </div>
@@ -271,7 +260,7 @@ export default function TeamSection() {
           {/* Connector line between president row and VP row and grid */}
           <div className="relative mb-6">
             <div className="border-t border-white/10" />
-            <p className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#0d0f14] px-3 font-mono text-[10px] tracking-[0.2em] text-white/25 uppercase whitespace-nowrap">
+            <p className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#0d0f14] px-3 font-mono text-[10px] tracking-[0.2em] text-white uppercase whitespace-nowrap">
               Post Holders
             </p>
           </div>
@@ -279,7 +268,7 @@ export default function TeamSection() {
           {/* Other post holders — 4 columns */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
             {otherCoreExecutives.map((m, i) => (
-              <CoreCard key={i} member={m} size="sm" />
+              <CoreCard key={i} member={m} size="md" />
             ))}
           </div>
         </div>
@@ -288,7 +277,7 @@ export default function TeamSection() {
         <div>
           <div className="mb-10 flex items-center gap-3">
             <span className="h-px flex-1 bg-gradient-to-r from-transparent to-white/10" />
-            <p className="font-mono text-[11px] tracking-[0.35em] text-cyan-400 uppercase">
+            <p className="font-mono text-[13px] tracking-[0.35em] text-cyan-400 uppercase">
               // Senior Coordinators
             </p>
             <span className="h-px flex-1 bg-gradient-to-l from-transparent to-white/10" />
@@ -302,7 +291,7 @@ export default function TeamSection() {
         <div>
           <div className="mb-10 flex items-center gap-3">
             <span className="h-px flex-1 bg-gradient-to-r from-transparent to-white/10" />
-            <p className="font-mono text-[11px] tracking-[0.35em] text-white/50 uppercase">
+            <p className="font-mono text-[11px] tracking-[0.35em] text-cyan-400 uppercase">
               // Junior Coordinators
             </p>
             <span className="h-px flex-1 bg-gradient-to-l from-transparent to-white/10" />

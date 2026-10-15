@@ -73,7 +73,7 @@ export function SupportForm() {
         <h1 className="font-display text-4xl leading-none font-black uppercase sm:text-5xl">
           SUPPORT // <span className="text-red-600">XORDIUM 5.0</span>
         </h1>
-        <p className="font-mono text-[13px] text-white/60 max-w-3xl mt-2 leading-relaxed">
+        <p className="font-mono text-[13px] text-white max-w-3xl mt-2 leading-relaxed">
           Transmission issues, registration queries, or hardware compatibility checks — open a ticket and the committee
           arbiters respond via comms.
         </p>
@@ -87,7 +87,7 @@ export function SupportForm() {
           <div>
             <div className="border-b border-white/10 pb-2 mb-6">
               <h2 className="font-mono text-[13px] font-bold uppercase text-white">DIRECTORY & DISPATCH</h2>
-              <p className="font-mono text-[13px] text-white/40 text-[13px]">
+              <p className="font-mono text-[13px] text-white text-[13px]">
                 PRIMARY TOUCHPOINTS FOR PARTICIPANTS & TEAMS
               </p>
             </div>
@@ -104,7 +104,7 @@ export function SupportForm() {
                   </span>
                   <button
                     onClick={() => copyToClipboard('support@xordium.igniteclub.tech', 'Official Email')}
-                    className="text-white/40 hover:text-red-500 text-[13px] font-mono flex items-center gap-1"
+                    className="text-white hover:text-red-500 text-[13px] font-mono flex items-center gap-1"
                   >
                     {copiedChannel === 'Official Email' ? <Check className="w-3 h-3 text-red-500"/> :
                       <Copy className="w-3 h-3"/>}
@@ -117,7 +117,7 @@ export function SupportForm() {
                 >
                   ignite@bitmesra.ac.in
                 </a>
-                <span className="font-mono text-[13px] text-white/40 mt-1 block">
+                <span className="font-mono text-[13px] text-white mt-1 block">
                   Saved to the admin inbox • Email notification when configured
                 </span>
               </div>
@@ -140,7 +140,7 @@ export function SupportForm() {
                 >
                   Xordium 5.0
                 </a>
-                <span className="font-mono text-[13px] text-white/40 mt-1 block text-[13px]">
+                <span className="font-mono text-[13px] text-white mt-1 block text-[13px]">
                   Event updates and frequently asked question direclty from coordinators
                 </span>
               </div>
@@ -157,7 +157,7 @@ export function SupportForm() {
                     href="https://instagram.com/ignite_bitp"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-white/40 hover:text-red-500 text-[13px] font-mono"
+                    className="text-white hover:text-red-500 text-[13px] font-mono"
                   >
                     </a>
                 </div>
@@ -169,7 +169,7 @@ export function SupportForm() {
                 >
                   @ignite_bitp
                 </a>
-                <span className="font-mono text-[13px] text-white/40 mt-1 block text-[13px]">
+                <span className="font-mono text-[13px] text-white mt-1 block text-[13px]">
                   Highlights, tournament stories, and match announcements
                 </span>
               </div>
@@ -183,7 +183,7 @@ export function SupportForm() {
           <div>
             <div className="border-b border-white/10 pb-2 mb-6">
               <h2 className="font-mono text-[13px] font-bold uppercase text-white">DISPATCH MESSAGE</h2>
-              <p className="font-mono text-[13px] text-white/40 text-[13px]">
+              <p className="font-mono text-[13px] text-white text-[13px]">
                 MESSAGES ARE STORED IN THE ADMIN INBOX
               </p>
             </div>
@@ -191,7 +191,7 @@ export function SupportForm() {
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Field 1: Name */}
               <div>
-                <label className="block font-mono text-[13px] uppercase text-white/60 mb-1">
+                <label className="block font-mono text-[13px] uppercase text-white mb-1">
                   Your Name (Student Name / Gamer Tag) <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -206,7 +206,7 @@ export function SupportForm() {
 
               {/* Field 2: Email */}
               <div>
-                <label className="block font-mono text-[13px] uppercase text-white/60 mb-1">
+                <label className="block font-mono text-[13px] uppercase text-white mb-1">
                   Email Address<span className="text-red-500">*</span>
                 </label>
                 <input
@@ -221,7 +221,7 @@ export function SupportForm() {
 
               {/* Field 3: Inquiry Topic */}
               <div>
-                <label className="block font-mono text-[13px] uppercase text-white/60 mb-1">
+                <label className="block font-mono text-[13px] uppercase text-white mb-1">
                   Inquiry Topic <span className="text-red-500">*</span>
                 </label>
                 <select
@@ -239,7 +239,7 @@ export function SupportForm() {
 
               {/* Field 4: Message */}
               <div>
-                <label className="block font-mono text-[13px] uppercase text-white/60 mb-1">
+                <label className="block font-mono text-[13px] uppercase text-white mb-1">
                   Message Body <span className="text-red-500">*</span>
                 </label>
                 <textarea
@@ -273,9 +273,9 @@ export function SupportForm() {
                       {submittedDispatch.notificationSent ? 'DISPATCH SENT TO COMMITTEE ARBITERS' : 'MESSAGE RECEIVED'}
                     </span>
                   </div>
-                  <p className="font-mono text-[13px] text-white/60 mt-1">
+                  <p className="font-mono text-[13px] text-white mt-1">
                     Your message reference
-                    is {submittedDispatch.dispatchId}. {submittedDispatch.notificationSent ? 'Committee arbiters have been notified.' : 'Committee administrators can review it in the admin inbox.'}
+                    is {submittedDispatch.dispatchId}. {submittedDispatch.notificationSent ? '' : ''}
                   </p>
                 </div>
               )}

@@ -11,7 +11,7 @@ export default function PrivacyPage() {
           </h1>
         </div>
       </section>
-      <main className="glass-panel mx-auto my-10 max-w-3xl space-y-6 px-6 py-8 font-mono text-xs leading-relaxed text-white/65 sm:px-8">
+      <main className="glass-panel mx-auto my-10 max-w-3xl space-y-6 px-6 py-8 font-mono text-xs leading-relaxed text-white sm:px-8">
         <section>
           <h2 className="font-display text-xl font-extrabold text-white uppercase">
             Information collected

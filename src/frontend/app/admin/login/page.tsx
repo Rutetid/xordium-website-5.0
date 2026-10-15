@@ -34,7 +34,7 @@ export default function AdminLogin() {
           <h1 className="font-mono text-2xl font-bold tracking-[0.3em] text-white uppercase">
             XORDIUM // ADMIN
           </h1>
-          <p className="mt-2 font-mono text-[11px] text-white/40 uppercase tracking-[0.2em]">
+          <p className="mt-2 font-mono text-[11px] text-white uppercase tracking-[0.2em]">
             Authentication Required
           </p>
         </div>
@@ -44,7 +44,7 @@ export default function AdminLogin() {
           onSubmit={handleSubmit}
           className="border border-white/10 bg-white/5 p-6 rounded"
         >
-          <label className="block font-mono text-xs text-white/70 uppercase tracking-[0.15em]">
+          <label className="block font-mono text-xs text-white uppercase tracking-[0.15em]">
             EMAIL OR USERNAME
             <input
               type="text"
@@ -56,7 +56,7 @@ export default function AdminLogin() {
             />
           </label>
 
-          <label className="mt-4 block font-mono text-xs text-white/70 uppercase tracking-[0.15em]">
+          <label className="mt-4 block font-mono text-xs text-white uppercase tracking-[0.15em]">
             PASSWORD
             <input
               type="password"
@@ -85,7 +85,7 @@ export default function AdminLogin() {
 
         {/* Footer */}
         <div className="mt-8 text-center">
-          <p className="font-mono text-[10px] text-white/30 uppercase tracking-[0.2em]">
+          <p className="font-mono text-[10px] text-white uppercase tracking-[0.2em]">
             Owner &gt; Admin &gt; Moderator
           </p>
         </div>

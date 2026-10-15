@@ -28,7 +28,7 @@ const components: Components = {
   ),
   li: ({ children }) => <li className="marker:text-white/40">{children}</li>,
   blockquote: ({ children }) => (
-    <blockquote className="mb-3 border-l-2 border-red-500/60 pl-3 text-white/70 last:mb-0">
+    <blockquote className="mb-3 border-l-2 border-red-500/60 pl-3 text-white last:mb-0">
       {children}
     </blockquote>
   ),
@@ -58,7 +58,7 @@ const components: Components = {
     </div>
   ),
   th: ({ children }) => (
-    <th className="border border-white/15 px-2 py-1 text-left text-white/50 uppercase">
+    <th className="border border-white/15 px-2 py-1 text-left text-white uppercase">
       {children}
     </th>
   ),

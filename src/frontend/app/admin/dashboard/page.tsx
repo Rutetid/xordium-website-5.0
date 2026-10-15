@@ -82,7 +82,7 @@ export default function AdminDashboard() {
         <h1 className="font-mono text-2xl font-bold tracking-[0.2em] text-white uppercase">
           // DASHBOARD
         </h1>
-        <p className="mt-2 font-mono text-[11px] text-white/40 uppercase tracking-[0.2em]">
+        <p className="mt-2 font-mono text-[11px] text-white uppercase tracking-[0.2em]">
           Welcome back, {user.email}
         </p>
       </div>
@@ -112,7 +112,7 @@ export default function AdminDashboard() {
                   : "cursor-default"
               }`}
             >
-              <p className="font-mono text-[10px] text-white/50 uppercase tracking-[0.2em] mb-1">
+              <p className="font-mono text-[10px] text-white uppercase tracking-[0.2em] mb-1">
                 {card.label}
               </p>
               <p className="font-mono text-2xl font-bold text-white">{card.value}</p>
@@ -167,13 +167,13 @@ export default function AdminDashboard() {
           </h3>
           <dl className="space-y-3">
             <div className="flex justify-between">
-              <dt className="font-mono text-[11px] text-white/50 uppercase tracking-[0.15em]">
+              <dt className="font-mono text-[11px] text-white uppercase tracking-[0.15em]">
                 Version
               </dt>
               <dd className="font-mono text-[11px] text-white">5.0</dd>
             </div>
             <div className="flex justify-between">
-              <dt className="font-mono text-[11px] text-white/50 uppercase tracking-[0.15em]">
+              <dt className="font-mono text-[11px] text-white uppercase tracking-[0.15em]">
                 Environment
               </dt>
               <dd className="font-mono text-[11px] text-white uppercase">
@@ -181,7 +181,7 @@ export default function AdminDashboard() {
               </dd>
             </div>
             <div className="flex justify-between">
-              <dt className="font-mono text-[11px] text-white/50 uppercase tracking-[0.15em]">
+              <dt className="font-mono text-[11px] text-white uppercase tracking-[0.15em]">
                 Role Hierarchy
               </dt>
               <dd className="font-mono text-[11px] text-white">
@@ -189,13 +189,13 @@ export default function AdminDashboard() {
               </dd>
             </div>
             <div className="flex justify-between">
-              <dt className="font-mono text-[11px] text-white/50 uppercase tracking-[0.11px]">
+              <dt className="font-mono text-[11px] text-white uppercase tracking-[0.11px]">
                 Backend
               </dt>
               <dd className="font-mono text-[11px] text-white">Next.js API Routes</dd>
             </div>
             <div className="flex justify-between">
-              <dt className="font-mono text-[11px] text-white/50 uppercase tracking-[0.15em]">
+              <dt className="font-mono text-[11px] text-white uppercase tracking-[0.15em]">
                 Database
               </dt>
               <dd className="font-mono text-[11px] text-white">PostgreSQL</dd>

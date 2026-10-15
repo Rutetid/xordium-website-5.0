@@ -3,6 +3,7 @@
 import { useState, type SyntheticEvent } from "react";
 import Link from "next/link";
 import { registrationEvents, HACKATHON_EVENT_ID, requiresBitEmail, isBitEmail, BIT_EMAIL_DOMAIN } from "@/data/events";
+import { getEvent } from "@/lib/events";
 import type {
   Branch,
   RegistrationSubmission,
@@ -69,6 +70,10 @@ export default function RegistrationForm({ initialEventId }: Props) {
   const selectedEvent =
     registrationEvents.find((event) => event.id === eventId) ??
     registrationEvents[0];
+  // Full event details (description, venue, format...) live in the event
+  // catalogue keyed by the same slug — re-resolved on every render so the
+  // panel below always matches the selected event.
+  const selectedEventInfo = getEvent(eventId);
   const hasTeamFields = selectedEvent.allowTeamMembers;
   const totalTeamSize = 1 + teamMembers.length;
   const showExternalToggle = selectedEvent.id === HACKATHON_EVENT_ID;
@@ -257,7 +262,7 @@ export default function RegistrationForm({ initialEventId }: Props) {
         <h2 className="mt-2 font-display text-3xl font-black uppercase">
           You&apos;re on the roster
         </h2>
-        <p className="mt-2 font-mono text-xs leading-relaxed text-white/60">
+        <p className="mt-2 font-mono text-xs leading-relaxed text-white">
           Your registration for {registered.eventName} was submitted.
         </p>
         <dl className="mt-5 grid gap-3 border-t border-white/10 pt-4 font-mono text-xs sm:grid-cols-2">
@@ -322,6 +327,45 @@ export default function RegistrationForm({ initialEventId }: Props) {
                 </option>
               ))}
             </select>
+            {selectedEventInfo && (
+              <div className="mt-3 rounded border border-white/15 bg-black/40 p-4">
+                <p className="font-mono text-[10px] tracking-[0.2em] text-red-400 uppercase">
+                  {selectedEventInfo.tag} // {selectedEventInfo.category}
+                </p>
+                <h3 className="mt-1 font-display text-base font-extrabold uppercase">
+                  {selectedEventInfo.title}
+                </h3>
+                <p className="mt-2 font-mono text-[13px] leading-relaxed">
+                  {selectedEventInfo.description}
+                </p>
+                <dl className="mt-3 space-y-1 border-t border-white/10 pt-3 font-mono text-[13px]">
+                  <div className="flex justify-between gap-2">
+                    <dt className="uppercase">Venue</dt>
+                    <dd className="text-right">{selectedEventInfo.venue}</dd>
+                  </div>
+                  <div className="flex justify-between gap-2">
+                    <dt className="uppercase">Format</dt>
+                    <dd className="text-right">{selectedEventInfo.format}</dd>
+                  </div>
+                  <div className="flex justify-between gap-2">
+                    <dt className="uppercase">Schedule</dt>
+                    <dd className="text-right">{selectedEventInfo.schedule}</dd>
+                  </div>
+                  <div className="flex justify-between gap-2">
+                    <dt className="uppercase">Prize pool</dt>
+                    <dd className="text-right text-red-500">
+                      {selectedEventInfo.prizePool}
+                    </dd>
+                  </div>
+                  <div className="flex justify-between gap-2">
+                    <dt className="uppercase">Squad</dt>
+                    <dd className="text-right">
+                      {selectedEvent.minTeamSize}–{selectedEvent.maxTeamSize} people
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            )}
           </div>
           <TextField
             id="fullName"
@@ -420,11 +464,11 @@ export default function RegistrationForm({ initialEventId }: Props) {
               onChange={(event) => setIsExternalTeam(event.target.checked)}
               className="mt-0.5 size-4 shrink-0 accent-cyan-400"
             />
-            <span className="font-mono text-xs leading-relaxed text-white/70">
+            <span className="font-mono text-xs leading-relaxed text-white">
               <span className="block text-[11px] font-bold uppercase tracking-[0.15em] text-white">
                 Our team is not from Birla Institute of Technology (BIT)
               </span>
-              <span className="mt-1 block text-white/50">
+              <span className="mt-1 block text-white">
                 BIT teams must use {BIT_EMAIL_DOMAIN} emails.
               </span>
             </span>
@@ -444,7 +488,7 @@ export default function RegistrationForm({ initialEventId }: Props) {
             >
               Team details
             </h2>
-            <p className="mt-1 font-mono text-[11px] text-white/50">
+            <p className="mt-1 font-mono text-[11px] text-white">
               You are the team leader. The allowed team size includes you.
             </p>
           </div>
@@ -485,7 +529,7 @@ export default function RegistrationForm({ initialEventId }: Props) {
       ) : null}
 
       <section className="border-t border-white/10 pt-5">
-        <label className="flex items-start gap-3 font-mono text-[13px] leading-relaxed text-white/65">
+        <label className="flex items-start gap-3 font-mono text-[13px] leading-relaxed text-white">
           <input
             type="checkbox"
             checked={acceptedPrivacyPolicy}
@@ -585,7 +629,7 @@ function FieldError({ id, message }: { id: string; message?: string }) {
 function SummaryItem({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <dt className="text-[10px] tracking-[0.2em] text-white/40 uppercase">
+      <dt className="text-[10px] tracking-[0.2em] text-white uppercase">
         {label}
       </dt>
       <dd className="mt-1 wrap-break-word text-white">{value}</dd>

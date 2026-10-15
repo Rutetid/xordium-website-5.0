@@ -217,7 +217,7 @@ export default function EventsPage() {
         <h1 className="font-mono text-2xl font-bold tracking-[0.2em] text-white uppercase">
           // EVENTS
         </h1>
-        <p className="mt-2 font-mono text-[11px] text-white/40 uppercase tracking-[0.2em]">
+        <p className="mt-2 font-mono text-[11px] text-white uppercase tracking-[0.2em]">
           Manage event descriptions, posters, and featured status
         </p>
       </div>
@@ -250,7 +250,7 @@ export default function EventsPage() {
               </div>
               <button
                 onClick={cancelEditing}
-                className="font-mono text-white/50 hover:text-white text-2xl leading-none"
+                className="font-mono text-white hover:text-white text-2xl leading-none"
               >
                 ×
               </button>
@@ -259,7 +259,7 @@ export default function EventsPage() {
             <form onSubmit={handleSave} className="p-6 space-y-6">
               {/* Description */}
               <div>
-                <label className="block font-mono text-[11px] tracking-[0.2em] text-white/60 uppercase mb-1.5">
+                <label className="block font-mono text-[11px] tracking-[0.2em] text-white uppercase mb-1.5">
                   Description
                 </label>
                 <textarea
@@ -269,16 +269,16 @@ export default function EventsPage() {
                   className="block w-full rounded border border-white/20 bg-white/5 p-3 font-mono text-xs text-white placeholder:text-white/30 focus:border-red-500 focus:outline-none resize-y"
                   placeholder="Event description (Markdown supported)..."
                 />
-                <p className="mt-1.5 font-mono text-[10px] leading-relaxed text-white/35">
+                <p className="mt-1.5 font-mono text-[10px] leading-relaxed text-white">
                   Markdown supported - **bold**, *italic*, - lists, &gt;   quotes,
                 </p>
               </div>
 
               {/* Poster upload */}
               <div>
-                <label className="block font-mono text-[11px] tracking-[0.2em] text-white/60 uppercase mb-1.5">
+                <label className="block font-mono text-[11px] tracking-[0.2em] text-white uppercase mb-1.5">
                   Poster Image
-                  <span className="ml-2 text-white/30 normal-case tracking-normal">
+                  <span className="ml-2 text-white normal-case tracking-normal">
                     (portrait 1080x1350 - any format, saved as WebP)
                   </span>
                 </label>
@@ -296,7 +296,7 @@ export default function EventsPage() {
                     className="sr-only"
                   />
                   {converting ? (
-                    <p className="font-mono text-xs text-white/50">
+                    <p className="font-mono text-xs text-white">
                       Converting to WebP...
                     </p>
                   ) : previewSrc ? (
@@ -313,14 +313,14 @@ export default function EventsPage() {
                       <p className="font-mono text-[10px] text-green-400">
                         Converted to WebP - ready to save
                       </p>
-                      <p className="font-mono text-[10px] text-white/40">
+                      <p className="font-mono text-[10px] text-white">
                         Click to replace
                       </p>
                     </>
                   ) : (
                     <>
                       <svg
-                        className="h-8 w-8 text-white/25"
+                        className="h-8 w-8 text-white"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -333,10 +333,10 @@ export default function EventsPage() {
                         />
                       </svg>
                       <div>
-                        <p className="font-mono text-xs text-white/60">
+                        <p className="font-mono text-xs text-white">
                           Click to select a poster image
                         </p>
-                        <p className="font-mono text-[10px] text-white/35 mt-1">
+                        <p className="font-mono text-[10px] text-white mt-1">
                           JPEG - PNG - WebP - AVIF - up to 10 MB
                         </p>
                       </div>
@@ -354,13 +354,13 @@ export default function EventsPage() {
                   <button
                     type="button"
                     onClick={handleUploadNow}
-                    className="mt-2 border border-white/20 bg-white/5 px-4 py-2 font-mono text-[11px] font-bold tracking-[0.15em] text-white/70 uppercase hover:bg-white/10 hover:text-white transition-colors"
+                    className="mt-2 border border-white/20 bg-white/5 px-4 py-2 font-mono text-[11px] font-bold tracking-[0.15em] text-white uppercase hover:bg-white/10 hover:text-white transition-colors"
                   >
                     Upload poster only (skip save)
                   </button>
                 )}
                 {uploading && (
-                  <p className="mt-2 font-mono text-[11px] text-white/50">
+                  <p className="mt-2 font-mono text-[11px] text-white">
                     Uploading...
                   </p>
                 )}
@@ -378,7 +378,7 @@ export default function EventsPage() {
                 <button
                   type="button"
                   onClick={cancelEditing}
-                  className="border border-white/20 bg-white/5 px-6 py-2.5 font-mono text-[11px] font-bold tracking-[0.2em] text-white/60 uppercase hover:bg-white/10 hover:text-white transition-colors"
+                  className="border border-white/20 bg-white/5 px-6 py-2.5 font-mono text-[11px] font-bold tracking-[0.2em] text-white uppercase hover:bg-white/10 hover:text-white transition-colors"
                 >
                   CANCEL
                 </button>
@@ -403,7 +403,7 @@ export default function EventsPage() {
         </div>
       ) : events.length === 0 ? (
         <div className="border border-white/10 bg-white/5 p-8 rounded text-center">
-          <p className="font-mono text-sm text-white/60">No events found.</p>
+          <p className="font-mono text-sm text-white">No events found.</p>
         </div>
       ) : (
         <div className="grid md:grid-cols-2 gap-4 max-w-[1080px] mx-auto">
@@ -447,11 +447,11 @@ export default function EventsPage() {
                 )}
                 <div className="flex-1 min-w-0">
                   {event.description && (
-                    <p className="font-mono text-[11px] text-white/60 line-clamp-6">
+                    <p className="font-mono text-[11px] text-white line-clamp-6">
                       {stripMarkdown(event.description).slice(0, 400)}...
                     </p>
                   )}
-                  <p className="font-mono text-[10px] text-white/40 mt-2">
+                  <p className="font-mono text-[10px] text-white mt-2">
                     {event.category}
                   </p>
                 </div>
@@ -472,7 +472,7 @@ export default function EventsPage() {
                       className={`bg-white/10 border px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.15em] transition-colors ${
                         deleteConfirm === event.slug
                           ? "bg-red-600 border-red-500 text-white"
-                          : "border-white/20 text-white/60 hover:bg-red-600/20 hover:border-red-500 hover:text-red-400"
+                          : "border-white/20 text-white hover:bg-red-600/20 hover:border-red-500 hover:text-red-400"
                       }`}
                     >
                       {deleteConfirm === event.slug
@@ -491,14 +491,14 @@ export default function EventsPage() {
 
       {/* Info box */}
       <div className="mt-8 border border-white/10 bg-white/5 p-4 rounded">
-        <h4 className="font-mono text-[11px] text-white/60 uppercase tracking-[0.15em] mb-2">
+        <h4 className="font-mono text-[11px] text-white uppercase tracking-[0.15em] mb-2">
           Owner Capabilities
         </h4>
         <ul className="space-y-1">
-          <li className="font-mono text-[11px] text-white/40">Edit event descriptions & posters</li>
-          <li className="font-mono text-[11px] text-white/40">Delete events</li>
-          <li className="font-mono text-[11px] text-white/40">Featured events shown first, then sorted by date</li>
-          <li className="font-mono text-[11px] text-white/40">Upload poster images (auto-converted to WebP, portrait 1080x1350)</li>
+          <li className="font-mono text-[11px] text-white">Edit event descriptions & posters</li>
+          <li className="font-mono text-[11px] text-white">Delete events</li>
+          <li className="font-mono text-[11px] text-white">Featured events shown first, then sorted by date</li>
+          <li className="font-mono text-[11px] text-white">Upload poster images (auto-converted to WebP, portrait 1080x1350)</li>
         </ul>
       </div>
     </div>

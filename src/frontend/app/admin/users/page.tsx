@@ -147,7 +147,7 @@ export default function UsersPage() {
         <h2 className="font-mono text-sm font-bold text-red-400 uppercase tracking-[0.2em]">
           Access Denied
         </h2>
-        <p className="mt-2 font-mono text-xs text-white/60">
+        <p className="mt-2 font-mono text-xs text-white">
           This page requires Owner privileges.
         </p>
       </div>
@@ -162,7 +162,7 @@ export default function UsersPage() {
           <h1 className="font-mono text-2xl font-bold tracking-[0.2em] text-white uppercase">
             // USERS
           </h1>
-          <p className="mt-2 font-mono text-[11px] text-white/40 uppercase tracking-[0.2em]">
+          <p className="mt-2 font-mono text-[11px] text-white uppercase tracking-[0.2em]">
             Invite users by email — they set up their own account
           </p>
         </div>
@@ -193,12 +193,12 @@ export default function UsersPage() {
             Invitation link (valid 24h, single use)
           </p>
           <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-            <code className="flex-1 break-all font-mono text-[11px] text-white/80 bg-black/30 p-2 rounded">
+            <code className="flex-1 break-all font-mono text-[11px] text-white bg-black/30 p-2 rounded">
               {lastInviteUrl}
             </code>
             <button
               onClick={copyLink}
-              className="border border-white/20 bg-white/5 px-3 py-2 font-mono text-[10px] font-bold tracking-[0.15em] text-white/70 uppercase hover:bg-white/10 hover:text-white transition-colors"
+              className="border border-white/20 bg-white/5 px-3 py-2 font-mono text-[10px] font-bold tracking-[0.15em] text-white uppercase hover:bg-white/10 hover:text-white transition-colors"
             >
               {copied ? "✓ Copied" : "Copy"}
             </button>
@@ -215,12 +215,12 @@ export default function UsersPage() {
           <h3 className="font-mono text-sm font-bold text-white uppercase tracking-[0.2em] mb-1">
             Invite New User
           </h3>
-          <p className="font-mono text-[11px] text-white/40 mb-4">
+          <p className="font-mono text-[11px] text-white mb-4">
             We email them a 24-hour link to set their own name, roll number, username and password.
           </p>
 
           <div className="grid md:grid-cols-2 gap-4">
-            <label className="block font-mono text-xs text-white/70 uppercase tracking-[0.15em]">
+            <label className="block font-mono text-xs text-white uppercase tracking-[0.15em]">
               EMAIL
               <input
                 type="email"
@@ -232,7 +232,7 @@ export default function UsersPage() {
               />
             </label>
 
-            <label className="block font-mono text-xs text-white/70 uppercase tracking-[0.15em]">
+            <label className="block font-mono text-xs text-white uppercase tracking-[0.15em]">
               ROLE
               <select
                 value={newRole}
@@ -273,35 +273,35 @@ export default function UsersPage() {
         </div>
       ) : users.length === 0 ? (
         <div className="border border-white/10 bg-white/5 p-8 rounded text-center">
-          <p className="font-mono text-sm text-white/60">No users found.</p>
+          <p className="font-mono text-sm text-white">No users found.</p>
         </div>
       ) : (
         <div className="border border-white/10 bg-white/5 rounded overflow-hidden overflow-x-auto mb-8">
           <table className="w-full">
             <thead className="border-b border-white/10">
               <tr>
-                <th className="px-4 py-3 text-left font-mono text-[10px] text-white/50 uppercase tracking-[0.2em]">
+                <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
                   Email
                 </th>
-                <th className="px-4 py-3 text-left font-mono text-[10px] text-white/50 uppercase tracking-[0.2em]">
+                <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
                   Username
                 </th>
-                <th className="px-4 py-3 text-left font-mono text-[10px] text-white/50 uppercase tracking-[0.2em]">
+                <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
                   Roll No
                 </th>
-                <th className="px-4 py-3 text-left font-mono text-[10px] text-white/50 uppercase tracking-[0.2em]">
+                <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
                   Name
                 </th>
-                <th className="px-4 py-3 text-left font-mono text-[10px] text-white/50 uppercase tracking-[0.2em]">
+                <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
                   Role
                 </th>
-                <th className="px-4 py-3 text-left font-mono text-[10px] text-white/50 uppercase tracking-[0.2em]">
+                <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
                   Status
                 </th>
-                <th className="px-4 py-3 text-left font-mono text-[10px] text-white/50 uppercase tracking-[0.2em]">
+                <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
                   Created
                 </th>
-                <th className="px-4 py-3 text-left font-mono text-[10px] text-white/50 uppercase tracking-[0.2em]">
+                <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
                   Actions
                 </th>
               </tr>
@@ -312,13 +312,13 @@ export default function UsersPage() {
                 return (
                   <tr key={u.id} className="border-b border-white/5 hover:bg-white/5">
                     <td className="px-4 py-3 font-mono text-xs text-white">{u.email}</td>
-                    <td className="px-4 py-3 font-mono text-xs text-white/80">
+                    <td className="px-4 py-3 font-mono text-xs text-white">
                       {u.username || "—"}
                     </td>
-                    <td className="px-4 py-3 font-mono text-[11px] text-white/60">
+                    <td className="px-4 py-3 font-mono text-[11px] text-white">
                       {u.rollNo || "—"}
                     </td>
-                    <td className="px-4 py-3 font-mono text-xs text-white/80">
+                    <td className="px-4 py-3 font-mono text-xs text-white">
                       {u.name || "—"}
                     </td>
                     <td className="px-4 py-3">
@@ -338,7 +338,7 @@ export default function UsersPage() {
                               ? "bg-red-600/20 text-red-400 border border-red-500/50"
                               : u.role === "ADMIN"
                               ? "bg-blue-600/20 text-blue-400 border border-blue-500/50"
-                              : "bg-white/10 text-white/60 border border-white/20"
+                              : "bg-white/10 text-white border border-white/20"
                           }`}
                         >
                           {u.role}
@@ -354,7 +354,7 @@ export default function UsersPage() {
                             onChange={(e) => setEditIsActive(e.target.checked)}
                             className="size-4 accent-red-500"
                           />
-                          <span className="font-mono text-xs text-white/70">Active</span>
+                          <span className="font-mono text-xs text-white">Active</span>
                         </label>
                       ) : (
                         <span
@@ -368,7 +368,7 @@ export default function UsersPage() {
                         </span>
                       )}
                     </td>
-                    <td className="px-4 py-3 font-mono text-[10px] text-white/40">
+                    <td className="px-4 py-3 font-mono text-[10px] text-white">
                       {u.createdAt ? new Date(u.createdAt).toLocaleDateString() : "—"}
                     </td>
                     <td className="px-4 py-3">
@@ -386,7 +386,7 @@ export default function UsersPage() {
                             <button
                               type="button"
                               onClick={cancelEditing}
-                              className="border border-white/20 bg-white/5 px-3 py-1.5 font-mono text-[10px] font-bold tracking-[0.15em] text-white/60 uppercase hover:bg-white/10 hover:text-white transition-colors"
+                              className="border border-white/20 bg-white/5 px-3 py-1.5 font-mono text-[10px] font-bold tracking-[0.15em] text-white uppercase hover:bg-white/10 hover:text-white transition-colors"
                             >
                               CANCEL
                             </button>
@@ -395,7 +395,7 @@ export default function UsersPage() {
                           <>
                             <button
                               onClick={() => startEditing(u)}
-                              className="bg-white/10 border border-white/20 px-3 py-1.5 font-mono text-[10px] font-bold tracking-[0.15em] text-white/60 uppercase hover:bg-white/20 hover:text-white transition-colors"
+                              className="bg-white/10 border border-white/20 px-3 py-1.5 font-mono text-[10px] font-bold tracking-[0.15em] text-white uppercase hover:bg-white/20 hover:text-white transition-colors"
                             >
                               Edit
                             </button>
@@ -425,23 +425,23 @@ export default function UsersPage() {
       </h3>
       {invitations.length === 0 ? (
         <div className="border border-white/10 bg-white/5 p-6 rounded text-center">
-          <p className="font-mono text-xs text-white/50">No invitations sent yet.</p>
+          <p className="font-mono text-xs text-white">No invitations sent yet.</p>
         </div>
       ) : (
         <div className="border border-white/10 bg-white/5 rounded overflow-hidden overflow-x-auto">
           <table className="w-full">
             <thead className="border-b border-white/10">
               <tr>
-                <th className="px-4 py-3 text-left font-mono text-[10px] text-white/50 uppercase tracking-[0.2em]">
+                <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
                   Email
                 </th>
-                <th className="px-4 py-3 text-left font-mono text-[10px] text-white/50 uppercase tracking-[0.2em]">
+                <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
                   Role
                 </th>
-                <th className="px-4 py-3 text-left font-mono text-[10px] text-white/50 uppercase tracking-[0.2em]">
+                <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
                   Status
                 </th>
-                <th className="px-4 py-3 text-left font-mono text-[10px] text-white/50 uppercase tracking-[0.2em]">
+                <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
                   Sent
                 </th>
               </tr>
@@ -457,7 +457,7 @@ export default function UsersPage() {
                 return (
                   <tr key={inv.id} className="border-b border-white/5 hover:bg-white/5">
                     <td className="px-4 py-3 font-mono text-xs text-white">{inv.email}</td>
-                    <td className="px-4 py-3 font-mono text-[11px] text-white/60">
+                    <td className="px-4 py-3 font-mono text-[11px] text-white">
                       {inv.role}
                     </td>
                     <td className="px-4 py-3">
@@ -467,13 +467,13 @@ export default function UsersPage() {
                             ? "bg-green-600/20 text-green-400 border border-green-500/50"
                             : status === "PENDING"
                             ? "bg-amber-600/20 text-amber-400 border border-amber-500/50"
-                            : "bg-white/10 text-white/50 border border-white/20"
+                            : "bg-white/10 text-white border border-white/20"
                         }`}
                       >
                         {status}
                       </span>
                     </td>
-                    <td className="px-4 py-3 font-mono text-[10px] text-white/40">
+                    <td className="px-4 py-3 font-mono text-[10px] text-white">
                       {new Date(inv.createdAt).toLocaleDateString()}
                     </td>
                   </tr>

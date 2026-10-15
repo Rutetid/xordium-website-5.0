@@ -1,19 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import SectionHeading from "@/components/section-heading";
 
 type CarouselImage = {
   id: string;
   altText: string;
 };
 
-const ROTATION_INTERVAL_MS = 6_000;
+// Seconds of travel per image — keeps the glide slow no matter how many
+// photos are in the carousel.
+const SECONDS_PER_IMAGE = 6;
 
 export default function HomepageCarousel() {
-  const viewportRef = useRef<HTMLDivElement>(null);
   const [images, setImages] = useState<CarouselImage[]>([]);
-  const [width, setWidth] = useState(0);
-  const [slide, setSlide] = useState(0);
 
   // Fetch images from local public folder
   useEffect(() => {
@@ -23,63 +23,36 @@ export default function HomepageCarousel() {
       .catch(() => setImages([]));
   }, []);
 
-  // Update width on mount and resize
-  useEffect(() => {
-    const updateWidth = () => {
-      setWidth(viewportRef.current?.clientWidth ?? 0);
-    };
-    updateWidth();
-    window.addEventListener("resize", updateWidth);
-    return () => window.removeEventListener("resize", updateWidth);
-  }, []);
-
-  // Smooth continuous rotation
-  useEffect(() => {
-    if (images.length < 2) return;
-
-    const interval = setInterval(() => {
-      setSlide((current) => current + 1);
-    }, ROTATION_INTERVAL_MS);
-
-    return () => clearInterval(interval);
-  }, [images.length]);
-
-  // Reset slide position when it exceeds image count, with smooth transition
-  useEffect(() => {
-    if (images.length && slide >= images.length) {
-      const reset = setTimeout(() => setSlide(0), 700);
-      return () => clearTimeout(reset);
-    }
-  }, [images.length, slide]);
-
-  const isDesktop = width >= 1024;
-  const slideWidth = isDesktop ? width / 4 : width / 1.5;
-
+  // Rendered twice so the -50% marquee loop is seamless.
   const renderedImages = images.length > 1 ? [...images, ...images] : images;
 
   return (
     <section className="border-y border-white/10">
       <div className="mx-auto max-w-6xl px-4 py-14">
-        <div ref={viewportRef} className="glass-panel min-h-[300px] overflow-hidden">
+        <SectionHeading
+          kicker="Archives // Xordium 4.0"
+          title="Quick peeks to Xordium 4.0"
+        />
+        <div className="glass-panel min-h-[300px] overflow-hidden">
           {images.length > 0 ? (
             <div
-              className="flex"
+              className="carousel-marquee-track flex w-max"
               style={{
-                transition: "transform 700ms ease-in-out",
-                transform: `translateX(-${slide * slideWidth}px)`,
+                animationDuration: `${Math.max(images.length, 1) * SECONDS_PER_IMAGE}s`,
               }}
             >
               {renderedImages.map((image, index) => (
                 <div
                   key={`${image.id}-${index}`}
-                  className="h-[300px] shrink-0 border-r border-white/10 last:border-r-0"
-                  style={{ width: isDesktop ? "25%" : "66.666667%" }}
+                  aria-hidden={index >= images.length}
+                  className="h-[300px] w-[420px] shrink-0 border-r border-white/10 bg-black/50 last:border-r-0 sm:w-[533px]"
                 >
                   <img
                     src={`/carousel/${image.id}`}
                     alt={image.altText}
                     draggable={false}
-                    className="pointer-events-none h-full w-full select-none object-cover"
+                    loading={index < images.length ? "eager" : "lazy"}
+                    className="pointer-events-none h-full w-full select-none object-contain"
                   />
                 </div>
               ))}
@@ -90,7 +63,7 @@ export default function HomepageCarousel() {
             </div>
           )}
         </div>
-        <p className="mt-4 text-center font-mono text-[13px] tracking-[0.25em] text-white/60 uppercase">
+        <p className="mt-4 text-center font-mono text-[13px] tracking-[0.25em] text-white uppercase">
           Courtesy of Megapixels
         </p>
       </div>

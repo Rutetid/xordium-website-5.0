@@ -302,6 +302,68 @@ export async function deleteEvent(slug: string): Promise<{ message: string }> {
   });
 }
 
+// ==================== TIMETABLE API ====================
+
+export interface TimetableEntry {
+  id: string;
+  day: string;
+  time: string;
+  title: string;
+  detail: string;
+  venue: string;
+  mode: string;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TimetableEntryInput {
+  day: string;
+  time: string;
+  title: string;
+  detail: string;
+  venue: string;
+  mode: string;
+  sortOrder?: number;
+}
+
+// Public timetable (homepage). No auth required.
+export async function fetchTimetable(): Promise<TimetableEntry[]> {
+  const response = await fetch(`${API_BASE}/timetable`, {
+    credentials: "same-origin",
+  });
+  if (!response.ok) throw new Error("Failed to load timetable");
+  const data = await response.json();
+  return Array.isArray(data) ? (data as TimetableEntry[]) : [];
+}
+
+export async function createTimetableEntry(
+  input: TimetableEntryInput,
+): Promise<TimetableEntry> {
+  return apiRequest<TimetableEntry>("/admin/timetable", {
+    method: "POST",
+    body: JSON.stringify(input),
+  });
+}
+
+export async function updateTimetableEntry(
+  id: string,
+  input: Partial<TimetableEntryInput>,
+): Promise<TimetableEntry> {
+  return apiRequest<TimetableEntry>(`/admin/timetable/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(input),
+  });
+}
+
+export async function deleteTimetableEntry(
+  id: string,
+): Promise<{ message: string }> {
+  return apiRequest<{ message: string }>(`/admin/timetable/${id}`, {
+    method: "DELETE",
+  });
+}
+
 // ==================== REGISTRATIONS API ====================
 
 export interface Registration {
