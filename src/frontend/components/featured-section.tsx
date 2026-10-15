@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/section-heading";
 import StackedEventCard from "@/components/stacked-event-card";
-import { events, getFeaturedEvents, type FestEvent } from "@/lib/events";
+import { events, type FestEvent } from "@/lib/events";
 
 type DbEventFlag = {
   slug: string;
@@ -11,9 +11,9 @@ type DbEventFlag = {
   posterUrl?: string | null;
 };
 
-// Homepage featured section. Reads the admin-controlled `featured` flags
-// from the database; falls back to the built-in list when the API is
-// unreachable so the section never renders empty by accident.
+// Homepage featured section. Shows ONLY the events checked as featured
+// in the admin panel — nothing is hardcoded. Skeleton rows hold the layout
+// while loading; if the API is unreachable the section stays empty.
 export default function FeaturedSection() {
   const [featured, setFeatured] = useState<FestEvent[] | null>(null);
 
@@ -21,13 +21,16 @@ export default function FeaturedSection() {
     fetch("/api/events")
       .then((response) => (response.ok ? response.json() : null))
       .then((data: DbEventFlag[] | null) => {
-        if (!Array.isArray(data)) return;
+        if (!Array.isArray(data)) {
+          setFeatured([]);
+          return;
+        }
         const bySlug = new Map(data.map((d) => [d.slug, d]));
         setFeatured(
           events
             .map((e) => {
               const db = bySlug.get(e.slug);
-              if (!db) return e;
+              if (!db) return { ...e, featured: false };
               return {
                 ...e,
                 featured: Boolean(db.featured),
@@ -38,11 +41,11 @@ export default function FeaturedSection() {
         );
       })
       .catch(() => {
-        // Keep the built-in fallback when the API is unreachable.
+        setFeatured([]);
       });
   }, []);
 
-  const visible = featured ?? getFeaturedEvents();
+  const visible = featured ?? [];
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-14">
@@ -52,9 +55,17 @@ export default function FeaturedSection() {
         blurb="Engineered for extreme performance. Each track carries strict tournament guidelines, certified adjudicators, enterprise compute nodes, and direct cash disbursements."
       />
       <div className="flex flex-col gap-5">
-        {visible.map((e, i) => (
-          <StackedEventCard key={e.slug} event={e} index={i} total={visible.length} />
-        ))}
+        {featured === null
+          ? [1, 2].map((i) => (
+              <div
+                key={i}
+                className="glass-panel h-64 animate-pulse"
+                aria-hidden="true"
+              />
+            ))
+          : visible.map((e, i) => (
+              <StackedEventCard key={e.slug} event={e} index={i} total={visible.length} />
+            ))}
       </div>
     </section>
   );
