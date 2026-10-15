@@ -36,7 +36,7 @@ export default function TimetableSection() {
             key={d}
             type="button"
             onClick={() => setActiveDay(d)}
-            className={`shrink-0 border px-3 py-2 transition-colors ${
+            className={`shrink-0 border px-3 py-2 min-h-11 transition-colors ${
               d === selectedDay
                 ? "border-red-600 bg-red-600 text-white"
                 : "border-white/15 text-white hover:text-white"

@@ -12,14 +12,14 @@ export default async function RegistrationPage({
   return (
     <>
       <section className="border-b border-white/10">
-        <div className="mx-auto max-w-6xl px-4 pt-10 pb-8">
-          <p className="font-mono text-[10px] tracking-[0.3em] text-red-500 uppercase">
+        <div className="text-slab mx-auto max-w-6xl px-4 pt-10 pb-8 my-6">
+          <p className="font-mono text-[13px] tracking-[0.3em] text-red-500 uppercase">
             Participant intake // Xordium 5.0
           </p>
           <h1 className="mt-2 font-display text-5xl leading-none font-black uppercase sm:text-7xl">
             Event <span className="text-red-600">registration</span>
           </h1>
-          <p className="mt-3 max-w-2xl font-mono text-xs leading-relaxed text-white">
+          <p className="mt-3 max-w-2xl font-mono text-md leading-relaxed text-white">
             Enter your details to join an event. Team events ask for the full
             team roster; individual events only need your own details.
           </p>

@@ -20,6 +20,15 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 13px;
+  overflow-x: clip;
+}
+
+/* Mobile optimizations */
+@media (max-width: 767px) {
+  /* 16px inputs prevent iOS Safari auto-zoom on focus. */
+  .field-control {
+    font-size: 16px;
+  }
 }
 
 .collage-shell {
@@ -299,5 +308,12 @@ h6 {
   }
   .carousel-marquee-track {
     animation: none;
+  }
+}
+
+/* On small screens, links read bolder than surrounding body text. */
+@media (max-width: 767px) {
+  a {
+    font-weight: 700;
   }
 }

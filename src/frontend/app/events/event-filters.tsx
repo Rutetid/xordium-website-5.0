@@ -67,7 +67,7 @@ export default function EventFilters() {
           <button
             key={c}
             onClick={() => setCategory(c)}
-            className={`border px-3 py-1.5 transition ${
+            className={`border px-3 py-1.5 min-h-11 transition ${
               category === c
                 ? "border-red-600 bg-red-600 text-white"
                 : "border-white/15 text-white hover:bg-white/10"

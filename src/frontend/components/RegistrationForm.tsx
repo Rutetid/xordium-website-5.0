@@ -288,10 +288,18 @@ export default function RegistrationForm({ initialEventId }: Props) {
             </>
           ) : null}
         </dl>
+        <a
+          href="https://chat.whatsapp.com/KcL7hlFXZCw78nP3hWkza0"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 block border border-green-500/50 bg-green-600/15 px-5 py-3 text-center font-mono text-[13px] font-bold tracking-[0.15em] text-white uppercase transition hover:bg-green-600/30"
+        >
+          Join WhatsApp community →
+        </a>
         <button
           type="button"
           onClick={() => window.location.reload()}
-          className="mt-6 min-h-11 bg-red-600 px-5 py-2.5 font-mono text-[13px] font-bold tracking-[0.15em] text-white uppercase hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300"
+          className="mt-3 min-h-11 bg-red-600 px-5 py-2.5 font-mono text-[13px] font-bold tracking-[0.15em] text-white uppercase hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300"
         >
           Register another participant
         </button>
@@ -382,6 +390,8 @@ export default function RegistrationForm({ initialEventId }: Props) {
               </div>
             )}
           </div>
+          {selectedEvent ? (
+            <>
           <TextField
             id="fullName"
             label="Full name"
@@ -487,8 +497,16 @@ export default function RegistrationForm({ initialEventId }: Props) {
             onChange={setRollNumber}
             required
           />
+            </>
+          ) : (
+            <p className="font-mono text-[13px] text-white sm:col-span-2">
+              ↑ Select an event above to unlock the registration form.
+            </p>
+          )}
         </div>
 
+        {selectedEvent ? (
+          <>
         {showExternalToggle ? (
           <label className="mt-4 flex items-start gap-3 border border-cyan-300/30 bg-cyan-300/5 p-3">
             <input
@@ -506,6 +524,8 @@ export default function RegistrationForm({ initialEventId }: Props) {
               </span>
             </span>
           </label>
+        ) : null}
+          </>
         ) : null}
       </section>
 
@@ -561,6 +581,8 @@ export default function RegistrationForm({ initialEventId }: Props) {
         </section>
       ) : null}
 
+      {selectedEvent ? (
+        <>
       <section className="border-t border-white/10 pt-5">
         <label className="flex items-start gap-3 font-mono text-[13px] leading-relaxed text-white">
           <input
@@ -609,6 +631,8 @@ export default function RegistrationForm({ initialEventId }: Props) {
       >
         {isSubmitting ? "Submitting registration..." : "Submit registration →"}
       </button>
+          </>
+        ) : null}
     </form>
   );
 }
