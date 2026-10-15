@@ -4,11 +4,8 @@ import { join } from "node:path";
 import { requireAdmin } from "@/backend/lib/api";
 import sharp from "sharp";
 
-// Allow up to 11 MB multipart body (10 MB image + overhead)
-export const config = {
-  api: { bodyParser: false },
-};
-
+// Allow up to 11 MB multipart body (10 MB image + overhead).
+// (App Router route handlers stream the body; no bodyParser toggle needed.)
 export const maxDuration = 30; // seconds
 
 const ALLOWED_TYPES = new Set([

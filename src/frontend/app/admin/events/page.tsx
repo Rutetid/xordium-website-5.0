@@ -92,9 +92,15 @@ async function uploadPoster(slug: string, webpBlob: Blob): Promise<string> {
     body: form,
   });
 
-  const data = await res.json();
+  let data: { error?: string; path?: string } = {};
+  try {
+    data = await res.json();
+  } catch {
+    throw new Error(`Upload failed with status ${res.status}.`);
+  }
   if (!res.ok) throw new Error(data.error || "Upload failed.");
-  return data.path as string;
+  if (!data.path) throw new Error("Upload failed.");
+  return data.path;
 }
 
 // Component
