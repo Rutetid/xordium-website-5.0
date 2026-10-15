@@ -6,7 +6,7 @@ import {
   getCurrentUser,
   fetchUsers,
   fetchModerators,
-  fetchRegistrations,
+  fetchEventRegistrations,
   hasRole,
 } from "@/lib/admin-api";
 
@@ -37,7 +37,7 @@ export default function AdminDashboard() {
         );
 
         promises.push(
-          fetchRegistrations()
+          fetchEventRegistrations()
             .then((regs) => setRegistrationCount(regs.length))
             .catch(() => setRegistrationCount(0))
         );

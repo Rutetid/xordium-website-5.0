@@ -1,21 +1,46 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import {useEffect, useRef, useState} from "react";
 import {
-  getCurrentUser,
-  fetchAdminEvents,
-  updateEvent,
-  deleteEvent,
   type AdminEvent,
+  createEvent,
+  deleteEvent,
+  fetchAdminEvents,
+  getCurrentUser,
+  updateEvent,
 } from "@/lib/admin-api";
-import { stripMarkdown } from "@/lib/markdown";
+import {stripMarkdown} from "@/lib/markdown";
+
+const EVENT_CATEGORIES = [
+  "Technical",
+  "Esports",
+  "Robotics",
+  "Cybersecurity",
+  "Algorithms",
+  "AI / ML",
+  "Open",
+  "Fun",
+] as const;
+
+const EMPTY_EVENT_FORM = {
+  title: "",
+  slug: "",
+  tag: "",
+  category: "Technical",
+  description: "",
+  image: "",
+  prizePool: "",
+  venue: "",
+  format: "",
+  schedule: "",
+  teamSize: "",
+  cta: "Register",
+  featured: false,
+};
 
 // WebP conversion via Canvas (client-side, no server deps)
-const convertToWebP = (file: File): Promise<Blob> =>
-{
-  return new Promise((resolve, reject) =>
-  {
+const convertToWebP = (file: File): Promise<Blob> => {
+  return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file);
     const img = document.createElement("img");
 
@@ -90,6 +115,9 @@ export default function EventsPage() {
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [togglingSlug, setTogglingSlug] = useState<string | null>(null);
+  const [showCreate, setShowCreate] = useState(false);
+  const [createForm, setCreateForm] = useState({...EMPTY_EVENT_FORM});
+  const [creating, setCreating] = useState(false);
 
   useEffect(() => {
     loadEvents();
@@ -188,7 +216,8 @@ export default function EventsPage() {
     }
   }
 
-  async function handleDelete(slug: string) {    setDeleting(true);
+  async function handleDelete(slug: string) {
+    setDeleting(true);
     setError("");
     try {
       await deleteEvent(slug);
@@ -211,12 +240,54 @@ export default function EventsPage() {
     setDeleteConfirm(null);
   }
 
+  function openCreate() {
+    setCreateForm({...EMPTY_EVENT_FORM});
+    setShowCreate(true);
+    setSuccess("");
+    setError("");
+  }
+
+  function updateCreateField(field: string, value: string | boolean) {
+    setCreateForm((current) => ({...current, [field]: value}));
+  }
+
+  async function handleCreate(e: React.FormEvent) {
+    e.preventDefault();
+    setCreating(true);
+    setError("");
+    setSuccess("");
+    try {
+      await createEvent({
+        title: createForm.title.trim(),
+        slug: createForm.slug.trim() || undefined,
+        tag: createForm.tag.trim(),
+        category: createForm.category,
+        description: createForm.description.trim(),
+        image: createForm.image.trim() || undefined,
+        prizePool: createForm.prizePool.trim(),
+        venue: createForm.venue.trim(),
+        format: createForm.format.trim(),
+        schedule: createForm.schedule.trim(),
+        teamSize: createForm.teamSize.trim() || undefined,
+        cta: createForm.cta.trim(),
+        featured: createForm.featured,
+      });
+      setSuccess(`"${createForm.title.trim()}" created successfully.`);
+      setShowCreate(false);
+      loadEvents();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to create event.");
+    } finally {
+      setCreating(false);
+    }
+  }
+
   async function toggleFeatured(event: AdminEvent) {
     setTogglingSlug(event.slug);
     setError("");
     setSuccess("");
     try {
-      await updateEvent(event.slug, { featured: !event.featured });
+      await updateEvent(event.slug, {featured: !event.featured});
       setSuccess(
         `"${event.title}" ${!event.featured ? "will now show" : "hidden from"} Featured competitions.`
       );
@@ -233,13 +304,21 @@ export default function EventsPage() {
   return (
     <div>
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="font-mono text-2xl font-bold tracking-[0.2em] text-white uppercase">
-          // EVENTS
-        </h1>
-        <p className="mt-2 font-mono text-[11px] text-white uppercase tracking-[0.2em]">
-          Manage event descriptions, posters, and featured status
-        </p>
+      <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 className="font-mono text-2xl font-bold tracking-[0.2em] text-white uppercase">
+            // EVENTS
+          </h1>
+          <p className="mt-2 font-mono text-[11px] text-white uppercase tracking-[0.2em]">
+            Manage event descriptions, posters, and featured status
+          </p>
+        </div>
+        <button
+          onClick={openCreate}
+          className="bg-red-600 px-6 py-2.5 font-mono text-[11px] font-bold tracking-[0.2em] text-white uppercase hover:bg-red-500 transition-colors"
+        >
+          + Add event
+        </button>
       </div>
 
       {/* Alerts */}
@@ -257,7 +336,8 @@ export default function EventsPage() {
       {/* Edit Modal */}
       {editingEvent && (
         <div className="fixed inset-0 bg-black/85 flex items-center justify-center z-50 p-4">
-          <div className="border border-white/20 bg-[var(--color-dracula-bg)] rounded max-w-2xl w-full max-h-[92vh] overflow-y-auto">
+          <div
+            className="border border-white/20 bg-[var(--color-dracula-bg)] rounded max-w-2xl w-full max-h-[92vh] overflow-y-auto">
             {/* Modal header */}
             <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
               <div>
@@ -322,7 +402,7 @@ export default function EventsPage() {
                   ) : previewSrc ? (
                     <>
                       {/* 4:5 portrait preview */}
-                      <div className="relative w-40" style={{ paddingBottom: "125%" }}>
+                      <div className="relative w-40" style={{paddingBottom: "125%"}}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={previewSrc}
@@ -408,6 +488,210 @@ export default function EventsPage() {
         </div>
       )}
 
+      {/* Create modal */}
+      {showCreate && (
+        <div className="fixed inset-0 bg-black/85 flex items-center justify-center z-50 p-4">
+          <div className="border border-white/20 bg-[#0a0c10] rounded max-w-2xl w-full max-h-[92vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
+              <h2 className="font-mono text-base font-bold text-white">
+                New event
+              </h2>
+              <button
+                onClick={() => setShowCreate(false)}
+                className="font-mono text-white hover:text-white text-2xl leading-none"
+              >
+                ×
+              </button>
+            </div>
+
+            <form onSubmit={handleCreate} className="p-6 space-y-4">
+              <div>
+                <label className="field-label" htmlFor="new-title">Title</label>
+                <input
+                  id="new-title"
+                  value={createForm.title}
+                  onChange={(e) => updateCreateField("title", e.target.value)}
+                  required
+                  placeholder="Synapse Protocol: Decentralized Edge"
+                  className="field-control"
+                />
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="field-label" htmlFor="new-slug">
+                    Slug <span className="text-white normal-case tracking-normal">(optional — auto from title)</span>
+                  </label>
+                  <input
+                    id="new-slug"
+                    value={createForm.slug}
+                    onChange={(e) => updateCreateField("slug", e.target.value)}
+                    placeholder="synapse-protocol"
+                    className="field-control"
+                  />
+                </div>
+                <div>
+                  <label className="field-label" htmlFor="new-tag">Tag</label>
+                  <input
+                    id="new-tag"
+                    value={createForm.tag}
+                    onChange={(e) => updateCreateField("tag", e.target.value)}
+                    required
+                    placeholder="HACK-SYN-01"
+                    className="field-control"
+                  />
+                </div>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="field-label" htmlFor="new-category">Category</label>
+                  <select
+                    id="new-category"
+                    value={createForm.category}
+                    onChange={(e) => updateCreateField("category", e.target.value)}
+                    className="field-control"
+                  >
+                    {EVENT_CATEGORIES.map((c) => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="field-label" htmlFor="new-cta">CTA label</label>
+                  <input
+                    id="new-cta"
+                    value={createForm.cta}
+                    onChange={(e) => updateCreateField("cta", e.target.value)}
+                    required
+                    placeholder="Register squad"
+                    className="field-control"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="field-label" htmlFor="new-description">Description</label>
+                <textarea
+                  id="new-description"
+                  value={createForm.description}
+                  onChange={(e) => updateCreateField("description", e.target.value)}
+                  required
+                  rows={4}
+                  placeholder="Full event description (Markdown supported)..."
+                  className="block w-full rounded border border-white/20 bg-white/5 p-3 font-mono text-xs text-white placeholder:text-white/30 focus:border-red-500 focus:outline-none resize-y"
+                />
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="field-label" htmlFor="new-venue">Venue</label>
+                  <input
+                    id="new-venue"
+                    value={createForm.venue}
+                    onChange={(e) => updateCreateField("venue", e.target.value)}
+                    required
+                    placeholder="Mainstage Arena"
+                    className="field-control"
+                  />
+                </div>
+                <div>
+                  <label className="field-label" htmlFor="new-format">Format</label>
+                  <input
+                    id="new-format"
+                    value={createForm.format}
+                    onChange={(e) => updateCreateField("format", e.target.value)}
+                    required
+                    placeholder="5v5 squad LAN bracket"
+                    className="field-control"
+                  />
+                </div>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="field-label" htmlFor="new-schedule">Schedule</label>
+                  <input
+                    id="new-schedule"
+                    value={createForm.schedule}
+                    onChange={(e) => updateCreateField("schedule", e.target.value)}
+                    required
+                    placeholder="Day 02 // 10:00 IST"
+                    className="field-control"
+                  />
+                </div>
+                <div>
+                  <label className="field-label" htmlFor="new-prize">Prize pool</label>
+                  <input
+                    id="new-prize"
+                    value={createForm.prizePool}
+                    onChange={(e) => updateCreateField("prizePool", e.target.value)}
+                    required
+                    placeholder="₹60,000"
+                    className="field-control"
+                  />
+                </div>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="field-label" htmlFor="new-teamsize">
+                    Team size <span className="text-white normal-case tracking-normal">(optional)</span>
+                  </label>
+                  <input
+                    id="new-teamsize"
+                    value={createForm.teamSize}
+                    onChange={(e) => updateCreateField("teamSize", e.target.value)}
+                    placeholder="2 – 4 engineers per squad"
+                    className="field-control"
+                  />
+                </div>
+                <div>
+                  <label className="field-label" htmlFor="new-image">
+                    Image path <span className="text-white normal-case tracking-normal">(optional)</span>
+                  </label>
+                  <input
+                    id="new-image"
+                    value={createForm.image}
+                    onChange={(e) => updateCreateField("image", e.target.value)}
+                    placeholder="/assets/competitive-programming.jpg"
+                    className="field-control"
+                  />
+                </div>
+              </div>
+
+              <label
+                className="flex cursor-pointer items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-white">
+                <input
+                  type="checkbox"
+                  checked={createForm.featured}
+                  onChange={(e) => updateCreateField("featured", e.target.checked)}
+                  className="size-4 accent-red-600"
+                />
+                Show in homepage Featured competitions
+              </label>
+
+              <div className="flex gap-3 border-t border-white/10 pt-4">
+                <button
+                  type="submit"
+                  disabled={creating}
+                  className="bg-red-600 px-6 py-2.5 font-mono text-[11px] font-bold tracking-[0.2em] text-white uppercase hover:bg-red-500 disabled:opacity-50 transition-colors"
+                >
+                  {creating ? "CREATING..." : "CREATE EVENT >"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowCreate(false)}
+                  className="border border-white/20 bg-white/5 px-6 py-2.5 font-mono text-[11px] font-bold tracking-[0.2em] text-white uppercase hover:bg-white/10 transition-colors"
+                >
+                  CANCEL
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {/* Events grid */}
       {loading ? (
         <div className="grid md:grid-cols-2 gap-4">
@@ -416,8 +700,8 @@ export default function EventsPage() {
               key={i}
               className="border border-white/10 bg-white/5 p-4 rounded animate-pulse"
             >
-              <div className="h-4 bg-white/10 rounded w-3/4 mb-2" />
-              <div className="h-3 bg-white/10 rounded w-1/2" />
+              <div className="h-4 bg-white/10 rounded w-3/4 mb-2"/>
+              <div className="h-3 bg-white/10 rounded w-1/2"/>
             </div>
           ))}
         </div>
@@ -443,12 +727,14 @@ export default function EventsPage() {
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   {event.featured && (
-                    <span className="bg-yellow-600/20 text-yellow-400 border border-yellow-500/50 px-2 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.15em] rounded">
+                    <span
+                      className="bg-yellow-600/20 text-yellow-400 border border-yellow-500/50 px-2 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.15em] rounded">
                       Featured
                     </span>
                   )}
                   {(event.posterUrl || event.image) && (
-                    <span className="bg-green-600/20 text-green-400 border border-green-500/50 px-2 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.15em] rounded">
+                    <span
+                      className="bg-green-600/20 text-green-400 border border-green-500/50 px-2 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.15em] rounded">
                       Poster
                     </span>
                   )}
@@ -485,7 +771,8 @@ export default function EventsPage() {
                   >
                     Edit
                   </button>
-                  <label className="flex cursor-pointer items-center gap-1.5 bg-white/10 border border-white/20 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.15em] transition-colors hover:bg-white/20">
+                  <label
+                    className="flex cursor-pointer items-center gap-1.5 bg-white/10 border border-white/20 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.15em] transition-colors hover:bg-white/20">
                     <input
                       type="checkbox"
                       checked={Boolean(event.featured)}
@@ -528,10 +815,14 @@ export default function EventsPage() {
         </h4>
         <ul className="space-y-1">
           <li className="font-mono text-[11px] text-white">Edit event descriptions & posters</li>
-          <li className="font-mono text-[11px] text-white">Tick Featured to show an event in homepage Featured competitions</li>
+          <li className="font-mono text-[11px] text-white">Tick Featured to show an event in homepage Featured
+            competitions
+          </li>
           <li className="font-mono text-[11px] text-white">Delete events</li>
           <li className="font-mono text-[11px] text-white">Featured events shown first, then sorted by date</li>
-          <li className="font-mono text-[11px] text-white">Upload poster images (auto-converted to WebP, portrait 1080x1350)</li>
+          <li className="font-mono text-[11px] text-white">Upload poster images (auto-converted to WebP, portrait
+            1080x1350)
+          </li>
         </ul>
       </div>
     </div>

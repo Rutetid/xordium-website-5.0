@@ -3,10 +3,21 @@
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/section-heading";
 import StackedEventCard from "@/components/stacked-event-card";
-import { events, type FestEvent } from "@/lib/events";
+import { events, type EventCategory, type FestEvent } from "@/lib/events";
 
 type DbEventFlag = {
   slug: string;
+  tag: string;
+  title: string;
+  category: string;
+  description: string;
+  image: string;
+  prizePool: string;
+  venue: string;
+  format: string;
+  schedule: string;
+  teamSize?: string | null;
+  cta: string;
   featured: boolean;
   posterUrl?: string | null;
 };
@@ -26,19 +37,36 @@ export default function FeaturedSection() {
           return;
         }
         const bySlug = new Map(data.map((d) => [d.slug, d]));
-        setFeatured(
-          events
-            .map((e) => {
-              const db = bySlug.get(e.slug);
-              if (!db) return { ...e, featured: false };
-              return {
-                ...e,
-                featured: Boolean(db.featured),
-                image: db.posterUrl || e.image,
-              };
-            })
-            .filter((e) => e.featured),
-        );
+        const catalogue = new Map(events.map((e) => [e.slug, e]));
+        const merged: FestEvent[] = [];
+        for (const db of data) {
+          if (!db.featured) continue;
+          const base = catalogue.get(db.slug);
+          merged.push(
+            base
+              ? {
+                  ...base,
+                  featured: true,
+                  image: db.posterUrl || base.image,
+                }
+              : {
+                  slug: db.slug,
+                  tag: db.tag,
+                  title: db.title,
+                  category: db.category as EventCategory,
+                  description: db.description,
+                  image: db.posterUrl || db.image,
+                  prizePool: db.prizePool,
+                  venue: db.venue,
+                  format: db.format,
+                  schedule: db.schedule,
+                  teamSize: db.teamSize ?? undefined,
+                  cta: db.cta,
+                  featured: true,
+                },
+          );
+        }
+        setFeatured(merged);
       })
       .catch(() => {
         setFeatured([]);

@@ -295,6 +295,28 @@ export async function fetchAdminEvents(): Promise<AdminEvent[]> {
   return apiRequest<AdminEvent[]>("/admin/events");
 }
 
+export async function createEvent(input: {
+  slug?: string;
+  tag: string;
+  title: string;
+  category: string;
+  description: string;
+  image?: string;
+  prizePool: string;
+  venue: string;
+  format: string;
+  schedule: string;
+  teamSize?: string;
+  cta: string;
+  featured?: boolean;
+  posterUrl?: string;
+}): Promise<AdminEvent> {
+  return apiRequest<AdminEvent>("/admin/events", {
+    method: "POST",
+    body: JSON.stringify(input),
+  });
+}
+
 export async function deleteEvent(slug: string): Promise<{ message: string }> {
   return apiRequest<{ message: string }>("/admin/events", {
     method: "DELETE",

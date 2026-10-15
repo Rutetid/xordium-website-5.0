@@ -1,1 +1,1 @@
-export { GET, DELETE } from "@/backend/api/admin/events/route";
+export { GET, POST, DELETE } from "@/backend/api/admin/events/route";

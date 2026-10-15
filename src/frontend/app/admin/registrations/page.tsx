@@ -1,49 +1,76 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   getCurrentUser,
-  fetchRegistrations,
-  fetchEvents,
-  type Registration,
-  type AdminEvent,
+  fetchEventRegistrations,
+  eventRegistrationsExportUrl,
+  type EventRegistration,
 } from "@/lib/admin-api";
 
-export default function RegistrationsPage() {
+export default function EventRegistrationsPage() {
   const user = getCurrentUser();
-  const [registrations, setRegistrations] = useState<Registration[]>([]);
-  const [events, setEvents] = useState<AdminEvent[]>([]);
+  const [registrations, setRegistrations] = useState<EventRegistration[]>([]);
+  const [presentEvents, setPresentEvents] = useState<
+    { slug: string; title: string }[]
+  >([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [filterEvent, setFilterEvent] = useState<string | "">("");
+  const [filterEvent, setFilterEvent] = useState<string>("");
 
   useEffect(() => {
-    loadData();
+    loadRegistrations();
   }, []);
 
-  async function loadData() {
+  async function loadRegistrations() {
     try {
       const [regs, evts] = await Promise.all([
-        fetchRegistrations(),
-        fetchEvents().catch(() => [] as AdminEvent[]),
+        fetchEventRegistrations(),
+        fetch(`${"/api/events"}`).then((res) =>
+          res.ok ? res.json() : [],
+        ),
       ]);
-      setRegistrations(regs);
-      setEvents(evts);
+      setRegistrations(Array.isArray(regs) ? regs : []);
+      setPresentEvents(
+        Array.isArray(evts)
+          ? evts
+              .filter(
+                (e): e is { slug: string; title: string } =>
+                  typeof e?.slug === "string" &&
+                  typeof e?.title === "string",
+              )
+              .sort((a, b) => a.title.localeCompare(b.title))
+          : [],
+      );
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load registrations");
+      setError(
+        err instanceof Error ? err.message : "Failed to load registrations",
+      );
     } finally {
       setLoading(false);
     }
   }
 
-  function getEventTitle(eventId: string): string {
-    const event = events.find((e) => e.id === eventId);
-    return event ? event.title : `Event #${eventId.slice(0, 8)}...`;
-  }
+  // Dropdown lists only present events that actually have registrations —
+  // never an empty event.
+  const eventOptions = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const reg of registrations) {
+      counts.set(reg.eventId, (counts.get(reg.eventId) ?? 0) + 1);
+    }
+    return presentEvents
+      .filter((e) => (counts.get(e.slug) ?? 0) > 0)
+      .map((e) => ({
+        id: e.slug,
+        name: `${e.title} (${counts.get(e.slug)})`,
+      }));
+  }, [registrations, presentEvents]);
 
-  const filteredRegistrations = filterEvent
-    ? registrations.filter((r) => r.eventId === filterEvent)
+  const filtered = filterEvent
+    ? registrations.filter((reg) => reg.eventId === filterEvent)
     : registrations;
+
+  const externalCount = filtered.filter((reg) => reg.isExternalTeam).length;
 
   if (!user || (user.role !== "ADMIN" && user.role !== "OWNER")) {
     return (
@@ -61,21 +88,29 @@ export default function RegistrationsPage() {
   return (
     <div>
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
         <div>
           <h1 className="font-mono text-2xl font-bold tracking-[0.2em] text-white uppercase">
             // REGISTRATIONS
           </h1>
           <p className="mt-2 font-mono text-[11px] text-white uppercase tracking-[0.2em]">
-            View event registrations
+            Responses from the public event registration form
           </p>
         </div>
-        <button
-          onClick={loadData}
-          className="border border-white/20 bg-white/5 px-4 py-2 font-mono text-[11px] font-bold tracking-[0.2em] text-white uppercase hover:bg-white/10 hover:text-white transition-colors"
-        >
-          ↻ Refresh
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={loadRegistrations}
+            className="border border-white/20 bg-white/5 px-4 py-2 font-mono text-[11px] font-bold tracking-[0.2em] text-white uppercase hover:bg-white/10 hover:text-white transition-colors"
+          >
+            ↻ Refresh
+          </button>
+          <a
+            href={eventRegistrationsExportUrl(filterEvent || undefined)}
+            className="bg-red-600 px-4 py-2 font-mono text-[11px] font-bold tracking-[0.2em] text-white uppercase hover:bg-red-500 transition-colors"
+          >
+            ⬇ Export CSV
+          </a>
+        </div>
       </div>
 
       {/* Alerts */}
@@ -97,13 +132,13 @@ export default function RegistrationsPage() {
             <option value="" className="bg-neutral-900 text-white">
               All Events
             </option>
-            {events.map((event) => (
+            {eventOptions.map((event) => (
               <option
                 key={event.id}
                 value={event.id}
                 className="bg-neutral-900 text-white"
               >
-                {event.title}
+                {event.name}
               </option>
             ))}
           </select>
@@ -114,7 +149,7 @@ export default function RegistrationsPage() {
       <div className="mb-6 grid grid-cols-2 md:grid-cols-3 gap-4">
         <div className="border border-white/10 bg-white/5 p-4 rounded">
           <p className="font-mono text-[10px] text-white uppercase tracking-[0.2em] mb-1">
-            Total Registrations
+            Total Responses
           </p>
           <p className="font-mono text-2xl font-bold text-white">
             {registrations.length}
@@ -125,18 +160,20 @@ export default function RegistrationsPage() {
             Showing
           </p>
           <p className="font-mono text-2xl font-bold text-white">
-            {filteredRegistrations.length}
+            {filtered.length}
           </p>
         </div>
         <div className="border border-white/10 bg-white/5 p-4 rounded">
           <p className="font-mono text-[10px] text-white uppercase tracking-[0.2em] mb-1">
-            Events
+            External (non-BIT) Teams
           </p>
-          <p className="font-mono text-2xl font-bold text-white">{events.length}</p>
+          <p className="font-mono text-2xl font-bold text-white">
+            {externalCount}
+          </p>
         </div>
       </div>
 
-      {/* Registrations Table */}
+      {/* Table */}
       {loading ? (
         <div className="border border-white/10 bg-white/5 rounded overflow-hidden">
           {[1, 2, 3, 4, 5].map((i) => (
@@ -145,48 +182,182 @@ export default function RegistrationsPage() {
             </div>
           ))}
         </div>
-      ) : filteredRegistrations.length === 0 ? (
+      ) : filtered.length === 0 ? (
         <div className="border border-white/10 bg-white/5 p-8 rounded text-center">
-          <p className="font-mono text-sm text-white">No registrations found.</p>
+          <p className="font-mono text-sm text-white">
+            No registrations found.
+          </p>
         </div>
       ) : (
-        <div className="border border-white/10 bg-white/5 rounded overflow-hidden overflow-x-auto">
-          <table className="w-full">
-            <thead className="border-b border-white/10">
-              <tr>
-                <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
-                  Email
-                </th>
-                <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
-                  Name
-                </th>
-                <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
-                  Event
-                </th>
-                <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
-                  Registered
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredRegistrations.map((reg) => (
-                <tr key={reg.id} className="border-b border-white/5 hover:bg-white/5">
-                  <td className="px-4 py-3 font-mono text-xs text-white">{reg.email}</td>
-                  <td className="px-4 py-3 font-mono text-xs text-white">
-                    {reg.name || "—"}
-                  </td>
-                  <td className="px-4 py-3 font-mono text-[11px] text-white">
-                    {getEventTitle(reg.eventId)}
-                  </td>
-                  <td className="px-4 py-3 font-mono text-[10px] text-white">
-                    {new Date(reg.createdAt).toLocaleDateString()}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <RegistrationTable registrations={filtered} />
       )}
+    </div>
+  );
+}
+
+function RegistrationTable({
+  registrations,
+}: {
+  registrations: EventRegistration[];
+}) {
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  return (
+    <div className="border border-white/10 bg-white/5 rounded overflow-hidden overflow-x-auto">
+      <table className="w-full">
+        <thead className="border-b border-white/10">
+          <tr>
+            <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
+              Registered
+            </th>
+            <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
+              Event
+            </th>
+            <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
+              Team Head
+            </th>
+            <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
+              Email
+            </th>
+            <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
+              Team
+            </th>
+            <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
+              Size
+            </th>
+            <th className="px-4 py-3 text-left font-mono text-[10px] text-white uppercase tracking-[0.2em]">
+              Type
+            </th>
+            <th className="px-4 py-3"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {registrations.map((reg) => {
+            const expanded = expandedId === reg.id;
+            return (
+              <RegistrationRow
+                key={reg.id}
+                reg={reg}
+                expanded={expanded}
+                onToggle={() => setExpandedId(expanded ? null : reg.id)}
+              />
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function RegistrationRow({
+  reg,
+  expanded,
+  onToggle,
+}: {
+  reg: EventRegistration;
+  expanded: boolean;
+  onToggle: () => void;
+}) {
+  const teamSize = reg.teamMembers.length + 1;
+  return (
+    <>
+      <tr
+        onClick={onToggle}
+        className="border-b border-white/5 hover:bg-white/5 cursor-pointer"
+      >
+        <td className="px-4 py-3 font-mono text-[10px] text-white whitespace-nowrap">
+          {new Date(reg.createdAt).toLocaleDateString()}
+        </td>
+        <td className="px-4 py-3 font-mono text-[11px] text-white">
+          {reg.eventName}
+        </td>
+        <td className="px-4 py-3 font-mono text-xs text-white">
+          {reg.fullName}
+        </td>
+        <td className="px-4 py-3 font-mono text-xs text-white">
+          {reg.email}
+        </td>
+        <td className="px-4 py-3 font-mono text-[11px] text-white">
+          {reg.teamName || "—"}
+        </td>
+        <td className="px-4 py-3 font-mono text-[11px] text-white">
+          {teamSize}
+        </td>
+        <td className="px-4 py-3">
+          <span
+            className={`inline-block px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.15em] rounded ${
+              reg.isExternalTeam
+                ? "bg-amber-600/20 text-amber-400 border border-amber-500/50"
+                : "bg-white/10 text-white border border-white/20"
+            }`}
+          >
+            {reg.isExternalTeam ? "External" : "BIT"}
+          </span>
+        </td>
+        <td className="px-4 py-3 font-mono text-[11px] text-red-400">
+          {expanded ? "▾" : "▸"}
+        </td>
+      </tr>
+      {expanded && (
+        <tr className="border-b border-white/5 bg-black/20">
+          <td colSpan={8} className="px-4 py-4">
+            <div className="grid gap-4 md:grid-cols-2">
+              <div>
+                <p className="font-mono text-[10px] text-white uppercase tracking-[0.2em] mb-2">
+                  Team Head
+                </p>
+                <dl className="space-y-1 font-mono text-xs">
+                  <Detail label="Name" value={reg.fullName} />
+                  <Detail label="Email" value={reg.email} />
+                  <Detail label="Phone" value={reg.phone} />
+                  <Detail label="College" value={reg.collegeName} />
+                  <Detail label="Branch" value={reg.branch} />
+                  <Detail label="Year" value={reg.year} />
+                  <Detail label="Roll Number" value={reg.rollNumber} />
+                </dl>
+              </div>
+              <div>
+                <p className="font-mono text-[10px] text-white uppercase tracking-[0.2em] mb-2">
+                  Team Members ({reg.teamMembers.length})
+                </p>
+                {reg.teamMembers.length === 0 ? (
+                  <p className="font-mono text-xs text-white">
+                    Individual entry — no team members.
+                  </p>
+                ) : (
+                  <ul className="space-y-2">
+                    {reg.teamMembers.map((member, index) => (
+                      <li
+                        key={index}
+                        className="border border-white/10 rounded p-2 font-mono text-xs"
+                      >
+                        <p className="text-white">{member.name}</p>
+                        <p className="text-white">
+                          {member.email} · {member.phone}
+                        </p>
+                        <p className="text-white">
+                          {member.branch} · {member.year}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          </td>
+        </tr>
+      )}
+    </>
+  );
+}
+
+function Detail({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex gap-2">
+      <dt className="w-28 shrink-0 text-white uppercase tracking-[0.1em] text-[10px]">
+        {label}
+      </dt>
+      <dd className="text-white">{value || "—"}</dd>
     </div>
   );
 }
