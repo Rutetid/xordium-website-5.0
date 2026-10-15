@@ -304,11 +304,13 @@ export default function EventsPage() {
       }
 
       setSuccess(`"${created.title}" created successfully.`);
-      setShowCreate(false);
       loadEvents();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to create event.");
     } finally {
+      // The window closes whether creation succeeded or failed; the
+      // outcome is reported by the banner on the page behind it.
+      setShowCreate(false);
       setCreating(false);
     }
   }

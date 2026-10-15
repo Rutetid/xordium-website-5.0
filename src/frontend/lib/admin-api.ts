@@ -113,10 +113,24 @@ async function apiRequest<T>(
     throw new Error("Session expired. Please log in again.");
   }
 
-  const data = await response.json();
+  const text = await response.text();
+
+  let data: { error?: string } & Record<string, unknown>;
+  try {
+    data = text ? (JSON.parse(text) as typeof data) : {};
+  } catch {
+    // The server answered with something that is not JSON (e.g. an HTML
+    // error page from a stale deployment) — report the status instead of
+    // leaking a SyntaxError to the UI.
+    throw new Error(`Request failed with status ${response.status}.`);
+  }
 
   if (!response.ok) {
-    throw new Error(data.error || "Request failed");
+    const message =
+      typeof data.error === "string" && data.error
+        ? data.error
+        : `Request failed with status ${response.status}.`;
+    throw new Error(message);
   }
 
   return data as T;
