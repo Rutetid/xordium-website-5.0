@@ -12,6 +12,9 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const nextConfig: NextConfig = {
+  images: {
+    formats: ["image/avif", "image/webp"],
+  },
   // Disable webpack's default Node.js console.log patching in production
   // to prevent sensitive data leaks (unless explicitly needed)
   compiler: {

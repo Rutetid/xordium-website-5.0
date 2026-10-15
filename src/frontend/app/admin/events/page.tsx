@@ -20,15 +20,18 @@ const convertToWebP = (file: File): Promise<Blob> =>
     const img = document.createElement("img");
 
     img.onload = () => {
+      // Downscale huge uploads (phone photos) so stored posters stay light.
+      const MAX_SIDE = 1600;
+      const scale = Math.min(1, MAX_SIDE / Math.max(img.naturalWidth, img.naturalHeight));
       const canvas = document.createElement("canvas");
-      canvas.width = img.naturalWidth;
-      canvas.height = img.naturalHeight;
+      canvas.width = Math.round(img.naturalWidth * scale);
+      canvas.height = Math.round(img.naturalHeight * scale);
       const ctx = canvas.getContext("2d");
       if (!ctx) {
         URL.revokeObjectURL(url);
         return reject(new Error("Canvas 2D context unavailable."));
       }
-      ctx.drawImage(img, 0, 0);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
       canvas.toBlob(
         (blob) => {
           URL.revokeObjectURL(url);
@@ -36,7 +39,7 @@ const convertToWebP = (file: File): Promise<Blob> =>
           else reject(new Error("Canvas toBlob returned null."));
         },
         "image/webp",
-        0.92
+        0.85
       );
     };
 

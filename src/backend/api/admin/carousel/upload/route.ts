@@ -68,7 +68,8 @@ export async function POST(request: Request) {
 
         const imageData = await sharp(buffer)
           .rotate()
-          .webp({ quality: 85, effort: 4 })
+          .resize({ width: 1600, withoutEnlargement: true })
+          .webp({ quality: 80, effort: 4 })
           .toBuffer();
 
         await writeFile(sourcePath, imageData);

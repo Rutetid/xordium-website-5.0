@@ -249,6 +249,7 @@ export default function BackgroundCollage({
               alt=""
               loading="lazy"
               decoding="async"
+              fetchPriority="low"
               onLoad={(event) => void revealLoadedImage(event, tile.key)}
               style={{
                 width: "100%",

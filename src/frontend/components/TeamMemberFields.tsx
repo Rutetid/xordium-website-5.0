@@ -79,7 +79,7 @@ export default function TeamMemberFields({
                     ? `member-${index}-branch-error`
                     : undefined
                 }
-                className="mt-1.5 block min-h-11 w-full rounded border border-white/15 bg-[#0a0c10] px-3 py-2.5 font-mono text-[13px] text-white focus:border-cyan-300 focus:outline-none"
+                className="mt-1.5 block min-h-11 w-full rounded border border-white/40 bg-[#0a0c10] px-3 py-2.5 font-mono text-[13px] text-white focus:border-cyan-300 focus:outline-none"
               >
                 <option value="">Select branch</option>
                 {branches.map((branch) => (
@@ -110,7 +110,7 @@ export default function TeamMemberFields({
                     ? `member-${index}-year-error`
                     : undefined
                 }
-                className="mt-1.5 block min-h-11 w-full rounded border border-white/15 bg-[#0a0c10] px-3 py-2.5 font-mono text-[13px] text-white focus:border-cyan-300 focus:outline-none"
+                className="mt-1.5 block min-h-11 w-full rounded border border-white/40 bg-[#0a0c10] px-3 py-2.5 font-mono text-[13px] text-white focus:border-cyan-300 focus:outline-none"
               >
                 <option value="">Select batch</option>
                 {BATCHES.map((batch) => (
@@ -170,7 +170,7 @@ function MemberInput({
         inputMode={type === "tel" ? "numeric" : undefined}
         aria-invalid={Boolean(error)}
         aria-describedby={error ? `${id}-error` : undefined}
-        className="mt-1.5 block min-h-11 w-full rounded border border-white/15 bg-[#0a0c10] px-3 py-2.5 font-mono text-[13px] text-white placeholder:text-white/30 focus:border-cyan-300 focus:outline-none"
+        className="mt-1.5 block min-h-11 w-full rounded border border-white/40 bg-[#0a0c10] px-3 py-2.5 font-mono text-[13px] text-white placeholder:text-white/30 focus:border-cyan-300 focus:outline-none"
       />
       <FieldError id={`${id}-error`} message={error} />
     </div>

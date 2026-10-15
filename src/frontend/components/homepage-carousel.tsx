@@ -51,7 +51,8 @@ export default function HomepageCarousel() {
                     src={`/carousel/${image.id}`}
                     alt={image.altText}
                     draggable={false}
-                    loading={index < images.length ? "eager" : "lazy"}
+                    loading={index < 3 ? "eager" : "lazy"}
+                    decoding="async"
                     className="pointer-events-none h-full w-full select-none object-contain"
                   />
                 </div>

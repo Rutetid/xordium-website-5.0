@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { writeFile, mkdir } from "node:fs/promises";
+import { writeFile, mkdir, access } from "node:fs/promises";
 import { join } from "node:path";
 import { requireAdmin } from "@/backend/lib/api";
+import sharp from "sharp";
 
 // Allow up to 11 MB multipart body (10 MB image + overhead)
 export const config = {
@@ -20,6 +21,25 @@ const ALLOWED_TYPES = new Set([
 ]);
 
 const MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
+
+// The `public/` folder Next.js actually serves (`process.cwd()` is the repo
+// root when started via `next dev src/frontend`; the fallback covers being
+// started from inside `src/frontend`).
+async function resolvePublicDir(folder: string): Promise<string> {
+  const primary = join(process.cwd(), "src", "frontend", "public", folder);
+  try {
+    await access(primary);
+    return primary;
+  } catch {
+    try {
+      const fallback = join(process.cwd(), "public", folder);
+      await access(fallback);
+      return fallback;
+    } catch {
+      return primary;
+    }
+  }
+}
 
 // POST /api/moderator/events/:slug/poster
 // Accepts multipart/form-data with a "file" field.
@@ -59,12 +79,20 @@ export async function POST(
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Save as <slug>.webp — the client converts to WebP before uploading
+    // Re-encode server-side as a safety net: cap dimensions and compress so
+    // posters stay fast even if the client sent a large file.
+    const optimized = await sharp(buffer, { animated: true })
+      .rotate()
+      .resize({ width: 1600, withoutEnlargement: true })
+      .webp({ quality: 80, effort: 4 })
+      .toBuffer();
+
+    // Save as <slug>.webp inside the public/ dir Next.js actually serves.
     const filename = `${slug}.webp`;
-    const assetsDir = join(process.cwd(), "public", "assets");
+    const assetsDir = await resolvePublicDir("assets");
 
     await mkdir(assetsDir, { recursive: true });
-    await writeFile(join(assetsDir, filename), buffer);
+    await writeFile(join(assetsDir, filename), optimized);
 
     const publicPath = `/assets/${filename}`;
     return NextResponse.json({ path: publicPath });

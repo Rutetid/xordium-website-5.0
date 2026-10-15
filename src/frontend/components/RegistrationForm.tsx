@@ -38,11 +38,10 @@ type Props = {
 };
 
 export default function RegistrationForm({ initialEventId }: Props) {
-  const startingEvent =
-    registrationEvents.find((event) => event.id === initialEventId) ??
-    registrationEvents[0];
+  const validInitialEvent =
+    registrationEvents.find((event) => event.id === initialEventId) ?? null;
 
-  const [eventId, setEventId] = useState(startingEvent.id);
+  const [eventId, setEventId] = useState(validInitialEvent?.id ?? "");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -54,9 +53,7 @@ export default function RegistrationForm({ initialEventId }: Props) {
   const [teamName, setTeamName] = useState("");
   // The leader is counted in the minimum team size, so prefill the other slots.
   const [teamMembers, setTeamMembers] = useState<RegistrationTeamMember[]>(
-    startingEvent.allowTeamMembers
-      ? Array.from({ length: startingEvent.minTeamSize - 1 }, emptyMember)
-      : [],
+    [],
   );
   const [acceptedPrivacyPolicy, setAcceptedPrivacyPolicy] = useState(false);
   // Hackathon only: team declared they are not from BIT (waives @bitmesra.ac.in).
@@ -69,16 +66,17 @@ export default function RegistrationForm({ initialEventId }: Props) {
   );
 
   const selectedEvent =
-    registrationEvents.find((event) => event.id === eventId) ??
-    registrationEvents[0];
+    registrationEvents.find((event) => event.id === eventId) ?? null;
   // Full event details (description, venue, format...) live in the event
   // catalogue keyed by the same slug — re-resolved on every render so the
   // panel below always matches the selected event.
-  const selectedEventInfo = getEvent(eventId);
-  const hasTeamFields = selectedEvent.allowTeamMembers;
+  const selectedEventInfo = eventId ? getEvent(eventId) : undefined;
+  const hasTeamFields = selectedEvent?.allowTeamMembers ?? false;
   const totalTeamSize = 1 + teamMembers.length;
-  const showExternalToggle = selectedEvent.id === HACKATHON_EVENT_ID;
-  const bitRequired = requiresBitEmail(selectedEvent.id, isExternalTeam);
+  const showExternalToggle = selectedEvent?.id === HACKATHON_EVENT_ID;
+  const bitRequired = selectedEvent
+    ? requiresBitEmail(selectedEvent.id, isExternalTeam)
+    : true;
 
   function changeEvent(newEventId: string) {
     const newEvent = registrationEvents.find((event) => event.id === newEventId);
@@ -111,6 +109,7 @@ export default function RegistrationForm({ initialEventId }: Props) {
 
   function validateForm() {
     const nextErrors: Record<string, string> = {};
+    if (!selectedEvent) nextErrors.event = "Select an event to register for.";
     const requiredValues: [string, string, string][] = [
       ["fullName", fullName, "Enter your full name."],
       ["email", email, "Enter your email address."],
@@ -150,7 +149,7 @@ export default function RegistrationForm({ initialEventId }: Props) {
       nextErrors.email = "Each person on the team must use a different email.";
     }
 
-    if (hasTeamFields) {
+    if (hasTeamFields && selectedEvent) {
       if (!teamName.trim()) nextErrors.teamName = "Enter your team name.";
       if (totalTeamSize < selectedEvent.minTeamSize) {
         nextErrors.teamSize = `Add members until your team has at least ${selectedEvent.minTeamSize} people.`;
@@ -196,6 +195,11 @@ export default function RegistrationForm({ initialEventId }: Props) {
   async function handleSubmit(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
     if (isSubmitting || !validateForm()) return;
+
+    if (!selectedEvent) {
+      setFormError("Select an event to register for.");
+      return;
+    }
 
     setFormError("");
     setIsSubmitting(true);
@@ -320,14 +324,22 @@ export default function RegistrationForm({ initialEventId }: Props) {
               required
               value={eventId}
               onChange={(event) => changeEvent(event.target.value)}
+              aria-invalid={Boolean(errors.event)}
+              aria-describedby={errors.event ? "event-error" : undefined}
               className="field-control"
             >
+              <option value="">Select event</option>
               {registrationEvents.map((event) => (
                 <option key={event.id} value={event.id}>
                   {event.name}
                 </option>
               ))}
             </select>
+            {errors.event ? (
+              <p id="event-error" className="mt-1 font-mono text-[13px] text-red-300" role="alert">
+                {errors.event}
+              </p>
+            ) : null}
             {selectedEventInfo && (
               <div className="mt-3 rounded border border-white/15 bg-black/40 p-4">
                 <p className="font-mono text-[10px] tracking-[0.2em] text-red-400 uppercase">
@@ -361,7 +373,9 @@ export default function RegistrationForm({ initialEventId }: Props) {
                   <div className="flex justify-between gap-2">
                     <dt className="uppercase">Squad</dt>
                     <dd className="text-right">
-                      {selectedEvent.minTeamSize}–{selectedEvent.maxTeamSize} people
+                      {selectedEvent
+                        ? `${selectedEvent.minTeamSize}–${selectedEvent.maxTeamSize} people`
+                        : "—"}
                     </dd>
                   </div>
                 </dl>
@@ -495,7 +509,7 @@ export default function RegistrationForm({ initialEventId }: Props) {
         ) : null}
       </section>
 
-      {hasTeamFields ? (
+      {hasTeamFields && selectedEvent ? (
         <section aria-labelledby="team-heading">
           <div className="mb-4 border-b border-white/10 pb-3">
             <p className="font-mono text-[10px] tracking-[0.2em] text-cyan-300 uppercase">
