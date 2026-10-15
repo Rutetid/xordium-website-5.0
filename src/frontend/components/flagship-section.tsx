@@ -47,13 +47,13 @@ export default function FlagshipSection() {
       </div>
       <div className="grid gap-4 p-4 md:grid-cols-[minmax(0,1fr)_13rem] md:gap-5 md:p-5">
         {/* Poster */}
-        <div className="relative h-44 shrink-0 overflow-hidden rounded border border-white/10 md:order-2 md:h-auto">
+        <div className="relative h-44 shrink-0 overflow-hidden rounded border border-white/10 bg-black/50 md:order-2 md:h-auto">
           <Image
             src={flagship.image}
             alt={flagship.title}
             fill
             sizes="(max-width: 768px) 100vw, 13rem"
-            className="object-cover"
+            className="object-contain"
           />
           {flagship.venue ? (
             <span className="absolute bottom-2 left-2 bg-black/70 px-2 py-0.5 font-mono text-[9px] tracking-[0.2em] text-white uppercase">

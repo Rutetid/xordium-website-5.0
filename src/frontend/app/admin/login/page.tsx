@@ -42,7 +42,7 @@ export default function AdminLogin() {
         {/* Login Form */}
         <form
           onSubmit={handleSubmit}
-          className="border border-white/10 bg-white/5 p-6 rounded"
+          className="border border-white/10 bg-black/40 p-6 rounded"
         >
           <label className="block font-mono text-xs text-white uppercase tracking-[0.15em]">
             EMAIL OR USERNAME
@@ -52,7 +52,7 @@ export default function AdminLogin() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="admin@xordium.com or username"
-              className="mt-1 block w-full rounded border border-white/20 bg-white/5 p-2.5 text-white placeholder:text-white/30 focus:border-red-500 focus:outline-none"
+              className="mt-1 block w-full rounded border border-white/20 bg-black/40 p-2.5 text-white placeholder:text-white/30 focus:border-red-500 focus:outline-none"
             />
           </label>
 
@@ -64,7 +64,7 @@ export default function AdminLogin() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••••••"
-              className="mt-1 block w-full rounded border border-white/20 bg-white/5 p-2.5 text-white placeholder:text-white/30 focus:border-red-500 focus:outline-none"
+              className="mt-1 block w-full rounded border border-white/20 bg-black/40 p-2.5 text-white placeholder:text-white/30 focus:border-red-500 focus:outline-none"
             />
           </label>
 

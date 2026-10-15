@@ -50,13 +50,13 @@ export default async function EventDetailPage({
         ← Back to directory
       </Link>
       <div className="glass-panel mt-4 grid gap-6 overflow-hidden p-4 sm:p-6 lg:grid-cols-2">
-        <div className="relative min-h-72 overflow-hidden rounded border border-white/10">
+        <div className="relative aspect-[4/5] w-full overflow-hidden rounded border border-white/10 bg-black/50">
           <Image
             src={event.image}
             alt={event.title}
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover"
+            className="object-contain"
             priority
           />
           {event.tag ? (

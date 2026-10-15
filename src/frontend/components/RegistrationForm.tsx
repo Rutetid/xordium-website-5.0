@@ -490,7 +490,7 @@ export default function RegistrationForm({ initialEventId }: Props) {
                 type="text"
                 value="Birla Institute of Technology, Patna"
                 readOnly
-                className="field-control bg-white/5 cursor-not-allowed"
+                className="field-control bg-black/40 cursor-not-allowed"
               />
             </div>
           )}

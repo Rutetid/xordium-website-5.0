@@ -432,7 +432,7 @@ export default function EventsPage() {
                   value={editDescription}
                   onChange={(e) => setEditDescription(e.target.value)}
                   rows={5}
-                  className="block w-full rounded border border-white/20 bg-white/5 p-3 font-mono text-xs text-white placeholder:text-white/30 focus:border-red-500 focus:outline-none resize-y"
+                  className="block w-full rounded border border-white/20 bg-black/40 p-3 font-mono text-xs text-white placeholder:text-white/30 focus:border-red-500 focus:outline-none resize-y"
                   placeholder="Event description (Markdown supported)..."
                 />
                 <p className="mt-1.5 font-mono text-[10px] leading-relaxed text-white">
@@ -523,7 +523,7 @@ export default function EventsPage() {
                 {/* Drop zone */}
                 <div
                   onClick={() => fileInputRef.current?.click()}
-                  className="relative flex cursor-pointer flex-col items-center justify-center gap-3 rounded border-2 border-dashed border-white/20 bg-white/5 p-8 text-center transition hover:border-red-500/60 hover:bg-white/[0.07]"
+                  className="relative flex cursor-pointer flex-col items-center justify-center gap-3 rounded border-2 border-dashed border-white/20 bg-black/40 p-8 text-center transition hover:border-red-500/60 hover:bg-white/[0.07]"
                 >
                   <input
                     ref={fileInputRef}
@@ -591,7 +591,7 @@ export default function EventsPage() {
                   <button
                     type="button"
                     onClick={handleUploadNow}
-                    className="mt-2 border border-white/20 bg-white/5 px-4 py-2 font-mono text-[11px] font-bold tracking-[0.15em] text-white uppercase hover:bg-white/10 hover:text-white transition-colors"
+                    className="mt-2 border border-white/20 bg-black/40 px-4 py-2 font-mono text-[11px] font-bold tracking-[0.15em] text-white uppercase hover:bg-white/10 hover:text-white transition-colors"
                   >
                     Upload poster only (skip save)
                   </button>
@@ -615,7 +615,7 @@ export default function EventsPage() {
                 <button
                   type="button"
                   onClick={cancelEditing}
-                  className="border border-white/20 bg-white/5 px-6 py-2.5 font-mono text-[11px] font-bold tracking-[0.2em] text-white uppercase hover:bg-white/10 hover:text-white transition-colors"
+                  className="border border-white/20 bg-black/40 px-6 py-2.5 font-mono text-[11px] font-bold tracking-[0.2em] text-white uppercase hover:bg-white/10 hover:text-white transition-colors"
                 >
                   CANCEL
                 </button>
@@ -713,7 +713,7 @@ export default function EventsPage() {
                   onChange={(e) => updateCreateField("description", e.target.value)}
                   rows={4}
                   placeholder="Full event description (Markdown supported)..."
-                  className="block w-full rounded border border-white/20 bg-white/5 p-3 font-mono text-xs text-white placeholder:text-white/30 focus:border-red-500 focus:outline-none resize-y"
+                  className="block w-full rounded border border-white/20 bg-black/40 p-3 font-mono text-xs text-white placeholder:text-white/30 focus:border-red-500 focus:outline-none resize-y"
                 />
               </div>
 
@@ -780,7 +780,7 @@ export default function EventsPage() {
                   <label className="field-label">Poster image</label>
                   <div
                     onClick={() => createFileRef.current?.click()}
-                    className="relative flex cursor-pointer flex-col items-center justify-center gap-2 rounded border-2 border-dashed border-white/20 bg-white/5 p-6 text-center transition hover:border-red-500/60 hover:bg-white/[0.07]"
+                    className="relative flex cursor-pointer flex-col items-center justify-center gap-2 rounded border-2 border-dashed border-white/20 bg-black/40 p-6 text-center transition hover:border-red-500/60 hover:bg-white/[0.07]"
                   >
                     <input
                       ref={createFileRef}
@@ -896,7 +896,7 @@ export default function EventsPage() {
                 <button
                   type="button"
                   onClick={() => setShowCreate(false)}
-                  className="border border-white/20 bg-white/5 px-6 py-2.5 font-mono text-[11px] font-bold tracking-[0.2em] text-white uppercase hover:bg-white/10 transition-colors"
+                  className="border border-white/20 bg-black/40 px-6 py-2.5 font-mono text-[11px] font-bold tracking-[0.2em] text-white uppercase hover:bg-white/10 transition-colors"
                 >
                   CANCEL
                 </button>
@@ -912,7 +912,7 @@ export default function EventsPage() {
           {[1, 2, 3, 4].map((i) => (
             <div
               key={i}
-              className="border border-white/10 bg-white/5 p-4 rounded animate-pulse"
+              className="border border-white/10 bg-black/40 p-4 rounded animate-pulse"
             >
               <div className="h-4 bg-white/10 rounded w-3/4 mb-2"/>
               <div className="h-3 bg-white/10 rounded w-1/2"/>
@@ -920,7 +920,7 @@ export default function EventsPage() {
           ))}
         </div>
       ) : events.length === 0 ? (
-        <div className="border border-white/10 bg-white/5 p-8 rounded text-center">
+        <div className="border border-white/10 bg-black/40 p-8 rounded text-center">
           <p className="font-mono text-sm text-white">No events found.</p>
         </div>
       ) : (
@@ -928,7 +928,7 @@ export default function EventsPage() {
           {events.map((event) => (
             <div
               key={event.id}
-              className="border border-white/10 bg-white/5 p-4 rounded hover:border-white/20 transition-colors flex flex-col"
+              className="border border-white/10 bg-black/40 p-4 rounded hover:border-white/20 transition-colors flex flex-col"
             >
               <div className="flex items-start justify-between mb-3">
                 <div className="min-w-0">
@@ -961,7 +961,7 @@ export default function EventsPage() {
                     <img
                       src={event.posterUrl || event.image}
                       alt={event.title}
-                      className="w-full aspect-[3/4] object-contain rounded border border-white/10 bg-white/5"
+                      className="w-full aspect-[3/4] object-contain rounded border border-white/10 bg-black/40"
                     />
                   </div>
                 )}
@@ -981,12 +981,12 @@ export default function EventsPage() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => startEditing(event)}
-                    className="bg-white/10 border border-white/20 px-3 py-1.5 font-mono text-[10px] font-bold text-white uppercase tracking-[0.15em] hover:bg-white/20 transition-colors"
+                    className="bg-black/50 border border-white/20 px-3 py-1.5 font-mono text-[10px] font-bold text-white uppercase tracking-[0.15em] hover:bg-white/20 transition-colors"
                   >
                     Edit
                   </button>
                   <label
-                    className="flex cursor-pointer items-center gap-1.5 bg-white/10 border border-white/20 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.15em] transition-colors hover:bg-white/20">
+                    className="flex cursor-pointer items-center gap-1.5 bg-black/50 border border-white/20 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.15em] transition-colors hover:bg-white/20">
                     <input
                       type="checkbox"
                       checked={Boolean(event.featured)}
@@ -1002,7 +1002,7 @@ export default function EventsPage() {
                     <button
                       onClick={() => handleDeleteConfirm(event.slug)}
                       disabled={deleting}
-                      className={`bg-white/10 border px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.15em] transition-colors ${
+                      className={`bg-black/50 border px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.15em] transition-colors ${
                         deleteConfirm === event.slug
                           ? "bg-red-600 border-red-500 text-white"
                           : "border-white/20 text-white hover:bg-red-600/20 hover:border-red-500 hover:text-red-400"
@@ -1023,7 +1023,7 @@ export default function EventsPage() {
       )}
 
       {/* Info box */}
-      <div className="mt-8 border border-white/10 bg-white/5 p-4 rounded">
+      <div className="mt-8 border border-white/10 bg-black/40 p-4 rounded">
         <h4 className="font-mono text-[11px] text-white uppercase tracking-[0.15em] mb-2">
           Owner Capabilities
         </h4>

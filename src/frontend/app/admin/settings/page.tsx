@@ -78,14 +78,14 @@ export default function SettingsPage() {
       )}
 
       {loading ? (
-        <div className="border border-white/10 bg-white/5 p-4 rounded animate-pulse">
+        <div className="border border-white/10 bg-black/40 p-4 rounded animate-pulse">
           <div className="h-4 bg-white/10 rounded w-1/2 mb-2" />
           <div className="h-3 bg-white/10 rounded w-1/3" />
         </div>
       ) : (
         <form
           onSubmit={handleSave}
-          className="border border-white/10 bg-white/5 p-6 rounded max-w-2xl space-y-4"
+          className="border border-white/10 bg-black/40 p-6 rounded max-w-2xl space-y-4"
         >
           <div>
             <label className="field-label" htmlFor="set-deadline">

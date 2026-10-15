@@ -75,5 +75,5 @@ const stickerFileNames = [
 ] as const;
 
 export const collageImages: string[] = stickerFileNames.map(
-  (fileName) => `/webp-images/${encodeURIComponent(fileName)}`,
+  (fileName) => `/webp-thumbs/${encodeURIComponent(fileName)}`,
 );

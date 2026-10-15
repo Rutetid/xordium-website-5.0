@@ -57,7 +57,7 @@ export default function Home() {
             </Link>
           </div>
           <div
-            className="mx-auto mt-8 grid max-w-4xl grid-cols-2 gap-px overflow-hidden rounded border border-white/10 bg-white/10 sm:grid-cols-4">
+            className="mx-auto mt-8 grid max-w-4xl grid-cols-2 gap-px overflow-hidden rounded border border-white/10 bg-black/50 sm:grid-cols-4">
           </div>
         </div>
         </div>

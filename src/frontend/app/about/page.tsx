@@ -38,6 +38,7 @@ export default function AboutPage() {
           fill
           sizes="(max-width: 1024px) 100vw, 50vw"
           className="object-contain"
+            priority
         />
         <span
           className="absolute bottom-2 left-2 bg-black/70 px-2 py-1 font-mono text-[10px] tracking-[0.2em] uppercase">

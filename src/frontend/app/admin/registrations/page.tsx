@@ -100,7 +100,7 @@ export default function EventRegistrationsPage() {
         <div className="flex gap-2">
           <button
             onClick={loadRegistrations}
-            className="border border-white/20 bg-white/5 px-4 py-2 font-mono text-[11px] font-bold tracking-[0.2em] text-white uppercase hover:bg-white/10 hover:text-white transition-colors"
+            className="border border-white/20 bg-black/40 px-4 py-2 font-mono text-[11px] font-bold tracking-[0.2em] text-white uppercase hover:bg-white/10 hover:text-white transition-colors"
           >
             ↻ Refresh
           </button>
@@ -127,7 +127,7 @@ export default function EventRegistrationsPage() {
           <select
             value={filterEvent}
             onChange={(e) => setFilterEvent(e.target.value)}
-            className="mt-1 block w-full max-w-md rounded border border-white/20 bg-white/5 p-2.5 text-white focus:border-red-500 focus:outline-none"
+            className="mt-1 block w-full max-w-md rounded border border-white/20 bg-black/40 p-2.5 text-white focus:border-red-500 focus:outline-none"
           >
             <option value="" className="bg-neutral-900 text-white">
               All Events
@@ -147,7 +147,7 @@ export default function EventRegistrationsPage() {
 
       {/* Stats */}
       <div className="mb-6 grid grid-cols-2 md:grid-cols-3 gap-4">
-        <div className="border border-white/10 bg-white/5 p-4 rounded">
+        <div className="border border-white/10 bg-black/40 p-4 rounded">
           <p className="font-mono text-[10px] text-white uppercase tracking-[0.2em] mb-1">
             Total Responses
           </p>
@@ -155,7 +155,7 @@ export default function EventRegistrationsPage() {
             {registrations.length}
           </p>
         </div>
-        <div className="border border-white/10 bg-white/5 p-4 rounded">
+        <div className="border border-white/10 bg-black/40 p-4 rounded">
           <p className="font-mono text-[10px] text-white uppercase tracking-[0.2em] mb-1">
             Showing
           </p>
@@ -163,7 +163,7 @@ export default function EventRegistrationsPage() {
             {filtered.length}
           </p>
         </div>
-        <div className="border border-white/10 bg-white/5 p-4 rounded">
+        <div className="border border-white/10 bg-black/40 p-4 rounded">
           <p className="font-mono text-[10px] text-white uppercase tracking-[0.2em] mb-1">
             External (non-BIT) Teams
           </p>
@@ -175,7 +175,7 @@ export default function EventRegistrationsPage() {
 
       {/* Table */}
       {loading ? (
-        <div className="border border-white/10 bg-white/5 rounded overflow-hidden">
+        <div className="border border-white/10 bg-black/40 rounded overflow-hidden">
           {[1, 2, 3, 4, 5].map((i) => (
             <div key={i} className="border-b border-white/10 p-4 animate-pulse">
               <div className="h-4 bg-white/10 rounded w-1/4"></div>
@@ -183,7 +183,7 @@ export default function EventRegistrationsPage() {
           ))}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="border border-white/10 bg-white/5 p-8 rounded text-center">
+        <div className="border border-white/10 bg-black/40 p-8 rounded text-center">
           <p className="font-mono text-sm text-white">
             No registrations found.
           </p>
@@ -203,7 +203,7 @@ function RegistrationTable({
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   return (
-    <div className="border border-white/10 bg-white/5 rounded overflow-hidden overflow-x-auto">
+    <div className="border border-white/10 bg-black/40 rounded overflow-hidden overflow-x-auto">
       <table className="w-full">
         <thead className="border-b border-white/10">
           <tr>
@@ -288,7 +288,7 @@ function RegistrationRow({
             className={`inline-block px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.15em] rounded ${
               reg.isExternalTeam
                 ? "bg-amber-600/20 text-amber-400 border border-amber-500/50"
-                : "bg-white/10 text-white border border-white/20"
+                : "bg-black/50 text-white border border-white/20"
             }`}
           >
             {reg.isExternalTeam ? "External" : "BIT"}
