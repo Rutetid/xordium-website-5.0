@@ -138,7 +138,7 @@ export default function AdminLayout({
       </header>
 
       {/* Main content */}
-      <main className="flex-1 max-w-7xl mx-auto px-4 py-8 w-full">{children}</main>
+      <main className="admin-panel flex-1 max-w-7xl mx-auto px-4 py-8 w-full">{children}</main>
 
       {/* Footer */}
       <footer className="border-t border-white/10 bg-[#08090c] py-4">

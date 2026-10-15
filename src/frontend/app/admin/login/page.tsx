@@ -28,7 +28,7 @@ export default function AdminLogin() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="w-full max-w-md">
+      <div className="text-slab w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="font-mono text-2xl font-bold tracking-[0.3em] text-white uppercase">

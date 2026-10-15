@@ -131,6 +131,26 @@ body {
   }
 }
 
+/* Admin panel: one rectangular backdrop behind the whole tool UI so
+   labels, table cells and helper text stay readable over the collage. */
+.admin-panel {
+  border: 1px solid rgb(255 255 255 / 8%);
+  border-radius: 12px;
+  background: rgb(3 5 9 / 72%);
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+@supports not (
+  (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+) {
+  .admin-panel {
+    background: rgb(3 5 9 / 90%);
+  }
+}
+
 /* Homepage carousel: one continuous slow glide, never halting.
    The track holds two copies of the slides and loops translateX(-50%). */
 @keyframes carousel-marquee {
