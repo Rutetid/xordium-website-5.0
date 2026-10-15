@@ -41,7 +41,7 @@ const components: Components = {
       </code>
     ) : (
       <code
-        className="rounded bg-white/10 px-1 py-0.5 text-[0.9em] break-words"
+        className="rounded bg-black/50 px-1 py-0.5 text-[0.9em] break-words"
         {...props}
       >
         {children}

@@ -54,14 +54,14 @@ export default function SupportAdminPage() {
       {loading ? (
         <div className="space-y-4">
           {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="border border-white/10 bg-white/5 p-4 rounded animate-pulse">
+            <div key={i} className="border border-white/10 bg-black/40 p-4 rounded animate-pulse">
               <div className="h-4 bg-white/10 rounded w-1/3 mb-2" />
               <div className="h-3 bg-white/10 rounded w-1/2" />
             </div>
           ))}
         </div>
       ) : messages.length === 0 ? (
-        <div className="border border-white/10 bg-white/5 p-8 rounded text-center">
+        <div className="border border-white/10 bg-black/40 p-8 rounded text-center">
           <p className="font-mono text-sm text-white">No support messages yet.</p>
         </div>
       ) : (
@@ -71,7 +71,7 @@ export default function SupportAdminPage() {
             return (
               <div
                 key={msg.id}
-                className="border border-white/10 bg-white/5 p-4 rounded hover:border-white/20 transition-colors"
+                className="border border-white/10 bg-black/40 p-4 rounded hover:border-white/20 transition-colors"
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3">
@@ -96,7 +96,7 @@ export default function SupportAdminPage() {
                             ? "bg-orange-600/20 text-orange-400 border border-orange-500/50"
                             : msg.topic === "scrims"
                             ? "bg-green-600/20 text-green-400 border border-green-500/50"
-                            : "bg-white/10 text-white border border-white/20"
+                            : "bg-black/50 text-white border border-white/20"
                         }`}
                       >
                         {msg.topic.toUpperCase()}
@@ -115,7 +115,7 @@ export default function SupportAdminPage() {
                     </p>
                     <button
                       onClick={() => toggleExpand(msg.id)}
-                      className="bg-white/10 border border-white/20 px-3 py-1.5 font-mono text-[10px] font-bold text-white uppercase tracking-[0.15em] hover:bg-white/20 transition-colors"
+                      className="bg-black/50 border border-white/20 px-3 py-1.5 font-mono text-[10px] font-bold text-white uppercase tracking-[0.15em] hover:bg-white/20 transition-colors"
                     >
                       {isExpanded ? "COLLAPSE" : "EXPAND"}
                     </button>

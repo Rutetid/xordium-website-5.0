@@ -84,7 +84,7 @@ export default function AcceptInvitePage() {
   }
 
   const inputClass =
-    "mt-1 block w-full rounded border border-white/20 bg-white/5 p-2.5 text-white placeholder:text-white/30 focus:border-red-500 focus:outline-none";
+    "mt-1 block w-full rounded border border-white/20 bg-black/40 p-2.5 text-white placeholder:text-white/30 focus:border-red-500 focus:outline-none";
 
   return (
     <div className="max-w-lg mx-auto">
@@ -98,7 +98,7 @@ export default function AcceptInvitePage() {
       </div>
 
       {phase === "loading" && (
-        <div className="border border-white/10 bg-white/5 p-8 rounded">
+        <div className="border border-white/10 bg-black/40 p-8 rounded">
           <p className="font-mono text-sm text-white animate-pulse">
             Validating invitation…
           </p>
@@ -140,7 +140,7 @@ export default function AcceptInvitePage() {
       {(phase === "form" || phase === "submitting") && (
         <form
           onSubmit={handleSubmit}
-          className="border border-white/10 bg-white/5 p-6 rounded"
+          className="border border-white/10 bg-black/40 p-6 rounded"
         >
           <div className="mb-5 border border-white/10 bg-black/20 p-3 rounded">
             <p className="font-mono text-[10px] text-white uppercase tracking-[0.2em]">

@@ -93,7 +93,7 @@ export default function AdminDashboard() {
           {[1, 2, 3, 4].map((i) => (
             <div
               key={i}
-              className="border border-white/10 bg-white/5 p-4 rounded animate-pulse"
+              className="border border-white/10 bg-black/40 p-4 rounded animate-pulse"
             >
               <div className="h-3 bg-white/10 rounded w-24 mb-2"></div>
               <div className="h-8 bg-white/10 rounded w-16"></div>
@@ -106,7 +106,7 @@ export default function AdminDashboard() {
             <Link
               key={card.label}
               href={card.href || "#"}
-              className={`border border-white/10 bg-white/5 p-4 rounded transition-colors ${
+              className={`border border-white/10 bg-black/40 p-4 rounded transition-colors ${
                 card.href
                   ? "hover:border-red-500/50 hover:bg-white/10"
                   : "cursor-default"
@@ -123,21 +123,21 @@ export default function AdminDashboard() {
 
       {/* Quick Actions */}
       <div className="grid md:grid-cols-2 gap-6">
-        <div className="border border-white/10 bg-white/5 p-6 rounded">
+        <div className="border border-white/10 bg-black/40 p-6 rounded">
           <h3 className="font-mono text-sm font-bold text-white uppercase tracking-[0.2em] mb-4">
             Quick Actions
           </h3>
           <div className="space-y-3">
             <Link
               href="/admin/events"
-              className="block w-full border border-white/20 bg-white/5 py-2.5 px-4 font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-white hover:bg-white/10 transition-colors text-center"
+              className="block w-full border border-white/20 bg-black/40 py-2.5 px-4 font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-white hover:bg-white/10 transition-colors text-center"
             >
               Manage Events →
             </Link>
             {hasRole("ADMIN") && (
               <Link
                 href="/admin/moderators"
-                className="block w-full border border-white/20 bg-white/5 py-2.5 px-4 font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-white hover:bg-white/10 transition-colors text-center"
+                className="block w-full border border-white/20 bg-black/40 py-2.5 px-4 font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-white hover:bg-white/10 transition-colors text-center"
               >
                 Manage Moderators →
               </Link>
@@ -145,7 +145,7 @@ export default function AdminDashboard() {
             {hasRole("OWNER") && (
               <Link
                 href="/admin/users"
-                className="block w-full border border-white/20 bg-white/5 py-2.5 px-4 font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-white hover:bg-white/10 transition-colors text-center"
+                className="block w-full border border-white/20 bg-black/40 py-2.5 px-4 font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-white hover:bg-white/10 transition-colors text-center"
               >
                 Manage Users →
               </Link>
@@ -153,7 +153,7 @@ export default function AdminDashboard() {
             {hasRole("ADMIN") && (
               <Link
                 href="/admin/registrations"
-                className="block w-full border border-white/20 bg-white/5 py-2.5 px-4 font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-white hover:bg-white/10 transition-colors text-center"
+                className="block w-full border border-white/20 bg-black/40 py-2.5 px-4 font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-white hover:bg-white/10 transition-colors text-center"
               >
                 View Registrations →
               </Link>
@@ -161,7 +161,7 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="border border-white/10 bg-white/5 p-6 rounded">
+        <div className="border border-white/10 bg-black/40 p-6 rounded">
           <h3 className="font-mono text-sm font-bold text-white uppercase tracking-[0.2em] mb-4">
             System Info
           </h3>

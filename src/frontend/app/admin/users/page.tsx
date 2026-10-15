@@ -198,7 +198,7 @@ export default function UsersPage() {
             </code>
             <button
               onClick={copyLink}
-              className="border border-white/20 bg-white/5 px-3 py-2 font-mono text-[10px] font-bold tracking-[0.15em] text-white uppercase hover:bg-white/10 hover:text-white transition-colors"
+              className="border border-white/20 bg-black/40 px-3 py-2 font-mono text-[10px] font-bold tracking-[0.15em] text-white uppercase hover:bg-white/10 hover:text-white transition-colors"
             >
               {copied ? "✓ Copied" : "Copy"}
             </button>
@@ -210,7 +210,7 @@ export default function UsersPage() {
       {showInviteForm && (
         <form
           onSubmit={handleSendInvite}
-          className="mb-8 border border-white/10 bg-white/5 p-6 rounded"
+          className="mb-8 border border-white/10 bg-black/40 p-6 rounded"
         >
           <h3 className="font-mono text-sm font-bold text-white uppercase tracking-[0.2em] mb-1">
             Invite New User
@@ -228,7 +228,7 @@ export default function UsersPage() {
                 value={newEmail}
                 onChange={(e) => setNewEmail(e.target.value)}
                 placeholder="user@institution.edu"
-                className="mt-1 block w-full rounded border border-white/20 bg-white/5 p-2.5 text-white placeholder:text-white/30 focus:border-red-500 focus:outline-none"
+                className="mt-1 block w-full rounded border border-white/20 bg-black/40 p-2.5 text-white placeholder:text-white/30 focus:border-red-500 focus:outline-none"
               />
             </label>
 
@@ -237,7 +237,7 @@ export default function UsersPage() {
               <select
                 value={newRole}
                 onChange={(e) => setNewRole(e.target.value as "ADMIN" | "MODERATOR")}
-                className="mt-1 block w-full rounded border border-white/20 bg-white/5 p-2.5 text-white focus:border-red-500 focus:outline-none"
+                className="mt-1 block w-full rounded border border-white/20 bg-black/40 p-2.5 text-white focus:border-red-500 focus:outline-none"
               >
                 <option value="MODERATOR" className="bg-neutral-900 text-white">
                   Moderator
@@ -264,7 +264,7 @@ export default function UsersPage() {
         Active Users
       </h3>
       {loading ? (
-        <div className="border border-white/10 bg-white/5 rounded overflow-hidden">
+        <div className="border border-white/10 bg-black/40 rounded overflow-hidden">
           {[1, 2, 3, 4, 5].map((i) => (
             <div key={i} className="border-b border-white/10 p-4 animate-pulse">
               <div className="h-4 bg-white/10 rounded w-1/3"></div>
@@ -272,11 +272,11 @@ export default function UsersPage() {
           ))}
         </div>
       ) : users.length === 0 ? (
-        <div className="border border-white/10 bg-white/5 p-8 rounded text-center">
+        <div className="border border-white/10 bg-black/40 p-8 rounded text-center">
           <p className="font-mono text-sm text-white">No users found.</p>
         </div>
       ) : (
-        <div className="border border-white/10 bg-white/5 rounded overflow-hidden overflow-x-auto mb-8">
+        <div className="border border-white/10 bg-black/40 rounded overflow-hidden overflow-x-auto mb-8">
           <table className="w-full">
             <thead className="border-b border-white/10">
               <tr>
@@ -326,7 +326,7 @@ export default function UsersPage() {
                         <select
                           value={editRole}
                           onChange={(e) => setEditRole(e.target.value as "ADMIN" | "MODERATOR")}
-                          className="block w-full rounded border border-white/20 bg-white/5 p-1.5 text-white text-xs font-mono focus:border-red-500 focus:outline-none"
+                          className="block w-full rounded border border-white/20 bg-black/40 p-1.5 text-white text-xs font-mono focus:border-red-500 focus:outline-none"
                         >
                           <option value="MODERATOR">Moderator</option>
                           <option value="ADMIN">Admin</option>
@@ -338,7 +338,7 @@ export default function UsersPage() {
                               ? "bg-red-600/20 text-red-400 border border-red-500/50"
                               : u.role === "ADMIN"
                               ? "bg-blue-600/20 text-blue-400 border border-blue-500/50"
-                              : "bg-white/10 text-white border border-white/20"
+                              : "bg-black/50 text-white border border-white/20"
                           }`}
                         >
                           {u.role}
@@ -386,7 +386,7 @@ export default function UsersPage() {
                             <button
                               type="button"
                               onClick={cancelEditing}
-                              className="border border-white/20 bg-white/5 px-3 py-1.5 font-mono text-[10px] font-bold tracking-[0.15em] text-white uppercase hover:bg-white/10 hover:text-white transition-colors"
+                              className="border border-white/20 bg-black/40 px-3 py-1.5 font-mono text-[10px] font-bold tracking-[0.15em] text-white uppercase hover:bg-white/10 hover:text-white transition-colors"
                             >
                               CANCEL
                             </button>
@@ -395,7 +395,7 @@ export default function UsersPage() {
                           <>
                             <button
                               onClick={() => startEditing(u)}
-                              className="bg-white/10 border border-white/20 px-3 py-1.5 font-mono text-[10px] font-bold tracking-[0.15em] text-white uppercase hover:bg-white/20 hover:text-white transition-colors"
+                              className="bg-black/50 border border-white/20 px-3 py-1.5 font-mono text-[10px] font-bold tracking-[0.15em] text-white uppercase hover:bg-white/20 hover:text-white transition-colors"
                             >
                               Edit
                             </button>
@@ -424,11 +424,11 @@ export default function UsersPage() {
         Sent Invitations
       </h3>
       {invitations.length === 0 ? (
-        <div className="border border-white/10 bg-white/5 p-6 rounded text-center">
+        <div className="border border-white/10 bg-black/40 p-6 rounded text-center">
           <p className="font-mono text-xs text-white">No invitations sent yet.</p>
         </div>
       ) : (
-        <div className="border border-white/10 bg-white/5 rounded overflow-hidden overflow-x-auto">
+        <div className="border border-white/10 bg-black/40 rounded overflow-hidden overflow-x-auto">
           <table className="w-full">
             <thead className="border-b border-white/10">
               <tr>
@@ -467,7 +467,7 @@ export default function UsersPage() {
                             ? "bg-green-600/20 text-green-400 border border-green-500/50"
                             : status === "PENDING"
                             ? "bg-amber-600/20 text-amber-400 border border-amber-500/50"
-                            : "bg-white/10 text-white border border-white/20"
+                            : "bg-black/50 text-white border border-white/20"
                         }`}
                       >
                         {status}

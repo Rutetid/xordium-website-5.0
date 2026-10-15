@@ -117,7 +117,7 @@ export default function ModeratorsPage() {
       {showPromoteForm && (
         <form
           onSubmit={handlePromote}
-          className="mb-8 border border-white/10 bg-white/5 p-6 rounded"
+          className="mb-8 border border-white/10 bg-black/40 p-6 rounded"
         >
           <h3 className="font-mono text-sm font-bold text-white uppercase tracking-[0.2em] mb-4">
             Promote User to Moderator
@@ -129,7 +129,7 @@ export default function ModeratorsPage() {
               required
               value={selectedUserId || ""}
               onChange={(e) => setSelectedUserId(e.target.value)}
-              className="mt-1 block w-full rounded border border-white/20 bg-white/5 p-2.5 text-white focus:border-red-500 focus:outline-none"
+              className="mt-1 block w-full rounded border border-white/20 bg-black/40 p-2.5 text-white focus:border-red-500 focus:outline-none"
             >
               <option value="" className="bg-neutral-900 text-white">
                 Choose a user...
@@ -154,7 +154,7 @@ export default function ModeratorsPage() {
 
       {/* Moderators List */}
       {loading ? (
-        <div className="border border-white/10 bg-white/5 rounded overflow-hidden">
+        <div className="border border-white/10 bg-black/40 rounded overflow-hidden">
           {[1, 2, 3].map((i) => (
             <div key={i} className="border-b border-white/10 p-4 animate-pulse">
               <div className="h-4 bg-white/10 rounded w-1/3"></div>
@@ -162,14 +162,14 @@ export default function ModeratorsPage() {
           ))}
         </div>
       ) : moderators.length === 0 ? (
-        <div className="border border-white/10 bg-white/5 p-8 rounded text-center">
+        <div className="border border-white/10 bg-black/40 p-8 rounded text-center">
           <p className="font-mono text-sm text-white">No moderators found.</p>
           <p className="mt-2 font-mono text-[11px] text-white">
             Promote users to moderator role using the button above.
           </p>
         </div>
       ) : (
-        <div className="border border-white/10 bg-white/5 rounded overflow-hidden">
+        <div className="border border-white/10 bg-black/40 rounded overflow-hidden">
           <div className="grid grid-cols-[1fr,1fr,auto] border-b border-white/10">
             <div className="px-4 py-3 font-mono text-[10px] text-white uppercase tracking-[0.2em]">
               Email
@@ -199,7 +199,7 @@ export default function ModeratorsPage() {
       )}
 
       {/* Info Box */}
-      <div className="mt-8 border border-white/10 bg-white/5 p-4 rounded">
+      <div className="mt-8 border border-white/10 bg-black/40 p-4 rounded">
         <h4 className="font-mono text-[11px] text-white uppercase tracking-[0.15em] mb-2">
           Moderator Permissions
         </h4>
