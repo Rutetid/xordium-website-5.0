@@ -31,13 +31,13 @@ export default function AboutPage() {
 
     {/* Manifesto */}
     <section className="mx-auto grid max-w-6xl gap-8 px-4 py-12 lg:grid-cols-2">
-      <div className="relative min-h-80 overflow-hidden rounded border border-white/10">
+      <div className="relative aspect-[1280/684] w-full overflow-hidden rounded border border-white/10 bg-black/50">
         <Image
           src="/assets/Xordium Banner.jpeg"
           alt="Xordium arena"
           fill
           sizes="(max-width: 1024px) 100vw, 50vw"
-          className="object-cover"
+          className="object-contain"
         />
         <span
           className="absolute bottom-2 left-2 bg-black/70 px-2 py-1 font-mono text-[10px] tracking-[0.2em] uppercase">

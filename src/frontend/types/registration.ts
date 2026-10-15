@@ -15,6 +15,9 @@ export type RegistrationTeamMember = {
   phone: string;
 };
 
+// Admission batch options shown in place of a free-text year of study.
+export const BATCHES = ["2k23", "2k24", "2k25", "2k26"] as const;
+
 export type RegistrationSubmission = {
   eventId: string;
   eventName: string;

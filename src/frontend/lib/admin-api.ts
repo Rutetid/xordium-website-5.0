@@ -281,7 +281,7 @@ export async function fetchEventBySlug(slug: string): Promise<AdminEvent> {
 
 export async function updateEvent(
   slug: string,
-  input: { description?: string; posterUrl?: string }
+  input: { description?: string; posterUrl?: string; featured?: boolean }
 ): Promise<AdminEvent> {
   return apiRequest<AdminEvent>(`/moderator/events/${slug}`, {
     method: "PUT",
@@ -292,11 +292,11 @@ export async function updateEvent(
 // ==================== ADMIN EVENTS API (Owner only) ====================
 
 export async function fetchAdminEvents(): Promise<AdminEvent[]> {
-  return apiRequest<AdminEvent[]>("/api/admin/events");
+  return apiRequest<AdminEvent[]>("/admin/events");
 }
 
 export async function deleteEvent(slug: string): Promise<{ message: string }> {
-  return apiRequest<{ message: string }>("/api/admin/events", {
+  return apiRequest<{ message: string }>("/admin/events", {
     method: "DELETE",
     body: JSON.stringify({ slug }),
   });

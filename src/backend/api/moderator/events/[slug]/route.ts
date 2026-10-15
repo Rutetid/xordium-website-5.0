@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/backend/lib/prisma";
 import {
   inputErrorResponse,
+  ApiInputError,
   optionalText,
   optionalUrl,
   readJsonObject,
@@ -21,6 +22,14 @@ export async function PUT(request: Request, { params }: { params: Promise<{ slug
     const description = optionalText(body.description, "Description", 8_000);
     const posterUrl = optionalUrl(body.posterUrl, "Poster URL");
 
+    let featured: boolean | null = null;
+    if (body.featured !== undefined) {
+      if (typeof body.featured !== "boolean") {
+        throw new ApiInputError("Featured must be a boolean.");
+      }
+      featured = body.featured;
+    }
+
     const existing = await prisma.event.findUnique({
       where: { slug },
       select: { id: true },
@@ -34,6 +43,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ slug
       data: {
         ...(description !== null && { description }),
         ...(posterUrl !== null && { posterUrl }),
+        ...(featured !== null && { featured }),
       },
     });
 

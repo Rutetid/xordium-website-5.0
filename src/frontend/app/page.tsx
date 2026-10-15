@@ -1,15 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import Countdown from "@/components/countdown";
-import EventCard from "@/components/event-card";
+import FeaturedSection from "@/components/featured-section";
 import HomepageCarousel from "@/components/homepage-carousel";
 import SectionHeading from "@/components/section-heading";
 import TimetableSection from "@/components/timetable-section";
-import {getFeaturedEvents, REGISTRATION_DEADLINE} from "@/lib/events";
+import { REGISTRATION_DEADLINE } from "@/lib/events";
 
 export default function Home() {
-  const featured = getFeaturedEvents();
-
   return (
     <>
       {/* HERO */}
@@ -67,18 +65,7 @@ export default function Home() {
       </section>
 
       {/* FEATURED COMPETITIONS */}
-      <section className="mx-auto max-w-7xl px-4 py-14">
-        <SectionHeading
-          kicker="Transmission specifications // 01"
-          title="Featured competitions"
-          blurb="Engineered for extreme performance. Each track carries strict tournament guidelines, certified adjudicators, enterprise compute nodes, and direct cash disbursements."
-        />
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {featured.map((e) => (
-            <EventCard key={e.slug} event={e}/>
-          ))}
-        </div>
-      </section>
+      <FeaturedSection />
 
       <HomepageCarousel/>
 
@@ -119,7 +106,7 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="border-t border-white/10">
+      <section className="border-t border-white/10 mb-12">
         <div className="glass-panel mx-auto max-w-6xl px-4 py-8 text-center">
           <p className="font-mono text-[13px] tracking-[0.3em] text-red-500 uppercase">
             {"//"} Comms endpoint
@@ -135,10 +122,9 @@ export default function Home() {
               Authenticate & register now →
             </Link>
             <Link
-              href="/support"
-              className="border border-white/25 px-6 py-3 font-mono text-xs tracking-[0.2em] uppercase hover:bg-white/10"
+              href="https://www.instagram.com/ignite_bitp" className="border border-white/25 px-6 py-3 font-mono text-xs tracking-[0.2em] uppercase hover:bg-white/10"
             >
-              Join Discord comms
+              Follow Us on Instagram
             </Link>
           </div>
         </div>

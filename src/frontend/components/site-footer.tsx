@@ -31,7 +31,7 @@ export default function SiteFooter() {
         </div>
         <div className="font-mono text-[11px]">
           <p className="tracking-[0.2em] text-white uppercase">Comms</p>
-          <p className="mt-2 text-white">ignite@bitmesra.ac.in</p>
+          <Link href="mailto:ignite@bitmesra.ac.in" className="mt-2 text-white">ignite@bitmesra.ac.in</Link>
           <p className="text-white">Birla Institute of Technology, Patna 800014</p>
         </div>
       </div>

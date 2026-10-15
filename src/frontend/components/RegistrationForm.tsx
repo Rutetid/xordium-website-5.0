@@ -9,6 +9,7 @@ import type {
   RegistrationSubmission,
   RegistrationTeamMember,
 } from "@/types/registration";
+import { BATCHES } from "@/types/registration";
 import TeamMemberFields from "@/components/TeamMemberFields";
 
 const branches: Branch[] = [
@@ -115,7 +116,7 @@ export default function RegistrationForm({ initialEventId }: Props) {
       ["email", email, "Enter your email address."],
       ["phone", phone, "Enter your phone number."],
       ["branch", branch, "Select your branch."],
-      ["year", year, "Enter your year of study."],
+      ["year", year, "Select your batch."],
       ["rollNumber", rollNumber, "Enter your roll or registration number."],
     ];
 
@@ -168,7 +169,7 @@ export default function RegistrationForm({ initialEventId }: Props) {
           nextErrors[`${prefix}.email`] = `Use a ${BIT_EMAIL_DOMAIN} email address.`;
         }
         if (!member.branch) nextErrors[`${prefix}.branch`] = "Select this member's branch.";
-        if (!member.year.trim()) nextErrors[`${prefix}.year`] = "Enter this member's year of study.";
+        if (!member.year.trim()) nextErrors[`${prefix}.year`] = "Select this member's batch.";
         if (!member.phone.trim()) {
           nextErrors[`${prefix}.phone`] = "Enter this member's phone number.";
         } else if (!phonePattern.test(member.phone.trim())) {
@@ -438,14 +439,32 @@ export default function RegistrationForm({ initialEventId }: Props) {
             </select>
             <FieldError id="branch-error" message={errors.branch} />
           </div>
-          <TextField
-            id="year"
-            label="Year of study"
-            value={year}
-            error={errors.year}
-            onChange={setYear}
-            required
-          />
+          <div>
+            <label htmlFor="year" className="field-label">
+              Batch of
+            </label>
+            <select
+              id="year"
+              required
+              value={year}
+              onChange={(event) => setYear(event.target.value)}
+              aria-invalid={Boolean(errors.year)}
+              aria-describedby={errors.year ? "year-error" : undefined}
+              className="field-control"
+            >
+              <option value="">Select batch</option>
+              {BATCHES.map((batch) => (
+                <option key={batch} value={batch}>
+                  {batch}
+                </option>
+              ))}
+            </select>
+            {errors.year ? (
+              <p id="year-error" className="mt-1 font-mono text-[13px] text-red-300" role="alert">
+                {errors.year}
+              </p>
+            ) : null}
+          </div>
           <TextField
             id="rollNumber"
             label="College roll / registration number"

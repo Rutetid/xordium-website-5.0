@@ -86,6 +86,7 @@ export default function EventsPage() {
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [togglingSlug, setTogglingSlug] = useState<string | null>(null);
 
   useEffect(() => {
     loadEvents();
@@ -184,8 +185,7 @@ export default function EventsPage() {
     }
   }
 
-  async function handleDelete(slug: string) {
-    setDeleting(true);
+  async function handleDelete(slug: string) {    setDeleting(true);
     setError("");
     try {
       await deleteEvent(slug);
@@ -206,6 +206,23 @@ export default function EventsPage() {
     }
     await handleDelete(slug);
     setDeleteConfirm(null);
+  }
+
+  async function toggleFeatured(event: AdminEvent) {
+    setTogglingSlug(event.slug);
+    setError("");
+    setSuccess("");
+    try {
+      await updateEvent(event.slug, { featured: !event.featured });
+      setSuccess(
+        `"${event.title}" ${!event.featured ? "will now show" : "hidden from"} Featured competitions.`
+      );
+      loadEvents();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to update event.");
+    } finally {
+      setTogglingSlug(null);
+    }
   }
 
   if (!user) return null;
@@ -465,6 +482,18 @@ export default function EventsPage() {
                   >
                     Edit
                   </button>
+                  <label className="flex cursor-pointer items-center gap-1.5 bg-white/10 border border-white/20 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.15em] transition-colors hover:bg-white/20">
+                    <input
+                      type="checkbox"
+                      checked={Boolean(event.featured)}
+                      disabled={togglingSlug === event.slug}
+                      onChange={() => toggleFeatured(event)}
+                      className="size-3.5 accent-red-600"
+                    />
+                    <span className={event.featured ? "text-yellow-400" : "text-white"}>
+                      Featured
+                    </span>
+                  </label>
                   {user?.role === "OWNER" && (
                     <button
                       onClick={() => handleDeleteConfirm(event.slug)}
@@ -496,6 +525,7 @@ export default function EventsPage() {
         </h4>
         <ul className="space-y-1">
           <li className="font-mono text-[11px] text-white">Edit event descriptions & posters</li>
+          <li className="font-mono text-[11px] text-white">Tick Featured to show an event in homepage Featured competitions</li>
           <li className="font-mono text-[11px] text-white">Delete events</li>
           <li className="font-mono text-[11px] text-white">Featured events shown first, then sorted by date</li>
           <li className="font-mono text-[11px] text-white">Upload poster images (auto-converted to WebP, portrait 1080x1350)</li>

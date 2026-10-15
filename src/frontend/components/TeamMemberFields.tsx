@@ -1,6 +1,7 @@
 "use client";
 
 import type { Branch, RegistrationTeamMember } from "@/types/registration";
+import { BATCHES } from "@/types/registration";
 
 const branches: Branch[] = [
   "CSE",
@@ -92,13 +93,37 @@ export default function TeamMemberFields({
                 message={errors[`teamMembers.${index}.branch`]}
               />
             </div>
-            <MemberInput
-              id={`member-${index}-year`}
-              label="Year of study"
-              value={member.year}
-              error={errors[`teamMembers.${index}.year`]}
-              onChange={(value) => onChange(index, "year", value)}
-            />
+            <div>
+              <label
+                htmlFor={`member-${index}-year`}
+                className="font-mono text-[13px] tracking-[0.15em] text-white uppercase"
+              >
+                Batch of
+              </label>
+              <select
+                id={`member-${index}-year`}
+                value={member.year}
+                onChange={(event) => onChange(index, "year", event.target.value)}
+                aria-invalid={Boolean(errors[`teamMembers.${index}.year`])}
+                aria-describedby={
+                  errors[`teamMembers.${index}.year`]
+                    ? `member-${index}-year-error`
+                    : undefined
+                }
+                className="mt-1.5 block min-h-11 w-full rounded border border-white/15 bg-[#0a0c10] px-3 py-2.5 font-mono text-[13px] text-white focus:border-cyan-300 focus:outline-none"
+              >
+                <option value="">Select batch</option>
+                {BATCHES.map((batch) => (
+                  <option key={batch} value={batch}>
+                    {batch}
+                  </option>
+                ))}
+              </select>
+              <FieldError
+                id={`member-${index}-year-error`}
+                message={errors[`teamMembers.${index}.year`]}
+              />
+            </div>
             <MemberInput
               id={`member-${index}-phone`}
               label="Phone / WhatsApp number"
