@@ -118,6 +118,10 @@ export default function EventsPage() {
   const [showCreate, setShowCreate] = useState(false);
   const [createForm, setCreateForm] = useState({...EMPTY_EVENT_FORM});
   const [creating, setCreating] = useState(false);
+  const createFileRef = useRef<HTMLInputElement>(null);
+  const [createPreview, setCreatePreview] = useState<string | null>(null);
+  const [createBlob, setCreateBlob] = useState<Blob | null>(null);
+  const [createConverting, setCreateConverting] = useState(false);
 
   useEffect(() => {
     loadEvents();
@@ -242,6 +246,8 @@ export default function EventsPage() {
 
   function openCreate() {
     setCreateForm({...EMPTY_EVENT_FORM});
+    setCreatePreview(null);
+    setCreateBlob(null);
     setShowCreate(true);
     setSuccess("");
     setError("");
@@ -251,19 +257,35 @@ export default function EventsPage() {
     setCreateForm((current) => ({...current, [field]: value}));
   }
 
+  async function handleCreateFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setCreateConverting(true);
+    setError("");
+    try {
+      const webp = await convertToWebP(file);
+      setCreateBlob(webp);
+      setCreatePreview(URL.createObjectURL(webp));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Image conversion failed.");
+    } finally {
+      setCreateConverting(false);
+    }
+  }
+
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
     setCreating(true);
     setError("");
     setSuccess("");
     try {
-      await createEvent({
+      const created = await createEvent({
         title: createForm.title.trim(),
         slug: createForm.slug.trim() || undefined,
         tag: createForm.tag.trim(),
         category: createForm.category,
         description: createForm.description.trim(),
-        image: createForm.image.trim() || undefined,
         prizePool: createForm.prizePool.trim(),
         venue: createForm.venue.trim(),
         format: createForm.format.trim(),
@@ -272,7 +294,16 @@ export default function EventsPage() {
         cta: createForm.cta.trim(),
         featured: createForm.featured,
       });
-      setSuccess(`"${createForm.title.trim()}" created successfully.`);
+
+      // Upload the poster against the created event, then attach its URL.
+      if (createBlob) {
+        const path = await uploadPoster(created.slug, createBlob);
+        await updateEvent(created.slug, { posterUrl: path });
+        setCreateBlob(null);
+        setCreatePreview(null);
+      }
+
+      setSuccess(`"${created.title}" created successfully.`);
       setShowCreate(false);
       loadEvents();
     } catch (err) {
@@ -536,7 +567,6 @@ export default function EventsPage() {
                     id="new-tag"
                     value={createForm.tag}
                     onChange={(e) => updateCreateField("tag", e.target.value)}
-                    required
                     placeholder="HACK-SYN-01"
                     className="field-control"
                   />
@@ -563,7 +593,6 @@ export default function EventsPage() {
                     id="new-cta"
                     value={createForm.cta}
                     onChange={(e) => updateCreateField("cta", e.target.value)}
-                    required
                     placeholder="Register squad"
                     className="field-control"
                   />
@@ -576,7 +605,6 @@ export default function EventsPage() {
                   id="new-description"
                   value={createForm.description}
                   onChange={(e) => updateCreateField("description", e.target.value)}
-                  required
                   rows={4}
                   placeholder="Full event description (Markdown supported)..."
                   className="block w-full rounded border border-white/20 bg-white/5 p-3 font-mono text-xs text-white placeholder:text-white/30 focus:border-red-500 focus:outline-none resize-y"
@@ -590,7 +618,6 @@ export default function EventsPage() {
                     id="new-venue"
                     value={createForm.venue}
                     onChange={(e) => updateCreateField("venue", e.target.value)}
-                    required
                     placeholder="Mainstage Arena"
                     className="field-control"
                   />
@@ -601,7 +628,6 @@ export default function EventsPage() {
                     id="new-format"
                     value={createForm.format}
                     onChange={(e) => updateCreateField("format", e.target.value)}
-                    required
                     placeholder="5v5 squad LAN bracket"
                     className="field-control"
                   />
@@ -615,7 +641,6 @@ export default function EventsPage() {
                     id="new-schedule"
                     value={createForm.schedule}
                     onChange={(e) => updateCreateField("schedule", e.target.value)}
-                    required
                     placeholder="Day 02 // 10:00 IST"
                     className="field-control"
                   />
@@ -626,7 +651,6 @@ export default function EventsPage() {
                     id="new-prize"
                     value={createForm.prizePool}
                     onChange={(e) => updateCreateField("prizePool", e.target.value)}
-                    required
                     placeholder="₹60,000"
                     className="field-control"
                   />
@@ -647,16 +671,38 @@ export default function EventsPage() {
                   />
                 </div>
                 <div>
-                  <label className="field-label" htmlFor="new-image">
-                    Image path <span className="text-white normal-case tracking-normal">(optional)</span>
-                  </label>
-                  <input
-                    id="new-image"
-                    value={createForm.image}
-                    onChange={(e) => updateCreateField("image", e.target.value)}
-                    placeholder="/assets/competitive-programming.jpg"
-                    className="field-control"
-                  />
+                  <label className="field-label">Poster image</label>
+                  <div
+                    onClick={() => createFileRef.current?.click()}
+                    className="relative flex cursor-pointer flex-col items-center justify-center gap-2 rounded border-2 border-dashed border-white/20 bg-white/5 p-6 text-center transition hover:border-red-500/60 hover:bg-white/[0.07]"
+                  >
+                    <input
+                      ref={createFileRef}
+                      type="file"
+                      accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/avif"
+                      onChange={handleCreateFileChange}
+                      className="sr-only"
+                    />
+                    {createConverting ? (
+                      <p className="font-mono text-xs text-white">Converting to WebP...</p>
+                    ) : createPreview ? (
+                      <>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={createPreview}
+                          alt="Poster preview"
+                          className="h-32 w-auto rounded border border-white/20 object-contain"
+                        />
+                        <p className="font-mono text-[10px] text-green-400">
+                          Converted to WebP - uploaded on save
+                        </p>
+                      </>
+                    ) : (
+                      <p className="font-mono text-xs text-white">
+                        Click to select a poster image (optional)
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
 

@@ -360,24 +360,32 @@ export default function RegistrationForm({ initialEventId }: Props) {
                   {selectedEventInfo.description}
                 </p>
                 <dl className="mt-3 space-y-1 border-t border-white/10 pt-3 font-mono text-[13px]">
+                  {selectedEventInfo.venue ? (
                   <div className="flex justify-between gap-2">
                     <dt className="uppercase">Venue</dt>
                     <dd className="text-right">{selectedEventInfo.venue}</dd>
                   </div>
+                  ) : null}
+                  {selectedEventInfo.format ? (
                   <div className="flex justify-between gap-2">
                     <dt className="uppercase">Format</dt>
                     <dd className="text-right">{selectedEventInfo.format}</dd>
                   </div>
+                  ) : null}
+                  {selectedEventInfo.schedule ? (
                   <div className="flex justify-between gap-2">
                     <dt className="uppercase">Schedule</dt>
                     <dd className="text-right">{selectedEventInfo.schedule}</dd>
                   </div>
+                  ) : null}
+                  {selectedEventInfo.prizePool ? (
                   <div className="flex justify-between gap-2">
                     <dt className="uppercase">Prize pool</dt>
                     <dd className="text-right text-red-500">
                       {selectedEventInfo.prizePool}
                     </dd>
                   </div>
+                  ) : null}
                   <div className="flex justify-between gap-2">
                     <dt className="uppercase">Squad</dt>
                     <dd className="text-right">
