@@ -17,24 +17,22 @@ import {
 } from "@/data/register-events";
 
 const GRID_SPAN: Record<string, string> = {
-  "gen-ai": "md:col-span-2 lg:col-span-4",
-  technocrat: "lg:col-span-2",
-  "cp-contest": "lg:col-span-3",
-  "ad-making": "lg:col-span-3",
-  "poster-making": "lg:col-span-3",
-  "treasure-hunt": "lg:col-span-3",
   "hackathon-12h": "md:col-span-2 lg:col-span-6",
+  "cp-contest": "lg:col-span-3",
+  "treasure-hunt": "lg:col-span-3",
+  "ad-making": "lg:col-span-3",
+  technocrat: "lg:col-span-3",
+  "pixel-pulse": "md:col-span-2 lg:col-span-6",
 };
 
 const TICKER = [
   "REGISTRATION LIVE",
-  "GEN AI",
-  "CYBER PSYCHOSIS",
-  "CODE RED",
-  "AD VERSE",
-  "POSTER MAKING",
-  "TREASURE HUNT",
   "12 HOUR HACKATHON",
+  "CODE RED",
+  "TREASURE HUNT",
+  "AD VERSE",
+  "CYBER PSYCHOSIS",
+  "PIXEL PULSE",
   "受付開始",
   "XORDIUM 5.0 // BIT PATNA",
 ];
@@ -150,8 +148,8 @@ function EventCard({
   onBlocked: (event: RegisterEvent) => void;
 }) {
   const [pending, setPending] = useState(false);
-  const wide = event.slug === "hackathon-12h";
-  const spanClass = GRID_SPAN[event.slug] ?? "lg:col-span-2";
+  const wide = event.wide === true;
+  const spanClass = GRID_SPAN[event.slug] ?? "lg:col-span-3";
 
   function handleClick(clickEvent: MouseEvent<HTMLAnchorElement>) {
     if (!event.formUrl) {
@@ -205,9 +203,9 @@ function EventCard({
         </div>
       </div>
 
-      {wide ? (
+      {wide && event.ghost ? (
         <span className="rx-ghost" aria-hidden="true">
-          12H
+          {event.ghost}
         </span>
       ) : null}
       <span className="rx-corners rx-corners--a" aria-hidden="true" />
