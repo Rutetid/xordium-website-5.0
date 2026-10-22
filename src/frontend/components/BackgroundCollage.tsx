@@ -151,6 +151,10 @@ export default function BackgroundCollage({
   const [tiles, setTiles] = useState<CollageTile[]>([]);
   const [isVisible, setIsVisible] = useState(false);
 
+  // The register terminal renders its own full-bleed backdrop; the
+  // collage must not appear there (or behind its floating navbar).
+  const collageDisabled = pathname === "/register";
+
   useEffect(() => {
     const shell = shellRef.current;
     if (!shell) return;
@@ -182,6 +186,13 @@ export default function BackgroundCollage({
   }, []);
 
   useEffect(() => {
+    if (collageDisabled) {
+      imagesRef.current = [];
+      setTiles([]);
+      setIsVisible(false);
+      return;
+    }
+
     setIsVisible(false);
     const waitBeforeReplacing = hasRenderedRouteRef.current ? 750 : 0;
     hasRenderedRouteRef.current = true;
@@ -200,7 +211,7 @@ export default function BackgroundCollage({
     }, waitBeforeReplacing);
 
     return () => window.clearTimeout(timeout);
-  }, [pathname]);
+  }, [pathname, collageDisabled]);
 
   async function revealLoadedImage(
     event: SyntheticEvent<HTMLImageElement>,
@@ -224,42 +235,44 @@ export default function BackgroundCollage({
 
   return (
     <div ref={shellRef} className="collage-shell">
-      <div
-        className={`background-collage${isVisible ? " is-visible" : ""}`}
-        aria-hidden="true"
-      >
-        {tiles.map((tile) => (
-          <div
-            className={`collage-tile${tile.loaded ? " is-loaded" : ""}`}
-            key={tile.key}
-            style={
-              {
-                "--tile-left": `${tile.left}px`,
-                "--tile-top": `${tile.top}px`,
-                "--tile-width": `${tile.width}px`,
-                "--tile-height": `${tile.height}px`,
-                "--tile-rotation": `${tile.rotation}deg`,
-                "--tile-delay": `${tile.delay}ms`,
-                "--tile-z-index": `${tile.zIndex}`,
-              } as TileStyle
-            }
-          >
-            <img
-              src={tile.src}
-              alt=""
-              loading="lazy"
-              decoding="async"
-              fetchPriority="low"
-              onLoad={(event) => void revealLoadedImage(event, tile.key)}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "contain",
-              }}
-            />
-          </div>
-        ))}
-      </div>
+      {!collageDisabled && (
+        <div
+          className={`background-collage${isVisible ? " is-visible" : ""}`}
+          aria-hidden="true"
+        >
+          {tiles.map((tile) => (
+            <div
+              className={`collage-tile${tile.loaded ? " is-loaded" : ""}`}
+              key={tile.key}
+              style={
+                {
+                  "--tile-left": `${tile.left}px`,
+                  "--tile-top": `${tile.top}px`,
+                  "--tile-width": `${tile.width}px`,
+                  "--tile-height": `${tile.height}px`,
+                  "--tile-rotation": `${tile.rotation}deg`,
+                  "--tile-delay": `${tile.delay}ms`,
+                  "--tile-z-index": `${tile.zIndex}`,
+                } as TileStyle
+              }
+            >
+              <img
+                src={tile.src}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                fetchPriority="low"
+                onLoad={(event) => void revealLoadedImage(event, tile.key)}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                }}
+              />
+            </div>
+          ))}
+        </div>
+      )}
       <div className="collage-content">{children}</div>
     </div>
   );

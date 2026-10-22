@@ -3,7 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getRegistrationHref } from "@/data/events";
 import { prisma } from "@/backend/lib/prisma";
-import { toFestEvent } from "@/lib/events";
+import { toFestEvent, type FestEvent } from "@/lib/events";
+import { FALLBACK_EVENTS } from "@/data/site-config";
+import { accentFor } from "@/data/register-events";
 import MarkdownText from "@/components/markdown-text";
 
 export const dynamic = "force-dynamic";
@@ -22,93 +24,102 @@ export default async function EventDetailPage({
   const row = await prisma.event
     .findUnique({ where: { slug } })
     .catch(() => null);
-  if (!row) notFound();
 
-  const event = toFestEvent({
-    slug: row.slug,
-    tag: row.tag,
-    title: row.title,
-    category: row.category,
-    description: row.description,
-    image: row.image,
-    prizePool: row.prizePool,
-    venue: row.venue,
-    format: row.format,
-    schedule: row.schedule,
-    teamSize: row.teamSize,
-    cta: row.cta,
-    featured: row.featured,
-    posterUrl: row.posterUrl,
-  });
+  let event: FestEvent | null = null;
+  if (row) {
+    event = toFestEvent({
+      slug: row.slug,
+      tag: row.tag,
+      title: row.title,
+      category: row.category,
+      description: row.description,
+      image: row.image,
+      prizePool: row.prizePool,
+      venue: row.venue,
+      format: row.format,
+      schedule: row.schedule,
+      teamSize: row.teamSize,
+      cta: row.cta,
+      featured: row.featured,
+      posterUrl: row.posterUrl,
+    });
+  } else {
+    // Curated fallback keeps directory links alive when the DB is down.
+    event = FALLBACK_EVENTS.find((e) => e.slug === slug) ?? null;
+  }
+  if (!event) notFound();
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-10">
-      <Link
-        href="/events"
-        className="font-mono text-[11px] tracking-[0.2em] text-white uppercase hover:text-white"
-      >
+    <section className="mx-auto max-w-6xl px-4 py-8">
+      <Link href="/events" className="cx-dir-back">
         ← Back to directory
       </Link>
-      <div className="glass-panel mt-4 grid gap-6 overflow-hidden p-4 sm:p-6 lg:grid-cols-2">
-        <div className="relative aspect-[4/5] w-full overflow-hidden rounded border border-white/10 bg-black/50">
-          <Image
-            src={event.image}
-            alt={event.title}
-            fill
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-contain"
-            priority
-          />
-          {event.tag ? (
-            <span className="absolute top-2 left-2 bg-red-600 px-2 py-1 font-mono text-[10px] tracking-[0.2em] uppercase">
-              {event.tag}
-            </span>
-          ) : null}
-        </div>
-        <div>
-          <p className="font-mono text-[11px] tracking-[0.25em] text-cyan-300 uppercase">
+      <div
+        className="cx-flag cx-corners cx-flag--detail mt-2"
+        style={{ ["--accent" as string]: accentFor(event.slug) }}
+      >
+        <div className="cx-flag-bar">
+          <p className="cx-flag-label">
             {event.category}
             {event.schedule ? ` // ${event.schedule}` : ""}
           </p>
-          <h1 className="mt-2 font-display text-4xl leading-tight font-black uppercase">
-            {event.title}
-          </h1>
-          {event.description ? (
-            <MarkdownText className="mt-3 font-mono text-xs leading-relaxed text-white">
-              {event.description}
-            </MarkdownText>
-          ) : null}
-          <dl className="glass-panel mt-5 space-y-2 p-4 font-mono text-xs">
-            {[
-              ["Prize pool", event.prizePool],
-              ["Venue", event.venue],
-              ["Format", event.format],
-              ["Schedule", event.schedule],
-              ...(event.teamSize !== undefined
-                ? [["Squad", event.teamSize] as [string, string]]
-                : []),
-            ]
-              .filter(([, v]) => Boolean(v))
-              .map(([k, v]) => (
-                <div key={k} className="flex justify-between gap-3">
-                  <dt className="tracking-[0.2em] text-white uppercase">{k}</dt>
-                  <dd className="text-right text-white">{v}</dd>
-                </div>
-              ))}
-          </dl>
-          <div className="mt-5 flex flex-col gap-2 sm:flex-row">
-            <Link
-              href={getRegistrationHref(event.slug)}
-              className="bg-red-600 px-5 py-2.5 text-center font-mono text-[11px] font-bold tracking-[0.2em] uppercase hover:bg-red-500"
-            >
-              {event.cta || "Register"} // Register →
-            </Link>
-            <Link
-              href="/events"
-              className="border border-white/25 px-5 py-2.5 text-center font-mono text-[11px] tracking-[0.2em] uppercase hover:bg-white/10"
-            >
-              All events
-            </Link>
+          <p className="cx-flag-time">Protocol file</p>
+        </div>
+        <div className="cx-flag-body">
+          <div className="cx-flag-poster">
+            <Image
+              src={event.image}
+              alt=""
+              fill
+              sizes="(max-width: 768px) 100vw, 17rem"
+              priority
+            />
+            {event.venue ? (
+              <span className="cx-flag-venue">{event.venue}</span>
+            ) : null}
+          </div>
+          <div className="cx-flag-main">
+            <div className="cx-event-tags">
+              <span className="cx-tag">{event.tag}</span>
+              <span className="cx-tag cx-tag--ghost">{event.format}</span>
+            </div>
+            <h1 className="cx-flag-title">{event.title}</h1>
+            {event.description ? (
+              <MarkdownText className="cx-flag-desc">
+                {event.description}
+              </MarkdownText>
+            ) : null}
+            <dl className="cx-event-meta">
+              {(
+                [
+                  ["Prize pool", event.prizePool],
+                  ["Venue", event.venue],
+                  ["Format", event.format],
+                  ["Window", event.schedule],
+                  ...(event.teamSize !== undefined
+                    ? [["Team", event.teamSize] as [string, string]]
+                    : []),
+                ] as [string, string][]
+              )
+                .filter(([, v]) => Boolean(v))
+                .map(([k, v]) => (
+                  <div key={k}>
+                    <dt>{k}</dt>
+                    <dd>{v}</dd>
+                  </div>
+                ))}
+            </dl>
+            <div className="cx-flag-actions">
+              <Link
+                href={getRegistrationHref(event.slug)}
+                className="cx-btn cx-btn--acid"
+              >
+                {event.cta || "Register"} →
+              </Link>
+              <Link href="/events" className="cx-btn cx-btn--ghost">
+                All events
+              </Link>
+            </div>
           </div>
         </div>
       </div>

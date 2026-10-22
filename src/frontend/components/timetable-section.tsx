@@ -3,7 +3,10 @@
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/section-heading";
 import { fetchTimetable, type TimetableEntry } from "@/lib/admin-api";
+import { FALLBACK_TIMETABLE } from "@/data/site-config";
 
+// Ops timeline. Admin timetable wins; the fallback grid keeps the
+// section populated when the API is unreachable.
 export default function TimetableSection() {
   const [entries, setEntries] = useState<TimetableEntry[] | null>(null);
   const [activeDay, setActiveDay] = useState<string | null>(null);
@@ -11,10 +14,10 @@ export default function TimetableSection() {
   useEffect(() => {
     fetchTimetable()
       .then((data) => {
-        setEntries(data);
+        setEntries(data.length > 0 ? data : FALLBACK_TIMETABLE);
       })
       .catch(() => {
-        setEntries([]);
+        setEntries(FALLBACK_TIMETABLE);
       });
   }, []);
 
@@ -26,21 +29,22 @@ export default function TimetableSection() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-14">
       <SectionHeading
-        kicker="Festival timetable // Featured timetable"
-        title="Festival schedule timetable"
-        blurb="Structured four-day competitive continuum across the BIT collegiate campus. All times indexed to Indian Standard Time (IST)."
+        kicker="Ops timeline // 02"
+        title="Operations schedule"
+        blurb="Multi-day competitive continuum across the BIT collegiate campus. All times indexed to Indian Standard Time (IST)."
       />
-      <div className="mb-4 flex gap-2 overflow-x-auto font-mono text-[13px] tracking-[0.15em] uppercase">
+      <div
+        className="cx-sched-tabs"
+        role="group"
+        aria-label="Festival days"
+      >
         {days.map((d) => (
           <button
             key={d}
             type="button"
+            aria-pressed={d === selectedDay}
             onClick={() => setActiveDay(d)}
-            className={`shrink-0 border px-3 py-2 min-h-11 transition-colors ${
-              d === selectedDay
-                ? "border-red-600 bg-red-600 text-white"
-                : "border-white/15 text-white hover:text-white"
-            }`}
+            className="cx-sched-tab"
           >
             {d}
           </button>
@@ -51,29 +55,20 @@ export default function TimetableSection() {
           ? [1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="glass-panel h-24 animate-pulse"
+                className="cx-sched-row h-24 animate-pulse"
                 aria-hidden="true"
               />
             ))
           : visible.map((s) => (
-              <div
-                key={s.id}
-                className="glass-panel grid gap-2 p-4 sm:grid-cols-[140px_1fr_auto] sm:items-center"
-              >
-                <span className="font-mono text-xs text-cyan-300">{s.time}</span>
+              <div key={s.id} className="cx-sched-row">
+                <span className="cx-sched-time">{s.time}</span>
                 <div>
-                  <h3 className="font-display text-sm font-extrabold tracking-wide uppercase">
-                    {s.title}
-                  </h3>
-                  <p className="font-mono text-[13px] text-white">{s.detail}</p>
+                  <h3 className="cx-sched-title">{s.title}</h3>
+                  <p className="cx-sched-detail">{s.detail}</p>
                 </div>
-                <div className="flex gap-2 font-mono text-[13px] tracking-[0.15em] uppercase">
-                  <span className="border border-white/15 px-2 py-1 text-white">
-                    {s.venue}
-                  </span>
-                  <span className="border border-red-600/50 px-2 py-1 text-red-400">
-                    [{s.mode}]
-                  </span>
+                <div className="cx-sched-chips">
+                  <span className="cx-chip">{s.venue}</span>
+                  <span className="cx-chip cx-chip--mode">[{s.mode}]</span>
                 </div>
               </div>
             ))}
