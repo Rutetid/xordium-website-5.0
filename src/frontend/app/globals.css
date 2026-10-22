@@ -2604,6 +2604,275 @@ button {
   color: rgb(255 255 255 / 45%);
 }
 
+/* ---------- directory dossier (.cx-dos) ----------
+   Richer than the homepage .cx-event feed rows: HUD status bar,
+   poster + briefing split, highlights list, full meta ledger and
+   entry-aware footer (register link vs walk-in contact line). */
+
+.cx-dos {
+  --accent: var(--color-acid);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgb(255 255 255 / 14%);
+  background-color: rgb(8 9 13 / 82%);
+  background-image:
+    linear-gradient(155deg, rgb(255 255 255 / 5%), transparent 42%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgb(255 255 255 / 1.5%) 3px,
+      rgb(255 255 255 / 1.5%) 4px
+    );
+}
+
+/* --- HUD bar --- */
+
+.cx-dos-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem 0.75rem;
+  padding: 0.55rem 0.9rem;
+  border-bottom: 1px solid rgb(255 255 255 / 10%);
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--accent) 14%, transparent),
+    transparent 55%
+  );
+}
+
+.cx-dos-idx {
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.35rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+}
+
+.cx-dos-status {
+  margin-left: auto;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--accent) 85%, white 15%);
+}
+
+/* --- Poster + briefing split --- */
+
+.cx-dos-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 900px) {
+  .cx-dos-grid {
+    grid-template-columns: minmax(0, 17rem) minmax(0, 1fr);
+  }
+}
+
+.cx-dos-media {
+  position: relative;
+  min-height: 220px;
+  overflow: hidden;
+  border-bottom: 1px solid rgb(255 255 255 / 10%);
+}
+
+@media (min-width: 900px) {
+  .cx-dos-media {
+    border-right: 1px solid rgb(255 255 255 / 10%);
+    border-bottom: none;
+  }
+}
+
+.cx-dos-media img {
+  object-fit: cover;
+  filter: saturate(0.9) contrast(1.05);
+  transition: transform 0.45s ease, filter 0.45s ease;
+}
+
+.cx-dos:hover .cx-dos-media img {
+  transform: scale(1.04);
+  filter: saturate(1.05) contrast(1.08);
+}
+
+.cx-dos-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 40%,
+    rgb(8 9 13 / 55%) 100%
+  );
+  pointer-events: none;
+}
+
+.cx-dos-ghost {
+  position: absolute;
+  top: 0.4rem;
+  left: 0.6rem;
+  z-index: 1;
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(3.4rem, 8vw, 5rem);
+  font-weight: 900;
+  line-height: 0.85;
+  letter-spacing: 0.02em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px color-mix(in srgb, var(--accent) 70%, transparent);
+  pointer-events: none;
+}
+
+.cx-dos-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 1.1rem 1.15rem;
+}
+
+.cx-dos-title {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.cx-dos-blurb {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: rgb(255 255 255 / 78%);
+}
+
+.cx-dos-long {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  color: rgb(255 255 255 / 58%);
+}
+
+/* --- Key signals --- */
+
+.cx-dos-hl {
+  border-left: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  padding-left: 0.75rem;
+}
+
+.cx-dos-hl-head {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--accent) 80%, white 20%);
+  margin-bottom: 0.4rem;
+}
+
+.cx-dos-hl ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  list-style: none;
+}
+
+.cx-dos-hl li {
+  position: relative;
+  padding-left: 0.9rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: rgb(255 255 255 / 72%);
+}
+
+.cx-dos-hl li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 10px;
+}
+
+/* --- Meta ledger --- */
+
+.cx-dos-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem 1rem;
+  padding-top: 0.65rem;
+  border-top: 1px dashed rgb(255 255 255 / 14%);
+}
+
+.cx-dos-meta div {
+  min-width: 0;
+}
+
+.cx-dos-meta dt {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 42%);
+  margin-bottom: 0.15rem;
+}
+
+.cx-dos-meta dd {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 12px;
+  color: rgb(255 255 255 / 85%);
+  overflow-wrap: anywhere;
+}
+
+.cx-dos-prize {
+  font-family: var(--font-display), sans-serif;
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--accent) 75%, white 25%);
+}
+
+/* --- Footer actions --- */
+
+.cx-dos-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 0.85rem;
+  padding: 0.7rem 1.1rem;
+  border-top: 1px solid rgb(255 255 255 / 10%);
+  background: rgb(0 0 0 / 35%);
+}
+
+.cx-dos-entry {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.45rem 0.85rem;
+}
+
+.cx-dos-entry-tag {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  color: color-mix(in srgb, var(--accent) 85%, white 15%);
+}
+
+.cx-dos-entry-contact {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 12px;
+  color: rgb(255 255 255 / 75%);
+}
+
 /* =============================================================
    REGISTER // INTAKE TERMINAL  (.rx-*)
    A maximalist cyberpunk kiosk: hazard tape, CRT scanlines,

@@ -9,7 +9,7 @@ export const BROCHURE_URL = "";
 
 /** Placeholder hero stats — swap for real numbers. */
 export const heroStats: { value: string; label: string }[] = [
-  { value: "06", label: "Combat arenas" },
+  { value: "07", label: "Combat arenas" },
   { value: "04", label: "Festival days" },
   { value: "₹25K", label: "Prize pool" },
   { value: "500+", label: "Operators" },
@@ -22,6 +22,7 @@ export const tickerKeywords: string[] = [
   "Ad Verse",
   "Cyber Psychosis",
   "Pixel Pulse",
+  "The Foundry",
   "Esports Arena",
   "Gen AI Lab",
   "BIT Patna",
@@ -40,6 +41,14 @@ export const FALLBACK_EVENTS: FestEvent[] = [
     category: "Technical",
     description:
       "Twelve hours, one team, one artifact that survives the night. Ship before the clock hits zero.",
+    longDescription:
+      "The flagship build sprint of Xordium 5.0. Teams of two to four get a problem statement at ignition and twelve continuous hours to design, build and demo a working artifact. Mentors roam the floor, the scoreboard tracks commit velocity, and judging rewards both technical depth and demo polish. Overnight food and caffeine are on the house — sleep is optional, shipping is not.",
+    highlights: [
+      "12-hour overnight build window with live mentor support",
+      "Problem statement drop at ignition — no pre-work allowed",
+      "Demo to judges at freeze; prizes for build + presentation",
+      "Team size 2–4, mixed disciplines welcome",
+    ],
     image: "/assets/hackathon.jpg",
     prizePool: "₹10,000",
     venue: "Innovation Lab",
@@ -48,6 +57,7 @@ export const FALLBACK_EVENTS: FestEvent[] = [
     teamSize: "2–4",
     cta: "",
     featured: true,
+    entry: "register",
   },
   {
     slug: "cp-contest",
@@ -56,6 +66,14 @@ export const FALLBACK_EVENTS: FestEvent[] = [
     category: "Algorithms",
     description:
       "Timed problem set, climbing scoreboard, zero mercy. Bring your templates and your nerve.",
+    longDescription:
+      "A three-round competitive programming ladder — qualifying set, semifinal duel, grand final on the big-screen board. Problems span graphs, DP, strings and greedy constructs, difficulty ramping each round. Individual entry, rated scoring, system tests with penalty time. Bring your own templates; the only thing we provide is the clock.",
+    highlights: [
+      "Three rounds: qualifier → semifinal → grand final",
+      "Live climbing scoreboard projected on the main board",
+      "Individual rated entry — no team carry",
+      "Problem difficulty ramps every round",
+    ],
     image: "/assets/competitive-programming.jpg",
     prizePool: "₹8,000",
     venue: "CSE Labs 2+3",
@@ -64,6 +82,7 @@ export const FALLBACK_EVENTS: FestEvent[] = [
     teamSize: "Solo",
     cta: "",
     featured: true,
+    entry: "register",
   },
   {
     slug: "treasure-hunt",
@@ -72,6 +91,14 @@ export const FALLBACK_EVENTS: FestEvent[] = [
     category: "Fun",
     description:
       "Decode the clues, crack the campus, take what is yours. The map lies, the riddles do not.",
+    longDescription:
+      "A campus-wide puzzle trail across BIT Patna. Teams of two or three receive encrypted clue packets at rolling heat checkpoints — each solved riddle unlocks the next grid coordinate. Expect QR drops, steganography, lateral-thinking red herrings and at least one trap that wastes twenty minutes of your life. First team to the final vault takes the grid.",
+    highlights: [
+      "Rolling heats — join any checkpoint window on Day 2",
+      "Clue types: crypto, stego, location, lateral-thinking",
+      "Team of 2–3; phones allowed, maps lie",
+      "First to the final vault wins the grid",
+    ],
     image: "/assets/treasure-hunt.jpg",
     prizePool: "₹5,000",
     venue: "Full campus grid",
@@ -80,6 +107,7 @@ export const FALLBACK_EVENTS: FestEvent[] = [
     teamSize: "2–3",
     cta: "",
     featured: true,
+    entry: "register",
   },
   {
     slug: "ad-making",
@@ -88,6 +116,14 @@ export const FALLBACK_EVENTS: FestEvent[] = [
     category: "Open",
     description:
       "Cut, score and sell the impossible. The loudest idea in the room wins the room.",
+    longDescription:
+      "A live pitch arena for advertisers, film-makers and chaotic storytellers. Teams get a surprise product brief on the spot, ninety minutes to cut a 60-second ad, and three minutes to sell it to a live jury. Scoring weights concept, craft and pure persuasive nerve. No prior portfolio required — the room only cares what you do with the brief in front of you.",
+    highlights: [
+      "Surprise product brief dropped on-site — no pre-production",
+      "90 minutes to cut a 60-second spot",
+      "3-minute live pitch to the jury",
+      "Teams of 1–3; any tooling allowed",
+    ],
     image: "/assets/ad-making.jpg",
     prizePool: "₹4,000",
     venue: "Seminar Hall A",
@@ -96,6 +132,7 @@ export const FALLBACK_EVENTS: FestEvent[] = [
     teamSize: "1–3",
     cta: "",
     featured: true,
+    entry: "register",
   },
   {
     slug: "technocrat",
@@ -104,6 +141,14 @@ export const FALLBACK_EVENTS: FestEvent[] = [
     category: "Technical",
     description:
       "One crown for the sharpest builder on campus. Portfolio on the table, no hiding behind a team.",
+    longDescription:
+      "The solo builder's throne. Technocrat of the Year crowns the sharpest single mind on campus — one person, one portfolio, one live showcase to an adjudicator panel. Bring shipped projects, open-source commits, research, competition wins, anything that proves you build. No team buffers, no group credit. Portfolio on the table, questions on the mic, crown to the strongest.",
+    highlights: [
+      "Solo entry — no teams, no co-credit",
+      "Live portfolio showcase to the adjudicator panel",
+      "Bring shipped projects, OSS, research, competition wins",
+      "Q&A round on the mic after each showcase",
+    ],
     image: "/assets/technocrat.jpg",
     prizePool: "Trophy + goodies",
     venue: "Main Amphitheatre",
@@ -112,6 +157,7 @@ export const FALLBACK_EVENTS: FestEvent[] = [
     teamSize: "Solo",
     cta: "",
     featured: true,
+    entry: "register",
   },
   {
     slug: "pixel-pulse",
@@ -120,6 +166,14 @@ export const FALLBACK_EVENTS: FestEvent[] = [
     category: "AI / ML",
     description:
       "Prompt the machine, then design the poster that owns the wall. Gen AI sparks, you finish the frame.",
+    longDescription:
+      "A timed generative-AI poster duel. You get a theme prompt and a bank of Gen AI tools — image models, layout assists, type foundries. The machine sparks the frame, but you own the composition: crop, color, hierarchy, finish. Judges score prompt craft, visual impact and final polish equally. Solo entry, timed canvas, wall-mounted gallery at the end.",
+    highlights: [
+      "Gen AI tools live on-site — bring nothing but ideas",
+      "Theme prompt dropped at canvas-open",
+      "Judged on prompt craft + visual impact + polish",
+      "Solo timed entry; winning posters go on the wall",
+    ],
     image: "/assets/gen-ai.jpg",
     prizePool: "₹3,000",
     venue: "Design Studio",
@@ -128,6 +182,34 @@ export const FALLBACK_EVENTS: FestEvent[] = [
     teamSize: "Solo",
     cta: "",
     featured: true,
+    entry: "register",
+  },
+  {
+    slug: "the-foundry",
+    tag: "Technical workshop",
+    title: "The Foundry: Tech Override",
+    category: "Technical",
+    description:
+      "From generative-AI projects to resume, LinkedIn and portfolio craft — the placement playbook, compressed into one evening.",
+    longDescription:
+      "A skill-driven workshop by Ignite that bridges academic learning and real-world placement prep. Explore AI and Generative AI, discover how to turn ideas into shippable projects, and build the professional identity that gets you shortlisted — resume, LinkedIn headline and About section, coding profile, and a portfolio that presents your work like a pro. Ends with a live walkthrough of the placement process at top tech companies and how to plan your preparation roadmap.",
+    highlights: [
+      "Understand the placement process at top tech companies",
+      "AI + Generative AI: real-world applications and career paths",
+      "Build AI-powered projects — from idea to demo",
+      "Resume, LinkedIn and portfolio optimization clinic",
+      "Real interview experiences + preparation roadmap",
+    ],
+    image: "/assets/workshop.jpg",
+    prizePool: "Certificate + kit",
+    venue: "TBA",
+    format: "Solo · Hands-on",
+    schedule: "29 Oct · 17:30 IST",
+    teamSize: "Solo",
+    cta: "",
+    featured: true,
+    entry: "contact",
+    contact: "Rajeev Raj — 9608006152",
   },
 ];
 

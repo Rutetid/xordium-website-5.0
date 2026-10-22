@@ -99,9 +99,21 @@ export const registerEvents: RegisterEvent[] = [
   },
 ];
 
+/**
+ * Accents for events that appear in the directory but not on /register
+ * (e.g. walk-in workshops with no registration form).
+ */
+const EXTRA_EVENT_ACCENTS: Record<string, string> = {
+  "the-foundry": "#ff6a00",
+};
+
 /** Per-event accent colour (falls back to acid). */
 export function accentFor(slug: string): string {
-  return registerEvents.find((e) => e.slug === slug)?.accent ?? "#c6ff00";
+  return (
+    registerEvents.find((e) => e.slug === slug)?.accent ??
+    EXTRA_EVENT_ACCENTS[slug] ??
+    "#c6ff00"
+  );
 }
 
 export function openChannelCount(): number {
