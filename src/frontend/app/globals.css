@@ -718,6 +718,7 @@ button {
 
 .cx-nav {
   position: relative;
+  z-index: 2;
   overflow: hidden;
   pointer-events: auto;
   border: 2px solid rgb(198 255 0 / 60%);
@@ -734,10 +735,215 @@ button {
   left: 0;
 }
 
+/* One row on phones: brand left, Register + burger right.
+   Desktop adds the centered link strip between them. */
 .cx-nav-inner {
   position: relative;
   z-index: 2;
-  padding-top: calc(5px + 0.6rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: calc(5px + 0.5rem) 0.6rem 0.45rem;
+}
+
+.cx-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 0;
+}
+
+.cx-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+
+/* desktop inline strip — hidden on phones (drawer takes over) */
+.cx-nav-links {
+  display: none;
+}
+
+/* burger — mobile only */
+.cx-burger {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgb(198 255 0 / 55%);
+  background: rgb(198 255 0 / 8%);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.25s ease;
+}
+
+.cx-burger:hover {
+  background: rgb(198 255 0 / 16%);
+  box-shadow: 0 0 22px -10px var(--color-acid);
+}
+
+.cx-burger span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: var(--color-acid);
+  box-shadow: 0 0 8px rgb(198 255 0 / 60%);
+  transition:
+    transform 0.25s ease,
+    opacity 0.2s ease;
+}
+
+.cx-burger[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.cx-burger[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+
+.cx-burger[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ── mobile drawer ─────────────────────────────────────────── */
+
+.cx-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background: rgb(0 0 0 / 60%);
+  backdrop-filter: blur(2px);
+  pointer-events: auto;
+  animation: cx-drawer-fade 0.18s ease both;
+}
+
+.cx-drawer {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  z-index: 3;
+  margin-top: 0.4rem;
+  padding: 0 0.15rem;
+  pointer-events: auto;
+  animation: cx-drawer-drop 0.2s ease both;
+}
+
+.cx-drawer-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 50px;
+  padding: 0.7rem 0.9rem;
+  border: 2px solid rgb(198 255 0 / 55%);
+  border-bottom-width: 0;
+  background: #07080a;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 85%);
+  text-decoration: none;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.cx-drawer-link:last-child {
+  border-bottom-width: 2px;
+}
+
+.cx-drawer-link:hover {
+  background: rgb(198 255 0 / 10%);
+  color: var(--color-acid);
+}
+
+.cx-drawer-link[aria-current="page"] {
+  background: var(--color-acid);
+  color: #07090a;
+}
+
+.cx-drawer-idx {
+  flex-shrink: 0;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--color-danger);
+  text-shadow: 0 0 8px rgb(255 43 31 / 50%);
+}
+
+.cx-drawer-link[aria-current="page"] .cx-drawer-idx {
+  color: #07090a;
+  text-shadow: none;
+}
+
+.cx-drawer-sub {
+  margin-left: auto;
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  color: rgb(255 255 255 / 35%);
+}
+
+.cx-drawer-link[aria-current="page"] .cx-drawer-sub {
+  color: rgb(7 9 10 / 60%);
+}
+
+.cx-drawer-link.cx-nav-link--desk {
+  display: none;
+}
+
+@keyframes cx-drawer-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes cx-drawer-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.cx-burger:focus-visible,
+.cx-drawer-link:focus-visible {
+  outline: 2px solid var(--color-acid);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cx-drawer,
+  .cx-drawer-backdrop,
+  .cx-burger span {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .cx-nav-inner {
+    gap: 0.75rem;
+    padding: calc(5px + 0.55rem) 1rem 0.5rem;
+  }
+  .cx-nav-links {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+  .cx-burger,
+  .cx-drawer,
+  .cx-drawer-backdrop {
+    display: none;
+  }
 }
 
 .cx-brand {
