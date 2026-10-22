@@ -9,12 +9,20 @@ export type EventCategory =
   | "Open"
   | "Fun";
 
+/** How someone gets into an event. */
+export type EventEntry = "register" | "contact" | "walk-in";
+
 export interface FestEvent {
   slug: string;
   tag: string;
   title: string;
   category: EventCategory;
+  /** Short blurb — cards, search, homepage rows. */
   description: string;
+  /** Full briefing — directory dossiers + detail pages. */
+  longDescription?: string;
+  /** Bullet highlights shown on directory dossiers. */
+  highlights?: string[];
   image: string;
   prizePool: string;
   prizeNote?: string;
@@ -24,6 +32,14 @@ export interface FestEvent {
   teamSize?: string;
   cta: string;
   featured?: boolean;
+  /**
+   * register → links to /register
+   * contact  → shows a contact line, no register button
+   * walk-in  → "no registration" note
+   */
+  entry?: EventEntry;
+  /** Phone / email / handle for contact-entry events. */
+  contact?: string;
 }
 // Registration deadline and prize pool now live in site settings (admin).
 

@@ -89,6 +89,19 @@ export default async function EventDetailPage({
                 {event.description}
               </MarkdownText>
             ) : null}
+            {event.longDescription ? (
+              <p className="cx-dos-long">{event.longDescription}</p>
+            ) : null}
+            {event.highlights && event.highlights.length > 0 ? (
+              <div className="cx-dos-hl">
+                <p className="cx-dos-hl-head">// Key signals</p>
+                <ul>
+                  {event.highlights.map((h) => (
+                    <li key={h}>{h}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
             <dl className="cx-event-meta">
               {(
                 [
@@ -110,12 +123,23 @@ export default async function EventDetailPage({
                 ))}
             </dl>
             <div className="cx-flag-actions">
-              <Link
-                href={getRegistrationHref(event.slug)}
-                className="cx-btn cx-btn--acid"
-              >
-                {event.cta || "Register"} →
-              </Link>
+              {event.entry === "contact" || event.entry === "walk-in" ? (
+                <div className="cx-dos-entry">
+                  <span className="cx-dos-entry-tag">
+                    No registration required
+                  </span>
+                  <span className="cx-dos-entry-contact">
+                    {event.contact || "Walk in on-site"}
+                  </span>
+                </div>
+              ) : (
+                <Link
+                  href={getRegistrationHref(event.slug)}
+                  className="cx-btn cx-btn--acid"
+                >
+                  {event.cta || "Register"} →
+                </Link>
+              )}
               <Link href="/events" className="cx-btn cx-btn--ghost">
                 All events
               </Link>
