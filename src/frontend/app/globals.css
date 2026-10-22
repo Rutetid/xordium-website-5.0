@@ -2873,6 +2873,203 @@ button {
   color: rgb(255 255 255 / 75%);
 }
 
+/* ---------- about page (.cx-about-*) ---------- */
+
+.cx-about-quote {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.cx-about-body {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: rgb(255 255 255 / 72%);
+}
+
+.cx-about-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+/* banner poster */
+.cx-about-poster {
+  position: relative;
+  min-height: 240px;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 14%);
+  background: rgb(8 9 13 / 82%);
+}
+
+.cx-about-poster img {
+  object-fit: contain;
+  background: rgb(0 0 0 / 40%);
+}
+
+.cx-about-poster-tag {
+  position: absolute;
+  bottom: 0.55rem;
+  left: 0.55rem;
+  z-index: 1;
+  padding: 0.25rem 0.5rem;
+  background: rgb(0 0 0 / 78%);
+  border: 1px solid rgb(255 255 255 / 18%);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 70%);
+}
+
+/* scale telemetry grid */
+.cx-about-scale {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 640px) {
+  .cx-about-scale {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .cx-about-scale {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.cx-about-stat {
+  padding: 1rem 1.1rem;
+  border: 1px solid rgb(255 255 255 / 12%);
+  background: rgb(8 9 13 / 70%);
+}
+
+.cx-about-stat-value {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.03em;
+  color: var(--color-acid);
+}
+
+.cx-about-stat-label {
+  margin-top: 0.5rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  line-height: 1.45;
+  color: rgb(255 255 255 / 65%);
+}
+
+/* club panels */
+.cx-about-club {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 1.2rem 1.3rem;
+}
+
+.cx-about-club-kicker {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-acid);
+}
+
+.cx-about-club-title {
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.45rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.cx-about-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  list-style: none;
+  margin-top: 0.25rem;
+}
+
+.cx-about-list li {
+  position: relative;
+  padding-left: 0.9rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: rgb(255 255 255 / 70%);
+}
+
+.cx-about-list li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--color-acid);
+  font-size: 10px;
+}
+
+/* contact strip */
+.cx-about-contact {
+  margin-top: 1.5rem;
+  padding-top: 1.1rem;
+  border-top: 1px dashed rgb(255 255 255 / 14%);
+}
+
+.cx-about-contact-label {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 45%);
+  margin-bottom: 0.65rem;
+}
+
+.cx-about-contact-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+/* CTA strip */
+.cx-about-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.3rem 1.4rem;
+  border: 1px solid rgb(255 255 255 / 14%);
+  background:
+    linear-gradient(
+      120deg,
+      color-mix(in srgb, var(--color-acid) 10%, transparent),
+      transparent 55%
+    ),
+    rgb(8 9 13 / 82%);
+}
+
+.cx-about-cta-title {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(1.3rem, 3vw, 1.75rem);
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  margin-top: 0.2rem;
+}
+
 /* =============================================================
    REGISTER // INTAKE TERMINAL  (.rx-*)
    A maximalist cyberpunk kiosk: hazard tape, CRT scanlines,
