@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/section-heading";
-import StackedEventCard from "@/components/stacked-event-card";
+import HomepageEventRow from "@/components/homepage-event-row";
 import { events, type EventCategory, type FestEvent } from "@/lib/events";
+import { FALLBACK_EVENTS } from "@/data/site-config";
 
 type DbEventFlag = {
   slug: string;
@@ -22,9 +23,9 @@ type DbEventFlag = {
   posterUrl?: string | null;
 };
 
-// Homepage featured section. Shows ONLY the events checked as featured
-// in the admin panel — nothing is hardcoded. Skeleton rows hold the layout
-// while loading; if the API is unreachable the section stays empty.
+// Homepage featured section. Admin-featured events from the DB win;
+// if the API is unreachable or nothing is featured, the curated
+// fallback catalogue keeps the signal feed full.
 export default function FeaturedSection() {
   const [featured, setFeatured] = useState<FestEvent[] | null>(null);
 
@@ -33,7 +34,7 @@ export default function FeaturedSection() {
       .then((response) => (response.ok ? response.json() : null))
       .then((data: DbEventFlag[] | null) => {
         if (!Array.isArray(data)) {
-          setFeatured([]);
+          setFeatured(FALLBACK_EVENTS);
           return;
         }
         const bySlug = new Map(data.map((d) => [d.slug, d]));
@@ -66,10 +67,10 @@ export default function FeaturedSection() {
                 },
           );
         }
-        setFeatured(merged);
+        setFeatured(merged.length > 0 ? merged : FALLBACK_EVENTS);
       })
       .catch(() => {
-        setFeatured([]);
+        setFeatured(FALLBACK_EVENTS);
       });
   }, []);
 
@@ -78,21 +79,26 @@ export default function FeaturedSection() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-14">
       <SectionHeading
-        kicker="Transmission specifications // 01"
-        title="Featured competitions"
-        blurb="Engineered for extreme performance. Each track carries strict tournament guidelines, certified adjudicators, enterprise compute nodes, and direct cash disbursements."
+        kicker="Signal feed // 01"
+        title="Featured arenas"
+        blurb="Strict tournament guidelines, certified adjudicators, enterprise compute nodes, and direct cash disbursements. Pick your theater — the uplink is open."
       />
       <div className="flex flex-col gap-5">
         {featured === null
           ? [1, 2].map((i) => (
               <div
                 key={i}
-                className="glass-panel h-64 animate-pulse"
+                className="cx-event h-64 animate-pulse"
                 aria-hidden="true"
               />
             ))
           : visible.map((e, i) => (
-              <StackedEventCard key={e.slug} event={e} index={i} total={visible.length} />
+              <HomepageEventRow
+                key={e.slug}
+                event={e}
+                index={i}
+                total={visible.length}
+              />
             ))}
       </div>
     </section>

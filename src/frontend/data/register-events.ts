@@ -99,6 +99,11 @@ export const registerEvents: RegisterEvent[] = [
   },
 ];
 
+/** Per-event accent colour (falls back to acid). */
+export function accentFor(slug: string): string {
+  return registerEvents.find((e) => e.slug === slug)?.accent ?? "#c6ff00";
+}
+
 export function openChannelCount(): number {
   return registerEvents.filter((event) => event.formUrl.length > 0).length;
 }

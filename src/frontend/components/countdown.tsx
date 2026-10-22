@@ -24,8 +24,8 @@ type Parts = {
 const cells: { key: "days" | "hours" | "minutes" | "seconds"; label: string }[] = [
   { key: "days", label: "Days" },
   { key: "hours", label: "Hours" },
-  { key: "minutes", label: "Minutes" },
-  { key: "seconds", label: "Seconds" },
+  { key: "minutes", label: "Min" },
+  { key: "seconds", label: "Sec" },
 ];
 
 export default function Countdown({
@@ -56,22 +56,20 @@ export default function Countdown({
 
   return (
     <div>
-      <div className="glass-panel grid grid-cols-4 gap-px overflow-hidden">
+      <div className="cx-led" role="timer" aria-label={caption ?? "Countdown"}>
         {cells.map((c) => (
-          <div key={c.key} className="bg-black/40 px-2 py-4 text-center sm:py-5">
-            <div className="font-display text-3xl font-black tabular-nums text-white sm:text-4xl">
+          <div key={c.key} className="cx-led-cell">
+            <span className="cx-led-num">
               {String(shown[c.key]).padStart(2, "0")}
-            </div>
-            <div className="mt-1 font-mono text-[10px] tracking-[0.25em] text-white uppercase">
-              {c.label}
-            </div>
+            </span>
+            <span className="cx-led-label">{c.label}</span>
           </div>
         ))}
       </div>
-      <p className="mt-2 text-center font-mono text-[10px] tracking-[0.2em] text-white uppercase">
+      <p className="cx-led-caption">
         {shown.live
-          ? "Registration gateway: closed"
-          : (caption ?? "System launch synchronization clock")}
+          ? "Gateway closed // registration sealed"
+          : (caption ?? "T-minus to arena lockdown")}
       </p>
     </div>
   );
