@@ -1,113 +1,262 @@
 import Image from "next/image";
 import Link from "next/link";
 import SectionHeading from "@/components/section-heading";
-import TeamSection from "@/components/team-section";
 
-const scale = [{
-  value: "06", label: "Engineering depts — CSE, AIML, ECE, EEE, ME and CE unified under single arena infrastructure"
-}, {value: "02", label: "Student guilds — autonomous branches operating technical & esports"}, {
-  value: "12h", label: "Non-stop uninterrupted compute"
-}, {value: "100%", label: "Student-crafted"},];
+const scale = [
+  {
+    id: "TLM-01",
+    value: "07",
+    label: "Combat arenas — technical, esports, creative and fun tracks under one grid",
+  },
+  {
+    id: "TLM-02",
+    value: "06",
+    label: "Engineering depts — CSE, AIML, ECE, EEE, ME and CE unified under single arena infrastructure",
+  },
+  {
+    id: "TLM-03",
+    value: "12h",
+    label: "Non-stop uninterrupted compute — the flagship hackathon clock",
+  },
+  {
+    id: "TLM-04",
+    value: "100%",
+    label: "Student-crafted — designed, built and run by the club, no agency skin",
+  },
+];
 
 export default function AboutPage() {
-  return (<>
-    <section className="border-b border-white/10">
-      <div className="text-slab mx-auto max-w-7xl px-4 pt-10 pb-8 my-6">
-        <p className="font-mono text-[10px] tracking-[0.3em] text-red-500 uppercase">
-          Sys // Declassified overview // Protocol 2026
-        </p>
-        <h1 className="mt-2 font-display text-5xl leading-none font-black uppercase sm:text-7xl">
-          About <span className="text-red-600">Xordium 5.0</span>
-        </h1>
-        <p className="mt-1 font-display text-2xl font-bold text-cyan-300">
-          {"//"} 概要・電脳電波核
-        </p>
-        <p className="mt-3 max-w-2xl font-mono text-sm leading-relaxed text-white">
-          The convergence of bleeding-edge open hardware, algorithmic
-          dominance, underground cyberpunk culture, and esports warfare at Birla Institute of Technology.
-        </p>
-      </div>
-    </section>
+  return (
+    <div className="cx-stage">
+      <div className="cx-scanlines" aria-hidden="true" />
+      <div className="cx-grain" aria-hidden="true" />
 
-    {/* Manifesto */}
-    <section className="mx-auto grid max-w-6xl gap-8 px-4 py-12 lg:grid-cols-2">
-      <div className="relative aspect-[1280/684] w-full overflow-hidden rounded border border-white/10 bg-black/50">
-        <Image
-          src="/assets/Xordium Banner.jpeg"
-          alt="Xordium arena"
-          fill
-          sizes="(max-width: 1024px) 100vw, 50vw"
-          className="object-contain"
-            priority
-        />
-        <span
-          className="absolute bottom-2 left-2 bg-black/70 px-2 py-1 font-mono text-[10px] tracking-[0.2em] uppercase">
-          Comming Soon
+      {/* ── Page head ─────────────────────────────────────────── */}
+      <section className="cx-page-head">
+        <div className="cx-page-head-inner">
+          <p className="cx-page-kicker">
+            <span className="cx-live-dot" aria-hidden="true" />
+            Declassified overview // Protocol 2026 // Cycle 05
+          </p>
+          <h1 className="cx-page-title">
+            <span className="cx-glitch" data-text="About Xordium">
+              About Xordium
+            </span>{" "}
+            <span aria-hidden="true" className="text-red-500">
+              {"//"}
+            </span>{" "}
+            <span className="cx-page-jp">概要</span>
+          </h1>
+          <span className="cx-page-rule" aria-hidden="true" />
+          <p className="cx-page-blurb">
+            The convergence of open hardware, algorithmic dominance,
+            underground cyberpunk culture and esports warfare — staged
+            annually at Birla Institute of Technology, Patna.
+          </p>
+        </div>
+      </section>
+
+      {/* ── Archive carrier (was: red hazard tape) ────────────── */}
+      <div className="cx-carrier" aria-hidden="true">
+        <span className="cx-carrier-rail" />
+        <span className="cx-carrier-tag">
+          <span className="cx-live-dot cx-live-dot--red" />
+          Archive // REC-05 // 2026
         </span>
+        <span className="cx-carrier-rail" />
       </div>
-      <div className="text-slab">
-        <p className="font-mono text-[11px] tracking-[0.3em] text-red-500 uppercase">
-          // Symposium manifesto
-        </p>
-        <blockquote className="mt-2 font-display text-3xl leading-tight font-black uppercase">
-          “We reject the slide deck and measure the{" "}
-          <span className="text-red-600">solder seam</span>.”
-        </blockquote>
-        <p className="mt-2 font-mono text-md leading-relaxed text-white">
-          Xordium is the annual flagship fest of Club Ignite and the eSports Society of Birla Institute of Technology, Mesra – Off Campus, Patna.
-        </p>
-        <p className="mt-1 font-mono text-md leading-relaxed text-white">
-          Xordium brings together technology enthusiasts, gamers, and creators from across campuses to experience a dynamic blend of technical workshops, competitive events, eSports tournaments, and funfilled challenges. From coding battles and robotics showdowns to highenergy gaming arenas and creative contests, every segment of Xordium is designed to ignite minds and fuel collaboration.
-        </p>
-      </div>
-    </section>
 
-    {/* Scale */}
-    <section className="border-y border-white/10">
-      <div className="mx-auto max-w-6xl px-4 py-12">
+      {/* ── The event ─────────────────────────────────────────── */}
+      <section className="mx-auto max-w-6xl px-4 py-10">
         <SectionHeading
-          kicker="Telemetry benchmarks"
-          title="Scale of engagement"
+          kicker="The event"
+          title="Xordium 5.0"
+          blurb="Annual flagship symposium of Club Ignite and the eSports Society — BIT Mesra, Off Campus, Patna."
         />
-        <div
-          className="glass-panel grid gap-px overflow-hidden sm:grid-cols-2 lg:grid-cols-4">
-          {scale.map((s) => (<div key={s.label} className="bg-transparent p-5">
-            <p className="font-display text-5xl font-black">{s.value}</p>
-            <p className="mt-2 font-mono text-[11px] leading-relaxed text-white">
-              {s.label}
+
+        <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
+          {/* Manifesto panel */}
+          <div className="cx-flag cx-flag--wide cx-corners">
+            <div className="cx-scan" aria-hidden="true" />
+            <div className="cx-flag-bar">
+              <p className="cx-flag-label">
+                <span className="cx-live-dot" aria-hidden="true" />
+                Symposium manifesto
+              </p>
+              <p className="cx-flag-time">Year 2026</p>
+            </div>
+            <div className="cx-flag-body">
+              <div className="cx-flag-main">
+                <blockquote className="cx-about-quote">
+                  {"“"}We reject the slide deck and measure the{" "}
+                  <span className="text-red-500">solder seam</span>.{"”"}
+                </blockquote>
+                <p className="cx-about-body">
+                  Xordium brings together technology enthusiasts, gamers and
+                  creators from across campuses for a week of technical
+                  workshops, competitive events, esports tournaments and
+                  fun-filled challenges. From coding battles to high-energy
+                  gaming arenas and creative contests, every segment is
+                  designed to ignite minds and fuel collaboration.
+                </p>
+                <div className="cx-about-tags">
+                  <span className="cx-tag">Technical</span>
+                  <span className="cx-tag">Esports</span>
+                  <span className="cx-tag">Creative</span>
+                  <span className="cx-tag cx-tag--ghost">Workshops</span>
+                  <span className="cx-tag cx-tag--ghost">Fun</span>
+                </div>
+                <div className="cx-flag-actions">
+                  <Link href="/events" className="cx-btn cx-btn--acid">
+                    Explore arenas →
+                  </Link>
+                  <Link href="/register" className="cx-btn cx-btn--ghost">
+                    Register
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Banner */}
+          <div className="cx-about-poster cx-corners">
+            <Image
+              src="/assets/Xordium Banner.jpeg"
+              alt="Xordium 5.0 arena banner"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="pointer-events-none"
+              priority
+            />
+            <span className="cx-about-poster-tag">
+              XOR-BANNER.JPEG // ASSET-05
+            </span>
+          </div>
+        </div>
+
+        {/* Scale telemetry */}
+        <div className="cx-about-scale">
+          {scale.map((s) => (
+            <div key={s.label} className="cx-about-stat cx-corners">
+              <p className="cx-about-stat-head">
+                <span>{s.id}</span>
+                <span className="cx-live-dot" aria-hidden="true" />
+              </p>
+              <p className="cx-about-stat-value">{s.value}</p>
+              <p className="cx-about-stat-label">{s.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Guild carrier (was: neon hazard tape) ─────────────── */}
+      <div className="cx-carrier" aria-hidden="true">
+        <span className="cx-carrier-rail" />
+        <span className="cx-carrier-tag">
+          <span className="cx-live-dot" aria-hidden="true" />
+          Operators // GUILD-02 // LINKED
+        </span>
+        <span className="cx-carrier-rail" />
+      </div>
+
+      {/* ── The club ──────────────────────────────────────────── */}
+      <section className="mx-auto max-w-6xl px-4 py-10">
+        <SectionHeading
+          kicker="The operators"
+          title="Club Ignite"
+          blurb="Student-run technical club and esports society of BIT Patna — the guild behind the grid."
+        />
+
+        <div className="mt-8 grid gap-6 lg:grid-cols-2">
+          <div className="cx-panel cx-corners cx-about-club">
+            <div className="cx-scan" aria-hidden="true" />
+            <header className="cx-about-club-head">
+              <p className="cx-about-club-kicker">
+                <span className="cx-live-dot" aria-hidden="true" />
+                // Ignite
+              </p>
+              <span className="cx-about-club-meta">WING-01 // TECH</span>
+            </header>
+            <h3 className="cx-about-club-title">Technical wing</h3>
+            <p className="cx-about-body">
+              Club Ignite is the engineering collective of BIT Patna —
+              workshops, hackathons, open-source sprints and project build
+              nights run entirely by students. Ignite owns the technical
+              arenas of Xordium: the 12-hour hackathon, competitive
+              programming, the Gen AI lab and the Technocrat crown.
             </p>
-          </div>))}
-        </div>
-      </div>
-    </section>
+            <ul className="cx-about-list">
+              <li>Hands-on workshops and build nights across the year</li>
+              <li>Hackathon and CP infrastructure for the whole campus</li>
+              <li>Open-source contributions and project showcases</li>
+            </ul>
+          </div>
 
-    {/*{Team}*/}
-    <TeamSection />
-
-
-    {/* CTA */}
-    <section className="border-t border-white/10">
-      <div className="glass-panel mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-12 sm:flex-row">
-        <div>
-          <h2 className="font-display text-3xl font-black uppercase">
-            Prepare your deck for 2026
-          </h2>
+          <div className="cx-panel cx-corners cx-about-club">
+            <div className="cx-scan" aria-hidden="true" />
+            <header className="cx-about-club-head">
+              <p className="cx-about-club-kicker">
+                <span className="cx-live-dot" aria-hidden="true" />
+                // Esports Society
+              </p>
+              <span className="cx-about-club-meta">WING-02 // ARENA</span>
+            </header>
+            <h3 className="cx-about-club-title">Arena wing</h3>
+            <p className="cx-about-body">
+              The eSports Society runs the competitive gaming circuits —
+              LAN tournaments, squad brackets and the mainstage arena.
+              Together with Ignite, it forms the dual-guild structure
+              behind Xordium: code on one side, controllers on the other,
+              one grid to run them both.
+            </p>
+            <ul className="cx-about-list">
+              <li>LAN tournament ops and squad bracket management</li>
+              <li>Mainstage production for finals night</li>
+              <li>Cross-campus competitive circuits year-round</li>
+            </ul>
+          </div>
         </div>
-        <div className="flex gap-2">
-          <Link
-            href="/register"
-            className="bg-red-600 px-5 py-2.5 font-mono text-[11px] font-bold tracking-[0.2em] uppercase hover:bg-red-500"
-          >
-            Register delegate →
-          </Link>
-          <Link
-            href="/events"
-            className="border border-white/25 px-5 py-2.5 font-mono text-[11px] tracking-[0.2em] uppercase hover:bg-white/10"
-          >
-            Explore tracks
-          </Link>
+
+        <div className="cx-about-contact">
+          <p className="cx-about-contact-label">
+            <span className="cx-live-dot" aria-hidden="true" />
+            // Ping the comms channel
+          </p>
+          <div className="cx-about-contact-row">
+            <a href="mailto:ignite@bitmesra.ac.in" className="cx-contact">
+              ✉ ignite@bitmesra.ac.in
+            </a>
+            <a
+              href="https://www.instagram.com/ignite_bitp"
+              target="_blank"
+              rel="noreferrer"
+              className="cx-contact"
+            >
+              [a] Instagram ↗
+            </a>
+          </div>
         </div>
-      </div>
-    </section>
-  </>);
+      </section>
+
+      {/* ── CTA ───────────────────────────────────────────────── */}
+      <section className="mx-auto max-w-6xl px-4 pb-14">
+        <div className="cx-about-cta cx-corners">
+          <div>
+            <p className="cx-sec-kicker">Uplink open</p>
+            <h2 className="cx-about-cta-title">
+              Prepare your deck for 2026
+            </h2>
+          </div>
+          <div className="cx-flag-actions">
+            <Link href="/register" className="cx-btn cx-btn--acid">
+              Register →
+            </Link>
+            <Link href="/events" className="cx-btn cx-btn--ghost">
+              Explore tracks
+            </Link>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
 }
