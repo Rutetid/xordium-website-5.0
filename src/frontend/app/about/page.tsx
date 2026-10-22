@@ -4,18 +4,22 @@ import SectionHeading from "@/components/section-heading";
 
 const scale = [
   {
+    id: "TLM-01",
     value: "07",
     label: "Combat arenas — technical, esports, creative and fun tracks under one grid",
   },
   {
+    id: "TLM-02",
     value: "06",
     label: "Engineering depts — CSE, AIML, ECE, EEE, ME and CE unified under single arena infrastructure",
   },
   {
+    id: "TLM-03",
     value: "12h",
     label: "Non-stop uninterrupted compute — the flagship hackathon clock",
   },
   {
+    id: "TLM-04",
     value: "100%",
     label: "Student-crafted — designed, built and run by the club, no agency skin",
   },
@@ -23,11 +27,15 @@ const scale = [
 
 export default function AboutPage() {
   return (
-    <>
+    <div className="cx-stage">
+      <div className="cx-scanlines" aria-hidden="true" />
+      <div className="cx-grain" aria-hidden="true" />
+
       {/* ── Page head ─────────────────────────────────────────── */}
       <section className="cx-page-head">
         <div className="cx-page-head-inner">
           <p className="cx-page-kicker">
+            <span className="cx-live-dot" aria-hidden="true" />
             Declassified overview // Protocol 2026 // Cycle 05
           </p>
           <h1 className="cx-page-title">
@@ -48,10 +56,18 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── The event ─────────────────────────────────────────── */}
-      <div className="cx-tape cx-tape--red" aria-hidden="true" />
+      {/* ── Archive carrier (was: red hazard tape) ────────────── */}
+      <div className="cx-carrier" aria-hidden="true">
+        <span className="cx-carrier-rail" />
+        <span className="cx-carrier-tag">
+          <span className="cx-live-dot cx-live-dot--red" />
+          Archive // REC-05 // 2026
+        </span>
+        <span className="cx-carrier-rail" />
+      </div>
 
-      <section className="mx-auto max-w-6xl px-4 py-12">
+      {/* ── The event ─────────────────────────────────────────── */}
+      <section className="mx-auto max-w-6xl px-4 py-10">
         <SectionHeading
           kicker="The event"
           title="Xordium 5.0"
@@ -60,9 +76,13 @@ export default function AboutPage() {
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
           {/* Manifesto panel */}
-          <div className="cx-flag cx-corners">
+          <div className="cx-flag cx-flag--wide cx-corners">
+            <div className="cx-scan" aria-hidden="true" />
             <div className="cx-flag-bar">
-              <p className="cx-flag-label">Symposium manifesto</p>
+              <p className="cx-flag-label">
+                <span className="cx-live-dot" aria-hidden="true" />
+                Symposium manifesto
+              </p>
               <p className="cx-flag-time">Year 2026</p>
             </div>
             <div className="cx-flag-body">
@@ -108,7 +128,9 @@ export default function AboutPage() {
               className="pointer-events-none"
               priority
             />
-            <span className="cx-about-poster-tag">Coming soon</span>
+            <span className="cx-about-poster-tag">
+              XOR-BANNER.JPEG // ASSET-05
+            </span>
           </div>
         </div>
 
@@ -116,6 +138,10 @@ export default function AboutPage() {
         <div className="cx-about-scale">
           {scale.map((s) => (
             <div key={s.label} className="cx-about-stat cx-corners">
+              <p className="cx-about-stat-head">
+                <span>{s.id}</span>
+                <span className="cx-live-dot" aria-hidden="true" />
+              </p>
               <p className="cx-about-stat-value">{s.value}</p>
               <p className="cx-about-stat-label">{s.label}</p>
             </div>
@@ -123,10 +149,18 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── The club ──────────────────────────────────────────── */}
-      <div className="cx-tape cx-tape--neon" aria-hidden="true" />
+      {/* ── Guild carrier (was: neon hazard tape) ─────────────── */}
+      <div className="cx-carrier" aria-hidden="true">
+        <span className="cx-carrier-rail" />
+        <span className="cx-carrier-tag">
+          <span className="cx-live-dot" aria-hidden="true" />
+          Operators // GUILD-02 // LINKED
+        </span>
+        <span className="cx-carrier-rail" />
+      </div>
 
-      <section className="mx-auto max-w-6xl px-4 py-12">
+      {/* ── The club ──────────────────────────────────────────── */}
+      <section className="mx-auto max-w-6xl px-4 py-10">
         <SectionHeading
           kicker="The operators"
           title="Club Ignite"
@@ -135,7 +169,14 @@ export default function AboutPage() {
 
         <div className="mt-8 grid gap-6 lg:grid-cols-2">
           <div className="cx-panel cx-corners cx-about-club">
-            <p className="cx-about-club-kicker">// Ignite</p>
+            <div className="cx-scan" aria-hidden="true" />
+            <header className="cx-about-club-head">
+              <p className="cx-about-club-kicker">
+                <span className="cx-live-dot" aria-hidden="true" />
+                // Ignite
+              </p>
+              <span className="cx-about-club-meta">WING-01 // TECH</span>
+            </header>
             <h3 className="cx-about-club-title">Technical wing</h3>
             <p className="cx-about-body">
               Club Ignite is the engineering collective of BIT Patna —
@@ -152,7 +193,14 @@ export default function AboutPage() {
           </div>
 
           <div className="cx-panel cx-corners cx-about-club">
-            <p className="cx-about-club-kicker">// Esports Society</p>
+            <div className="cx-scan" aria-hidden="true" />
+            <header className="cx-about-club-head">
+              <p className="cx-about-club-kicker">
+                <span className="cx-live-dot" aria-hidden="true" />
+                // Esports Society
+              </p>
+              <span className="cx-about-club-meta">WING-02 // ARENA</span>
+            </header>
             <h3 className="cx-about-club-title">Arena wing</h3>
             <p className="cx-about-body">
               The eSports Society runs the competitive gaming circuits —
@@ -170,7 +218,10 @@ export default function AboutPage() {
         </div>
 
         <div className="cx-about-contact">
-          <p className="cx-about-contact-label">// Ping the comms channel</p>
+          <p className="cx-about-contact-label">
+            <span className="cx-live-dot" aria-hidden="true" />
+            // Ping the comms channel
+          </p>
           <div className="cx-about-contact-row">
             <a href="mailto:ignite@bitmesra.ac.in" className="cx-contact">
               ✉ ignite@bitmesra.ac.in
@@ -206,6 +257,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
