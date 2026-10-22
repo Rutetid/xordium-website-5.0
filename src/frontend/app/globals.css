@@ -3,6 +3,14 @@
 @theme {
   --font-display: "Barlow Condensed", sans-serif;
   --font-mono: "Space Mono", ui-monospace, monospace;
+
+  /* Cyberpunk maximalist palette — shared by the .cx-* kit and
+     available as Tailwind utilities (bg-acid, text-neon, ...). */
+  --color-acid: #c6ff00;
+  --color-neon: #00f0ff;
+  --color-hot: #ff2e88;
+  --color-danger: #ff2b1f;
+  --color-flux: #ffb300;
 }
 
 html {
@@ -312,6 +320,645 @@ button {
 }
 
 /* =============================================================
+   SHARED CYBERPUNK KIT (.cx-*)
+   Site-wide maximalist primitives lifted out of the register
+   page's .rx-arena system: hazard tape, HUD corners, CRT
+   overlays, glitch type, bracketed labels and neon buttons.
+   Unscoped so every public surface speaks one language.
+   ============================================================= */
+
+/* ---------- hazard tape ---------- */
+
+.cx-tape {
+  position: relative;
+  z-index: 5;
+  height: 14px;
+  overflow: hidden;
+}
+
+.cx-tape::after {
+  content: "";
+  position: absolute;
+  inset: -2px -80px;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--color-acid) 0 20px,
+    #0a0a0c 20px 40px
+  );
+  animation: cx-tape 3.4s linear infinite;
+}
+
+.cx-tape--red::after {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--color-danger) 0 20px,
+    #0a0a0c 20px 40px
+  );
+}
+
+.cx-tape--micro {
+  height: 5px;
+}
+
+@keyframes cx-tape {
+  to {
+    transform: translateX(56.57px);
+  }
+}
+
+/* ---------- CRT overlays ---------- */
+
+.cx-scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(0 0 0 / 24%) 0 1px,
+    transparent 1px 4px
+  );
+}
+
+.cx-grain {
+  position: absolute;
+  inset: -80px;
+  z-index: 6;
+  pointer-events: none;
+  opacity: 0.1;
+  mix-blend-mode: screen;
+  background-size: 160px 160px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+  animation: cx-grain 0.75s steps(4) infinite;
+}
+
+@keyframes cx-grain {
+  0% {
+    background-position: 0 0;
+  }
+  25% {
+    background-position: -42px 28px;
+  }
+  50% {
+    background-position: 34px -26px;
+  }
+  75% {
+    background-position: -18px -34px;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+/* ---------- sharp neon panel (replaces .glass-panel on
+     restyled surfaces; .cx-nav, future cards) ---------- */
+
+.cx-panel {
+  position: relative;
+  border: 2px solid rgb(198 255 0 / 55%);
+  background: rgb(7 8 10 / 94%);
+  box-shadow:
+    0 10px 44px rgb(0 0 0 / 0.6),
+    0 0 26px -14px rgb(198 255 0 / 0.55);
+}
+
+/* ---------- HUD corner brackets (parent must be relative) ---------- */
+
+.cx-corners {
+  position: relative;
+}
+
+.cx-corners::before,
+.cx-corners::after {
+  content: "";
+  position: absolute;
+  z-index: 5;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--color-acid);
+  opacity: 0.35;
+  pointer-events: none;
+  transition:
+    opacity 0.3s ease,
+    width 0.3s ease,
+    height 0.3s ease;
+}
+
+.cx-corners::before {
+  top: 0;
+  left: 0;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.cx-corners::after {
+  right: 0;
+  bottom: 0;
+  border-top: 0;
+  border-left: 0;
+}
+
+.cx-corners:hover::before,
+.cx-corners:hover::after,
+.cx-corners:focus-visible::before,
+.cx-corners:focus-visible::after {
+  opacity: 0.95;
+  width: 23px;
+  height: 23px;
+}
+
+/* ---------- neon buttons ---------- */
+
+.cx-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.75rem 1.05rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.3s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.cx-btn--acid {
+  border: 1px solid var(--color-acid);
+  background: var(--color-acid);
+  color: #07090a;
+}
+
+.cx-btn--acid:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 44px -10px var(--color-acid);
+}
+
+.cx-btn--ghost {
+  border: 1px solid rgb(255 255 255 / 28%);
+  color: #fff;
+}
+
+.cx-btn--ghost:hover {
+  transform: translateY(-2px);
+  background: rgb(255 255 255 / 10%);
+}
+
+/* ---------- bracketed mono label / nav link ---------- */
+
+.cx-nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.45rem 0.55rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: rgb(255 255 255 / 78%);
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.cx-nav-link::before,
+.cx-nav-link::after {
+  font-weight: 700;
+  color: rgb(255 255 255 / 35%);
+  transition:
+    color 0.2s ease,
+    transform 0.25s ease;
+}
+
+.cx-nav-link::before {
+  content: "[";
+  margin-right: 0.4em;
+}
+
+.cx-nav-link::after {
+  content: "]";
+  margin-left: 0.4em;
+}
+
+.cx-nav-link:hover {
+  background: rgb(198 255 0 / 8%);
+  color: var(--color-acid);
+}
+
+.cx-nav-link:hover::before,
+.cx-nav-link:hover::after {
+  color: var(--color-acid);
+}
+
+.cx-nav-link:hover::before {
+  transform: translateX(-2px);
+}
+
+.cx-nav-link:hover::after {
+  transform: translateX(2px);
+}
+
+.cx-nav-link[aria-current="page"] {
+  background: var(--color-acid);
+  color: #07090a;
+}
+
+.cx-nav-link[aria-current="page"]::before,
+.cx-nav-link[aria-current="page"]::after {
+  color: #07090a;
+}
+
+/* Desktop-only nav item (Admin). Visibility lives here because the
+   kit is unlayered and would otherwise beat Tailwind's .hidden. */
+.cx-nav-link--desk {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .cx-nav-link {
+    min-height: 40px;
+    padding: 0.5rem 0.55rem;
+    font-size: 13px;
+    letter-spacing: 0.16em;
+  }
+  .cx-nav-link--desk {
+    display: inline-flex;
+  }
+}
+
+/* ---------- glitch display type (RGB split on hover) ---------- */
+
+.cx-glitch {
+  position: relative;
+  z-index: 0;
+  display: inline-block;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+.cx-glitch::before,
+.cx-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cx-glitch::before {
+  color: var(--color-danger);
+}
+
+.cx-glitch::after {
+  color: var(--color-neon);
+}
+
+.cx-glitch:hover::before,
+.cx-glitch:focus-visible::before {
+  animation: cx-glitch-a 0.5s steps(1) both;
+}
+
+.cx-glitch:hover::after,
+.cx-glitch:focus-visible::after {
+  animation: cx-glitch-b 0.5s steps(1) both;
+}
+
+@keyframes cx-glitch-a {
+  0% {
+    opacity: 1;
+    clip-path: inset(0 0 100% 0);
+    transform: translate(0, 0);
+  }
+  20% {
+    opacity: 1;
+    clip-path: inset(8% 0 68% 0);
+    transform: translate(-4px, -2px);
+  }
+  45% {
+    opacity: 1;
+    clip-path: inset(46% 0 30% 0);
+    transform: translate(4px, 1px);
+  }
+  70% {
+    opacity: 1;
+    clip-path: inset(74% 0 6% 0);
+    transform: translate(-3px, 2px);
+  }
+  85%,
+  100% {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes cx-glitch-b {
+  0% {
+    opacity: 1;
+    clip-path: inset(0 0 100% 0);
+    transform: translate(0, 0);
+  }
+  25% {
+    opacity: 1;
+    clip-path: inset(18% 0 58% 0);
+    transform: translate(4px, 2px);
+  }
+  50% {
+    opacity: 1;
+    clip-path: inset(58% 0 18% 0);
+    transform: translate(-4px, -1px);
+  }
+  75% {
+    opacity: 1;
+    clip-path: inset(32% 0 44% 0);
+    transform: translate(3px, -2px);
+  }
+  90%,
+  100% {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    transform: translate(0, 0);
+  }
+}
+
+/* ---------- navbar (.cx-nav) ---------- */
+
+/* The header is a fixed overlay: it sits ON TOP of the page content
+   (the bar isn't full width, so content stays visible in the gaps
+   around it). The strip itself never paints a background — only the
+   bar does — and never swallows clicks meant for content behind it. */
+.cx-header {
+  pointer-events: none;
+}
+
+.cx-nav {
+  position: relative;
+  overflow: hidden;
+  pointer-events: auto;
+  border: 2px solid rgb(198 255 0 / 60%);
+  background: #07080a;
+  box-shadow:
+    0 10px 44px rgb(0 0 0 / 0.6),
+    0 0 26px -14px rgb(198 255 0 / 0.55);
+}
+
+.cx-nav .cx-tape {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+}
+
+.cx-nav-inner {
+  position: relative;
+  z-index: 2;
+  padding-top: calc(5px + 0.6rem);
+}
+
+.cx-brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  text-decoration: none;
+}
+
+.cx-brand .cx-glitch {
+  font-size: 1.35rem;
+}
+
+.cx-brand-badge {
+  padding: 0.08rem 0.4rem;
+  background: var(--color-acid);
+  color: #07090a;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 900;
+  font-size: 1.05rem;
+  line-height: 1.1;
+  transition: box-shadow 0.25s ease;
+}
+
+.cx-brand:hover .cx-brand-badge {
+  box-shadow: 0 0 22px -4px var(--color-acid);
+}
+
+.cx-status {
+  display: none;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid rgb(198 255 0 / 40%);
+  background: rgb(198 255 0 / 8%);
+  padding: 0.22rem 0.5rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-acid);
+}
+
+@media (min-width: 640px) {
+  .cx-status {
+    display: inline-flex;
+  }
+}
+
+.cx-status-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--color-acid);
+  animation: cx-blink 1.4s steps(1) infinite;
+}
+
+@keyframes cx-blink {
+  0%,
+  55% {
+    opacity: 1;
+  }
+  56%,
+  100% {
+    opacity: 0.15;
+  }
+}
+
+@media (min-width: 1024px) {
+  .cx-brand .cx-glitch {
+    font-size: 1.6rem;
+  }
+  .cx-brand-badge {
+    font-size: 1.25rem;
+  }
+}
+
+/* Compact the nav CTA on small screens so logo + button share row 1 */
+.cx-nav .cx-btn {
+  padding: 0.6rem 0.8rem;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+}
+
+@media (min-width: 1024px) {
+  .cx-nav .cx-btn {
+    padding: 0.75rem 1.15rem;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+  }
+}
+
+/* ---------- footer (.cx-footer) ---------- */
+
+/* Same HUD shell language as the navbar: acid top edge, hazard tape,
+   scanlines and a blinking status strip; solid so the collage never
+   shows through. Hugs the bottom of short pages (flex parent). */
+.cx-footer {
+  position: relative;
+  overflow: hidden;
+  margin-top: auto;
+  background: #07080a;
+  border-top: 2px solid rgb(198 255 0 / 60%);
+  box-shadow: 0 -16px 36px -24px rgb(0 0 0 / 0.95);
+}
+
+/* logo link is only ~17px tall by default — pad its hit area to the
+   44px touch minimum without touching the navbar brand */
+.cx-footer .cx-brand {
+  min-height: 44px;
+  align-items: center;
+}
+
+.cx-footer .cx-tape {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+}
+
+.cx-footer-inner {
+  position: relative;
+  z-index: 2;
+  padding-top: calc(5px + 2rem);
+}
+
+.cx-footer-label {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-acid);
+}
+
+.cx-footer-label::before {
+  content: "// ";
+  color: rgb(198 255 0 / 55%);
+}
+
+.cx-footer-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.9rem;
+  border: 1px solid rgb(198 255 0 / 40%);
+  background: rgb(198 255 0 / 8%);
+  padding: 0.22rem 0.5rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-acid);
+}
+
+.cx-footer-status {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  border-top: 1px dashed rgb(198 255 0 / 30%);
+  padding: 0.7rem 1rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 65%);
+  text-align: center;
+}
+
+.cx-footer-status strong {
+  color: var(--color-acid);
+  font-weight: 700;
+}
+
+/* /register closes with its own red hazard tape. The footer's yellow
+   tape would stack right beneath it and read as one garish double
+   band — drop the footer's tape and acid edge on that route only. */
+.rx-arena + .cx-footer .cx-tape {
+  display: none;
+}
+
+.rx-arena + .cx-footer {
+  border-top-color: transparent;
+  box-shadow: none;
+}
+
+/* ---------- shared focus + reduced motion ---------- */
+
+.cx-nav a:focus-visible,
+.cx-btn:focus-visible {
+  outline: 2px solid var(--color-acid);
+  outline-offset: 2px;
+}
+
+/* The navbar is a fixed overlay, so the first block of every page sits
+   underneath it. Push just that block's content clear of the bar (the
+   home hero and the register arena handle their own clearance). */
+.collage-content
+  > header
+  + :not(.rx-arena):not([class*="min-h-svh"]) {
+  padding-top: 10rem;
+}
+
+@media (min-width: 1024px) {
+  .collage-content
+    > header
+    + :not(.rx-arena):not([class*="min-h-svh"]) {
+    padding-top: 6.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cx-tape::after,
+  .cx-grain,
+  .cx-status-dot {
+    animation: none !important;
+  }
+  .cx-glitch::before,
+  .cx-glitch::after {
+    display: none;
+  }
+  .cx-btn:hover {
+    transform: none;
+  }
+}
+
+/* =============================================================
    REGISTER // INTAKE TERMINAL  (.rx-*)
    A maximalist cyberpunk kiosk: hazard tape, CRT scanlines,
    film grain, glitch type, neon HUD cards and a live uplink
@@ -534,7 +1181,16 @@ button {
 /* ---------- hero ---------- */
 
 .rx-arena .rx-hero {
+  /* Fixed navbar overlays this page: start the hero below the bar while
+     the full-bleed tape above it stays visible behind the nav. */
+  margin-top: 6.75rem;
   padding-block: clamp(2.2rem, 5vw, 4rem) clamp(2rem, 4vw, 3.25rem);
+}
+
+@media (min-width: 1024px) {
+  .rx-arena .rx-hero {
+    margin-top: 1.75rem;
+  }
 }
 
 .rx-arena .rx-eyebrow {
