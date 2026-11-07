@@ -14,6 +14,7 @@ type NavigationLink = {
 const links: NavigationLink[] = [
   { href: "/", label: "Home" },
   { href: "/events", label: "Events" },
+  { href: "/results", label: "Results" },
   { href: "/about", label: "Intel", sr: "About" },
   { href: "/support", label: "Comms", sr: "Support" },
   // { href: "/admin", label: "Admin", sr: "Admin", desktopOnly: true },
