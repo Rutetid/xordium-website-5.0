@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import HomepageCountdown from "@/components/homepage-countdown";
+// import HomepageCountdown from "@/components/homepage-countdown";
 import HomepageCarousel from "@/components/homepage-carousel";
 import SectionHeading from "@/components/section-heading";
 import TimetableSection from "@/components/timetable-section";
@@ -95,9 +95,10 @@ export default function Home() {
             collegiate esports and raw intellectual horsepower.
           </p>
           <div className="cx-hero-barcode cx-rise" style={{ animationDelay: "400ms" }} aria-hidden="true" />
+          {/* Countdown intentionally paused while results are live.
           <div className="mt-6 cx-rise" style={{ animationDelay: "440ms" }}>
             <HomepageCountdown caption="T-minus to arena lockdown" />
-          </div>
+          </div> */}
           <div
             className="cx-hero-cta cx-rise"
             style={{ animationDelay: "520ms" }}
@@ -107,6 +108,9 @@ export default function Home() {
             </Link>
             <Link href="/events" className="cx-btn cx-btn--ghost">
               Explore events →
+            </Link>
+            <Link href="/results" className="cx-btn cx-btn--ghost">
+              Check results ↗
             </Link>
             {BROCHURE_URL ? (
               <a

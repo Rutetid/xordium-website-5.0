@@ -67,7 +67,7 @@ export default function SiteHeader() {
                 href={l.href}
                 aria-current={isActive(l.href) ? "page" : undefined}
                 aria-label={l.sr}
-                className={`cx-nav-link${l.desktopOnly ? " cx-nav-link--desk" : ""}`}
+                className={`cx-nav-link${l.desktopOnly ? " cx-nav-link--desk" : ""}${l.href === "/results" ? " cx-nav-link--results" : ""}`}
               >
                 {l.label}
               </Link>

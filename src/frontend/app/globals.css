@@ -587,6 +587,11 @@ button {
   color: #07090a;
 }
 
+.cx-nav-link--results {
+  border: 1px solid rgb(198 255 0 / 60%);
+  color: var(--color-acid);
+}
+
 /* Desktop-only nav item (Admin). Visibility lives here because the
    kit is unlayered and would otherwise beat Tailwind's .hidden. */
 .cx-nav-link--desk {
@@ -2478,6 +2483,33 @@ button {
     linear-gradient(90deg, rgb(255 255 255 / 2.5%) 1px, transparent 1px);
   background-size: 46px 46px;
   mask-image: radial-gradient(85% 110% at 40% 0%, #000 25%, transparent 78%);
+}
+
+/* Results gets a dedicated masthead so the fixed navigation sits over an
+   intentional acid signal field instead of an exposed black page edge. */
+.collage-content > header + .cx-results-stage.cx-results-stage {
+  padding-top: 0;
+}
+
+.cx-results-stage .cx-page-head {
+  background: linear-gradient(
+    to bottom,
+    #c6ff00 0,
+    #c6ff00 4rem,
+    #586e03 5.5rem,
+    #111608 8.5rem,
+    #07080a 12rem
+  );
+}
+
+.cx-results-stage .cx-page-head-inner {
+  padding-top: 7rem;
+}
+
+@media (min-width: 640px) {
+  .cx-results-stage .cx-page-head-inner {
+    padding-top: 8rem;
+  }
 }
 
 .cx-page-head-inner {

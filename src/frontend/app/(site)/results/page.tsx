@@ -9,7 +9,7 @@ const resultCategories = [
 
 export default function ResultsPage() {
   return (
-    <div className="cx-stage">
+    <div className="cx-stage cx-results-stage">
       <div className="cx-grain" aria-hidden="true" />
 
       <section className="cx-page-head">
